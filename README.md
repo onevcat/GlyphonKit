@@ -7,7 +7,7 @@ back, with alternates and a one-line reason. All AI runs locally via
 Apple's FoundationModels; no server, no API keys.
 
 GlyphonKit is the recommendation engine extracted from the
-[Glyphon](https://apps.apple.com/app/glyphon) app, where the pipeline was
+[Glyphon](https://glyphon.onevcat.com/) app, where the pipeline was
 tuned and evaluated against a weighted multilingual dataset (see
 [`eval/`](eval/)).
 
