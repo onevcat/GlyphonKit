@@ -39,6 +39,7 @@ public struct SymbolRecommender: Sendable {
   ///   - candidateLimit: Number of candidates for the model to choose from.
   /// - Returns: A recommendation with the chosen symbol, alternates, and reasoning.
   public func recommend(from text: String, candidateLimit: Int = 25) async throws -> SymbolRecommendation {
+    try Task.checkCancellation()
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
       return await luckyPick()
@@ -52,10 +53,16 @@ public struct SymbolRecommender: Sendable {
     do {
       extraction = try await extractKeywords(from: trimmed)
       debugLog("AI Step 1 - keywords: \(extraction.subject + extraction.related)")
+    } catch let error where error is CancellationError {
+      // Cancellation must escape the degradation ladder so hosts can
+      // abort mid-generation instead of receiving a fallback result.
+      throw error
     } catch {
       debugLog("AI Step 1 - extraction failed: \(error)")
       return retrievalOnlyRecommendation(for: trimmed)
     }
+
+    try Task.checkCancellation()
 
     var weighted: [SymbolRootIndex.WeightedKeyword] = []
     for (position, keyword) in extraction.subject.prefix(3).enumerated() {
@@ -76,6 +83,8 @@ public struct SymbolRecommender: Sendable {
     do {
       do {
         pick = try await pickSymbol(query: trimmed, candidates: candidates)
+      } catch let error where error is CancellationError {
+        throw error
       } catch {
         // The guardrail sometimes refuses harmless queries (finance, health)
         // only on the schema-constrained path; the identical prompt passes
@@ -83,6 +92,8 @@ public struct SymbolRecommender: Sendable {
         debugLog("AI Step 2 - constrained pick failed, retrying plain: \(error)")
         pick = try await pickSymbolPlainText(query: trimmed, candidates: candidates)
       }
+    } catch let error where error is CancellationError {
+      throw error
     } catch {
       debugLog("AI Step 2 - pick failed: \(error)")
       return recommendation(fromRanked: candidates, isLucky: false)
