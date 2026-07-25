@@ -1,0 +1,1117 @@
+{
+  "name": "train-v1",
+  "cases": [
+    {
+      "id": "en-dog",
+      "query": "dog",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "dog",
+          "weight": 1.0
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.7
+        }
+      ],
+      "notes": "Single concrete noun; the DB has a literal dog symbol."
+    },
+    {
+      "id": "en-cat-sleep",
+      "query": "a cute cat sleeping",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "cat",
+          "weight": 1.0
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.5
+        },
+        {
+          "root": "moon.zzz",
+          "weight": 0.4
+        },
+        {
+          "root": "zzz",
+          "weight": 0.4
+        }
+      ],
+      "notes": "Subject is the cat, not the sleeping."
+    },
+    {
+      "id": "en-coffee-shop",
+      "query": "coffee shop loyalty app",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "cup.and.saucer",
+          "weight": 1.0
+        },
+        {
+          "root": "mug",
+          "weight": 0.9
+        },
+        {
+          "root": "cup.and.heat.waves",
+          "weight": 0.9
+        },
+        {
+          "root": "takeoutbag.and.cup.and.straw",
+          "weight": 0.7
+        },
+        {
+          "root": "storefront",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-weather-rain",
+      "query": "weather app with rain forecast",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "cloud.rain",
+          "weight": 1.0
+        },
+        {
+          "root": "cloud.sun.rain",
+          "weight": 0.9
+        },
+        {
+          "root": "cloud.heavyrain",
+          "weight": 0.9
+        },
+        {
+          "root": "umbrella",
+          "weight": 0.7
+        },
+        {
+          "root": "cloud.drizzle",
+          "weight": 0.8
+        },
+        {
+          "root": "cloud",
+          "weight": 0.5
+        },
+        {
+          "root": "cloud.sun",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-todo",
+      "query": "a to-do list manager",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "checklist",
+          "weight": 1.0
+        },
+        {
+          "root": "checkmark.circle",
+          "weight": 0.8
+        },
+        {
+          "root": "list.bullet.clipboard",
+          "weight": 0.8
+        },
+        {
+          "root": "text.badge.checkmark",
+          "weight": 0.7
+        },
+        {
+          "root": "list.bullet",
+          "weight": 0.6
+        },
+        {
+          "root": "checkmark",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-finance",
+      "query": "personal finance tracker for monthly budgets",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.9
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.9
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.8
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.7
+        },
+        {
+          "root": "chart.line.uptrend.xyaxis",
+          "weight": 0.6
+        },
+        {
+          "root": "dollarsign.bank.building",
+          "weight": 0.5
+        }
+      ],
+      "notes": "Money-related terms are sparse in the DB (dollarsign has only currency/currencies)."
+    },
+    {
+      "id": "en-music",
+      "query": "music player app",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "music.note",
+          "weight": 1.0
+        },
+        {
+          "root": "music.note.list",
+          "weight": 0.9
+        },
+        {
+          "root": "headphones",
+          "weight": 0.8
+        },
+        {
+          "root": "play",
+          "weight": 0.5
+        },
+        {
+          "root": "waveform",
+          "weight": 0.5
+        },
+        {
+          "root": "music.quarternote.3",
+          "weight": 0.8
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-photo-edit",
+      "query": "photo editing tool with filters",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "camera.filters",
+          "weight": 1.0
+        },
+        {
+          "root": "wand.and.stars",
+          "weight": 0.9
+        },
+        {
+          "root": "photo",
+          "weight": 0.8
+        },
+        {
+          "root": "slider.horizontal.3",
+          "weight": 0.8
+        },
+        {
+          "root": "photo.badge.magnifyingglass",
+          "weight": 0.5
+        },
+        {
+          "root": "paintbrush",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-fitness",
+      "query": "fitness app for workout tracking",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "figure.run",
+          "weight": 1.0
+        },
+        {
+          "root": "dumbbell",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.strengthtraining.traditional",
+          "weight": 0.9
+        },
+        {
+          "root": "figure.walk",
+          "weight": 0.6
+        },
+        {
+          "root": "flame",
+          "weight": 0.5
+        },
+        {
+          "root": "heart",
+          "weight": 0.4
+        },
+        {
+          "root": "figure.cross.training",
+          "weight": 0.8
+        },
+        {
+          "root": "figure.core.training",
+          "weight": 0.7
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-email",
+      "query": "email client",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "envelope",
+          "weight": 1.0
+        },
+        {
+          "root": "envelope.open",
+          "weight": 0.9
+        },
+        {
+          "root": "paperplane",
+          "weight": 0.7
+        },
+        {
+          "root": "tray",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-password",
+      "query": "password manager with secure vault",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "lock.shield",
+          "weight": 1.0
+        },
+        {
+          "root": "key",
+          "weight": 0.9
+        },
+        {
+          "root": "lock",
+          "weight": 0.9
+        },
+        {
+          "root": "key.horizontal",
+          "weight": 0.9
+        },
+        {
+          "root": "lock.rectangle.stack",
+          "weight": 0.8
+        },
+        {
+          "root": "shield",
+          "weight": 0.6
+        },
+        {
+          "root": "shield.lefthalf.filled",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-chat",
+      "query": "team chat and messaging",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "message",
+          "weight": 1.0
+        },
+        {
+          "root": "bubble.left.and.bubble.right",
+          "weight": 0.9
+        },
+        {
+          "root": "text.bubble",
+          "weight": 0.7
+        },
+        {
+          "root": "quote.bubble",
+          "weight": 0.5
+        },
+        {
+          "root": "paperplane",
+          "weight": 0.5
+        },
+        {
+          "root": "person.2",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-reading",
+      "query": "ebook reader with a personal library",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "book",
+          "weight": 1.0
+        },
+        {
+          "root": "books.vertical",
+          "weight": 0.9
+        },
+        {
+          "root": "book.closed",
+          "weight": 0.8
+        },
+        {
+          "root": "book.pages",
+          "weight": 0.8
+        },
+        {
+          "root": "text.book.closed",
+          "weight": 0.7
+        },
+        {
+          "root": "bookmark",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-recipe",
+      "query": "recipe collection and cooking timer",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "frying.pan",
+          "weight": 1.0
+        },
+        {
+          "root": "fork.knife",
+          "weight": 0.9
+        },
+        {
+          "root": "stove",
+          "weight": 0.7
+        },
+        {
+          "root": "oven",
+          "weight": 0.6
+        },
+        {
+          "root": "carrot",
+          "weight": 0.6
+        },
+        {
+          "root": "timer",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-travel",
+      "query": "flight booking and travel planner",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "airplane.ticket",
+          "weight": 1.0
+        },
+        {
+          "root": "airplane",
+          "weight": 1.0
+        },
+        {
+          "root": "airplane.departure",
+          "weight": 0.9
+        },
+        {
+          "root": "suitcase",
+          "weight": 0.8
+        },
+        {
+          "root": "suitcase.rolling",
+          "weight": 0.8
+        },
+        {
+          "root": "globe",
+          "weight": 0.5
+        },
+        {
+          "root": "map",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-car-log",
+      "query": "car maintenance log",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "car",
+          "weight": 0.9
+        },
+        {
+          "root": "wrench.and.screwdriver",
+          "weight": 0.9
+        },
+        {
+          "root": "car.badge.gearshape",
+          "weight": 1.0
+        },
+        {
+          "root": "wrench.adjustable",
+          "weight": 0.6
+        },
+        {
+          "root": "fuelpump",
+          "weight": 0.4
+        },
+        {
+          "root": "gauge.with.needle",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-proj-dogcare",
+      "query": "A software project that automates dog care: feeding schedules, walk reminders, and pet health tracking.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "dog",
+          "weight": 1.0
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.8
+        },
+        {
+          "root": "pet.carrier",
+          "weight": 0.3
+        }
+      ],
+      "notes": "The reported real-world failure: baseline picked pet.carrier.circle.fill."
+    },
+    {
+      "id": "en-proj-cloudsync",
+      "query": "A command line tool that syncs local files to cloud storage automatically.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "arrow.triangle.2.circlepath.icloud",
+          "weight": 1.0
+        },
+        {
+          "root": "icloud.and.arrow.up",
+          "weight": 1.0
+        },
+        {
+          "root": "arrow.trianglehead.2.clockwise.rotate.90.icloud",
+          "weight": 0.9
+        },
+        {
+          "root": "icloud",
+          "weight": 0.7
+        },
+        {
+          "root": "arrow.triangle.2.circlepath",
+          "weight": 0.7
+        },
+        {
+          "root": "cloud",
+          "weight": 0.5
+        },
+        {
+          "root": "folder.badge.gearshape",
+          "weight": 0.4
+        },
+        {
+          "root": "terminal",
+          "weight": 0.4
+        },
+        {
+          "root": "apple.terminal",
+          "weight": 0.4
+        },
+        {
+          "root": "arrow.trianglehead.2.clockwise.rotate.90",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-proj-notes",
+      "query": "Markdown note-taking app with tags and backlinks.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "note.text",
+          "weight": 1.0
+        },
+        {
+          "root": "square.and.pencil",
+          "weight": 0.9
+        },
+        {
+          "root": "doc.text",
+          "weight": 0.7
+        },
+        {
+          "root": "text.document",
+          "weight": 0.7
+        },
+        {
+          "root": "pencil.and.list.clipboard",
+          "weight": 0.6
+        },
+        {
+          "root": "pencil",
+          "weight": 0.5
+        },
+        {
+          "root": "tag",
+          "weight": 0.5
+        },
+        {
+          "root": "link",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-proj-game",
+      "query": "A game engine for 2D platformer games.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "gamecontroller",
+          "weight": 1.0
+        },
+        {
+          "root": "arcade.stick.console",
+          "weight": 0.9
+        },
+        {
+          "root": "arcade.stick",
+          "weight": 0.8
+        },
+        {
+          "root": "dpad",
+          "weight": 0.6
+        },
+        {
+          "root": "puzzlepiece",
+          "weight": 0.4
+        },
+        {
+          "root": "die.face.5",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-proj-ml",
+      "query": "Machine learning framework for on-device inference.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "brain",
+          "weight": 1.0
+        },
+        {
+          "root": "brain.head.profile",
+          "weight": 0.9
+        },
+        {
+          "root": "cpu",
+          "weight": 0.8
+        },
+        {
+          "root": "apple.intelligence",
+          "weight": 0.7
+        },
+        {
+          "root": "memorychip",
+          "weight": 0.7
+        },
+        {
+          "root": "brain.filled.head.profile",
+          "weight": 0.9
+        },
+        {
+          "root": "sparkles",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "en-proj-blog",
+      "query": "Static site generator for personal blogs.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "doc.richtext",
+          "weight": 0.8
+        },
+        {
+          "root": "globe",
+          "weight": 0.7
+        },
+        {
+          "root": "safari",
+          "weight": 0.6
+        },
+        {
+          "root": "network",
+          "weight": 0.5
+        },
+        {
+          "root": "curlybraces",
+          "weight": 0.5
+        },
+        {
+          "root": "square.and.pencil",
+          "weight": 0.5
+        },
+        {
+          "root": "doc.text",
+          "weight": 0.4
+        },
+        {
+          "root": "text.document",
+          "weight": 0.4
+        }
+      ],
+      "notes": "Inherently ambiguous; several answers are acceptable but none perfect."
+    },
+    {
+      "id": "en-proj-health",
+      "query": "Medication reminder for elderly patients.",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "pills",
+          "weight": 1.0
+        },
+        {
+          "root": "pill",
+          "weight": 1.0
+        },
+        {
+          "root": "cross.case",
+          "weight": 0.8
+        },
+        {
+          "root": "cross.vial",
+          "weight": 0.7
+        },
+        {
+          "root": "stethoscope",
+          "weight": 0.5
+        },
+        {
+          "root": "alarm",
+          "weight": 0.5
+        },
+        {
+          "root": "calendar.badge.clock",
+          "weight": 0.4
+        },
+        {
+          "root": "bandage",
+          "weight": 0.3
+        },
+        {
+          "root": "cross",
+          "weight": 0.7
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "zh-finance",
+      "query": "一个记账应用，帮助管理每月开销",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.9
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.9
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.8
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.7
+        },
+        {
+          "root": "yensign",
+          "weight": 0.5
+        },
+        {
+          "root": "list.bullet.clipboard",
+          "weight": 0.4
+        }
+      ],
+      "notes": "Chinese input must be translated before retrieval can work."
+    },
+    {
+      "id": "zh-dog",
+      "query": "宠物狗的日常照顾和喂食提醒",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "dog",
+          "weight": 1.0
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.8
+        },
+        {
+          "root": "pet.carrier",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "zh-sleep",
+      "query": "睡眠追踪应用",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "bed.double",
+          "weight": 1.0
+        },
+        {
+          "root": "moon.zzz",
+          "weight": 1.0
+        },
+        {
+          "root": "zzz",
+          "weight": 0.9
+        },
+        {
+          "root": "moon",
+          "weight": 0.7
+        },
+        {
+          "root": "moon.stars",
+          "weight": 0.6
+        },
+        {
+          "root": "powersleep",
+          "weight": 0.6
+        },
+        {
+          "root": "sleep",
+          "weight": 0.8
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "ja-weather",
+      "query": "天気予報アプリ",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "cloud.sun",
+          "weight": 1.0
+        },
+        {
+          "root": "cloud.sun.rain",
+          "weight": 0.9
+        },
+        {
+          "root": "sun.max",
+          "weight": 0.8
+        },
+        {
+          "root": "cloud.rain",
+          "weight": 0.8
+        },
+        {
+          "root": "cloud",
+          "weight": 0.7
+        },
+        {
+          "root": "umbrella",
+          "weight": 0.6
+        },
+        {
+          "root": "thermometer.medium",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "ja-photos",
+      "query": "写真を整理するアプリ",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "photo.stack",
+          "weight": 1.0
+        },
+        {
+          "root": "photo",
+          "weight": 0.9
+        },
+        {
+          "root": "photo.on.rectangle",
+          "weight": 0.9
+        },
+        {
+          "root": "camera",
+          "weight": 0.5
+        },
+        {
+          "root": "folder",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "es-language",
+      "query": "aplicación para aprender idiomas",
+      "lang": "es",
+      "expected": [
+        {
+          "root": "translate",
+          "weight": 1.0
+        },
+        {
+          "root": "character.bubble",
+          "weight": 0.9
+        },
+        {
+          "root": "character.book.closed",
+          "weight": 0.7
+        },
+        {
+          "root": "globe",
+          "weight": 0.7
+        },
+        {
+          "root": "graduationcap",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.5
+        },
+        {
+          "root": "text.bubble",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "fr-meditation",
+      "query": "application de méditation et de relaxation",
+      "lang": "fr",
+      "expected": [
+        {
+          "root": "figure.mind.and.body",
+          "weight": 1.0
+        },
+        {
+          "root": "apple.meditate",
+          "weight": 1.0
+        },
+        {
+          "root": "leaf",
+          "weight": 0.8
+        },
+        {
+          "root": "brain.head.profile",
+          "weight": 0.5
+        },
+        {
+          "root": "moon",
+          "weight": 0.4
+        },
+        {
+          "root": "sparkles",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "de-bike",
+      "query": "Fahrrad-Navigation für die Stadt",
+      "lang": "de",
+      "expected": [
+        {
+          "root": "bicycle",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.outdoor.cycle",
+          "weight": 0.9
+        },
+        {
+          "root": "map",
+          "weight": 0.6
+        },
+        {
+          "root": "location",
+          "weight": 0.5
+        },
+        {
+          "root": "mappin.and.ellipse",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "ko-coffee",
+      "query": "커피 주문 앱",
+      "lang": "ko",
+      "expected": [
+        {
+          "root": "cup.and.saucer",
+          "weight": 1.0
+        },
+        {
+          "root": "mug",
+          "weight": 0.9
+        },
+        {
+          "root": "cup.and.heat.waves",
+          "weight": 0.9
+        },
+        {
+          "root": "takeoutbag.and.cup.and.straw",
+          "weight": 0.8
+        },
+        {
+          "root": "storefront",
+          "weight": 0.3
+        }
+      ],
+      "notes": "Korean is likely unsupported by the on-device FM; pipeline should still degrade gracefully."
+    },
+    {
+      "id": "en-speed",
+      "query": "speed",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "hare",
+          "weight": 1.0
+        },
+        {
+          "root": "gauge.with.needle",
+          "weight": 0.9
+        },
+        {
+          "root": "speedometer",
+          "weight": 0.9
+        },
+        {
+          "root": "bolt",
+          "weight": 0.9
+        },
+        {
+          "root": "gauge.open.with.lines.needle.33percent",
+          "weight": 0.8
+        },
+        {
+          "root": "timer",
+          "weight": 0.5
+        },
+        {
+          "root": "wind",
+          "weight": 0.5
+        }
+      ],
+      "notes": "Abstract single word."
+    },
+    {
+      "id": "en-ai",
+      "query": "artificial intelligence assistant",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "apple.intelligence",
+          "weight": 1.0
+        },
+        {
+          "root": "brain",
+          "weight": 0.9
+        },
+        {
+          "root": "sparkles",
+          "weight": 0.9
+        },
+        {
+          "root": "brain.head.profile",
+          "weight": 0.9
+        },
+        {
+          "root": "brain.filled.head.profile",
+          "weight": 0.9
+        },
+        {
+          "root": "cpu",
+          "weight": 0.6
+        },
+        {
+          "root": "bubble.left.and.bubble.right",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    }
+  ]
+}

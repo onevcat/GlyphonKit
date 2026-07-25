@@ -1,0 +1,537 @@
+{
+  "name": "test-v1",
+  "cases": [
+    {
+      "id": "test-en-birdwatch",
+      "query": "bird watching journal",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "bird",
+          "weight": 1.0
+        },
+        {
+          "root": "binoculars",
+          "weight": 0.9
+        },
+        {
+          "root": "tree",
+          "weight": 0.4
+        },
+        {
+          "root": "leaf",
+          "weight": 0.3
+        },
+        {
+          "root": "book",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-podcast",
+      "query": "podcast player with episode downloads",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "mic",
+          "weight": 0.9
+        },
+        {
+          "root": "headphones",
+          "weight": 0.8
+        },
+        {
+          "root": "waveform",
+          "weight": 0.7
+        },
+        {
+          "root": "antenna.radiowaves.left.and.right",
+          "weight": 0.6
+        },
+        {
+          "root": "radio",
+          "weight": 0.5
+        },
+        {
+          "root": "play",
+          "weight": 0.5
+        },
+        {
+          "root": "arrow.down.circle",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-vpn",
+      "query": "VPN and network privacy tool",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "lock.shield",
+          "weight": 1.0
+        },
+        {
+          "root": "network.badge.shield.half.filled",
+          "weight": 1.0
+        },
+        {
+          "root": "shield",
+          "weight": 0.8
+        },
+        {
+          "root": "network",
+          "weight": 0.7
+        },
+        {
+          "root": "eye.slash",
+          "weight": 0.5
+        },
+        {
+          "root": "globe",
+          "weight": 0.4
+        },
+        {
+          "root": "key",
+          "weight": 0.4
+        },
+        {
+          "root": "lock",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-garden",
+      "query": "plant watering reminder",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "leaf",
+          "weight": 0.9
+        },
+        {
+          "root": "drop",
+          "weight": 0.9
+        },
+        {
+          "root": "sprinkler.and.droplets",
+          "weight": 0.9
+        },
+        {
+          "root": "camera.macro",
+          "weight": 0.8
+        },
+        {
+          "root": "tree",
+          "weight": 0.5
+        },
+        {
+          "root": "humidity",
+          "weight": 0.5
+        }
+      ],
+      "notes": "camera.macro renders as a flower despite the name."
+    },
+    {
+      "id": "test-zh-invoice",
+      "query": "发票扫描和报销工具",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "doc.text.viewfinder",
+          "weight": 1.0
+        },
+        {
+          "root": "doc.viewfinder",
+          "weight": 0.9
+        },
+        {
+          "root": "text.page.badge.magnifyingglass",
+          "weight": 0.6
+        },
+        {
+          "root": "scanner",
+          "weight": 0.6
+        },
+        {
+          "root": "banknote",
+          "weight": 0.5
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.4
+        },
+        {
+          "root": "doc.text",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-ja-train",
+      "query": "電車の時刻表アプリ",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "tram",
+          "weight": 1.0
+        },
+        {
+          "root": "train.side.front.car",
+          "weight": 1.0
+        },
+        {
+          "root": "cablecar",
+          "weight": 0.5
+        },
+        {
+          "root": "clock",
+          "weight": 0.5
+        },
+        {
+          "root": "bus",
+          "weight": 0.4
+        },
+        {
+          "root": "calendar",
+          "weight": 0.3
+        },
+        {
+          "root": "train.side.middle.car",
+          "weight": 0.8
+        },
+        {
+          "root": "train.side.rear.car",
+          "weight": 0.7
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-stocks",
+      "query": "stock market tracker",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "chart.line.uptrend.xyaxis",
+          "weight": 1.0
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.8
+        },
+        {
+          "root": "chart.xyaxis.line",
+          "weight": 0.8
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.6
+        },
+        {
+          "root": "chart.bar.xaxis",
+          "weight": 0.8
+        },
+        {
+          "root": "arrow.up.right",
+          "weight": 0.3
+        },
+        {
+          "root": "dollarsign.gauge.chart.lefthalf.righthalf",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-fr-cook",
+      "query": "minuteur de cuisine",
+      "lang": "fr",
+      "expected": [
+        {
+          "root": "timer",
+          "weight": 1.0
+        },
+        {
+          "root": "stopwatch",
+          "weight": 0.7
+        },
+        {
+          "root": "alarm",
+          "weight": 0.5
+        },
+        {
+          "root": "stove",
+          "weight": 0.5
+        },
+        {
+          "root": "frying.pan",
+          "weight": 0.5
+        },
+        {
+          "root": "oven",
+          "weight": 0.4
+        },
+        {
+          "root": "fork.knife",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-de-budget",
+      "query": "Haushaltsbuch für Studenten",
+      "lang": "de",
+      "expected": [
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "eurosign",
+          "weight": 0.9
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.9
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.8
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.7
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-baby",
+      "query": "baby sleep monitor",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "moon.zzz",
+          "weight": 1.0
+        },
+        {
+          "root": "stroller",
+          "weight": 0.8
+        },
+        {
+          "root": "zzz",
+          "weight": 0.8
+        },
+        {
+          "root": "figure.child",
+          "weight": 0.6
+        },
+        {
+          "root": "bed.double",
+          "weight": 0.6
+        },
+        {
+          "root": "waveform.path.ecg",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-cli-http",
+      "query": "HTTP client for testing REST APIs",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "network",
+          "weight": 0.9
+        },
+        {
+          "root": "terminal",
+          "weight": 0.8
+        },
+        {
+          "root": "apple.terminal",
+          "weight": 0.8
+        },
+        {
+          "root": "curlybraces",
+          "weight": 0.7
+        },
+        {
+          "root": "arrow.up.arrow.down",
+          "weight": 0.6
+        },
+        {
+          "root": "server.rack",
+          "weight": 0.5
+        },
+        {
+          "root": "globe",
+          "weight": 0.5
+        },
+        {
+          "root": "link",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-es-gym",
+      "query": "rutinas de gimnasio",
+      "lang": "es",
+      "expected": [
+        {
+          "root": "dumbbell",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.strengthtraining.traditional",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.run",
+          "weight": 0.7
+        },
+        {
+          "root": "figure.indoor.cycle",
+          "weight": 0.6
+        },
+        {
+          "root": "flame",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-zh-vocab",
+      "query": "背单词的应用",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "character.book.closed",
+          "weight": 0.9
+        },
+        {
+          "root": "text.book.closed",
+          "weight": 0.8
+        },
+        {
+          "root": "book",
+          "weight": 0.8
+        },
+        {
+          "root": "translate",
+          "weight": 0.8
+        },
+        {
+          "root": "character.bubble",
+          "weight": 0.6
+        },
+        {
+          "root": "graduationcap",
+          "weight": 0.5
+        },
+        {
+          "root": "brain",
+          "weight": 0.5
+        },
+        {
+          "root": "textformat.abc",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-en-camera",
+      "query": "home security camera viewer",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "web.camera",
+          "weight": 1.0
+        },
+        {
+          "root": "video.doorbell",
+          "weight": 0.9
+        },
+        {
+          "root": "video",
+          "weight": 0.7
+        },
+        {
+          "root": "house",
+          "weight": 0.4
+        },
+        {
+          "root": "lock",
+          "weight": 0.4
+        },
+        {
+          "root": "eye",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "test-emoji-dog",
+      "query": "🐶",
+      "lang": "emoji",
+      "expected": [
+        {
+          "root": "dog",
+          "weight": 1.0
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.7
+        }
+      ],
+      "notes": "Emoji-only input."
+    },
+    {
+      "id": "test-en-drone",
+      "query": "drone flight controller",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "drone",
+          "weight": 1.0
+        },
+        {
+          "root": "gamecontroller",
+          "weight": 0.4
+        },
+        {
+          "root": "airplane",
+          "weight": 0.4
+        },
+        {
+          "root": "antenna.radiowaves.left.and.right",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    }
+  ]
+}

@@ -1,0 +1,675 @@
+{
+  "acceptableRate" : 0.2647058823529412,
+  "cases" : [
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "dog.circle.fill",
+        "dog.circle",
+        "dog",
+        "service.dog.fill",
+        "dog.fill"
+      ],
+      "candidateCount" : 15,
+      "id" : "en-dog",
+      "keywords" : [
+        "dog training software"
+      ],
+      "pick" : "dog.fill",
+      "pickScore" : 1,
+      "query" : "dog",
+      "reason" : "\nThis symbol is a more specific and concrete representation of a dog compared to the broader \"dog\" symbol.",
+      "totalSeconds" : 1.6694749593734741,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 0,
+      "id" : "en-cat-sleep",
+      "keywords" : [
+
+      ],
+      "pick" : "<error>",
+      "pickScore" : 0,
+      "query" : "a cute cat sleeping",
+      "reason" : "exceededContextWindowSize(FoundationModels.LanguageModelSession.GenerationError.Context(debugDescription: \"Content contains 4089 tokens, which exceeds the maximum allowed context size of 4096.\", underlyingErrors: [Provided 4,089 tokens, but the maximum allowed is 4,096.], errorDescriptionOverride: nil))",
+      "totalSeconds" : 65.3785560131073,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "app.translucent",
+        "questionmark.app.dashed",
+        "app.shadow",
+        "xmark.app.fill",
+        "hand.app"
+      ],
+      "candidateCount" : 52,
+      "id" : "en-coffee-shop",
+      "keywords" : [
+        "loyalty, app, coffee, shop"
+      ],
+      "pick" : "cup.and.heat.waves",
+      "pickScore" : 0.9,
+      "query" : "coffee shop loyalty app",
+      "reason" : "\nThis symbol is a highly recognizable and specific representation of coffee, making it the best choice for a coffee shop loyalty app.",
+      "totalSeconds" : 1.8298840522766113,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "cloud.sun.rain.fill",
+        "sun.rain.circle.fill",
+        "cloud.rain.circle.fill",
+        "cloud.moon.rain.circle",
+        "cloud.bolt.rain.circle.fill"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-weather-rain",
+      "keywords" : [
+        "weather app rain forecast"
+      ],
+      "pick" : "cloud.bolt.rain.circle",
+      "pickScore" : 0,
+      "query" : "weather app with rain forecast",
+      "reason" : "\nThis symbol is concrete and directly represents rain, which aligns well with the project's focus on a weather app with a rain forecast.",
+      "totalSeconds" : 1.5571709871292114,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "list.dash.badge.ellipsis",
+        "arrow.up.to.line.circle",
+        "arrow.forward.to.line.circle",
+        "arrow.left.to.line.square.fill",
+        "arrow.backward.to.line.compact"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-todo",
+      "keywords" : [
+        "to-do list, manager, tasks, organization, productivity, task tracking, scheduling, task management, reminder, task automation"
+      ],
+      "pick" : "list.bullet.badge.ellipsis",
+      "pickScore" : 0,
+      "query" : "a to-do list manager",
+      "reason" : "\nThis symbol is concrete and recognizable as a bullet point with a badge, fitting the description of a to-do list manager.",
+      "totalSeconds" : 2.471526026725769,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 0,
+      "id" : "en-finance",
+      "keywords" : [
+
+      ],
+      "pick" : "<error>",
+      "pickScore" : 0,
+      "query" : "personal finance tracker for monthly budgets",
+      "reason" : "guardrailViolation(FoundationModels.LanguageModelSession.GenerationError.Context(debugDescription: \"Response may contain sensitive or unsafe content\", underlyingErrors: [], errorDescriptionOverride: nil))",
+      "totalSeconds" : 0.9097249507904053,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "arrow.down.app.fill",
+        "app.badge.clock.fill",
+        "airplane.up.right.app.fill",
+        "checkmark.app.fill",
+        "hand.raised.app"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-music",
+      "keywords" : [
+        "music player app"
+      ],
+      "pick" : "music.note.tv",
+      "pickScore" : 0,
+      "query" : "music player app",
+      "reason" : "This symbol is concrete and recognizable as a music player, directly related to the project description.",
+      "totalSeconds" : 1.3276729583740234,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "dial.medium.fill",
+        "car.rear.road.lane.distance.5.and.gauge.open.with.lines.needle.67percent.and.arrowtriangle",
+        "photo.badge.checkmark",
+        "gauge.open.with.lines.needle.33percent.and.arrowtriangle",
+        "text.below.photo.fill.rtl"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-photo-edit",
+      "keywords" : [
+        "photo editing, filters, tool"
+      ],
+      "pick" : "photo.artframe.circle",
+      "pickScore" : 0,
+      "query" : "photo editing tool with filters",
+      "reason" : "\nThis symbol is concrete and directly relates to photo editing, with its recognizable shape of a circle and artistic frame, making it the best fit for the project sidebar.",
+      "totalSeconds" : 2.01944100856781,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "figure.roll.runningpace.circle.fill",
+        "baseball.circle.fill",
+        "figure.open.water.swim",
+        "figure.pilates.circle",
+        "flag.2.crossed.fill"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-fitness",
+      "keywords" : [
+        "fitness, app, workout, tracking"
+      ],
+      "pick" : "figure.pilates.circle",
+      "pickScore" : 0,
+      "query" : "fitness app for workout tracking",
+      "reason" : "Human-centric and directly related to fitness activities.",
+      "totalSeconds" : 1.7271549701690674,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 60,
+      "id" : "en-email",
+      "keywords" : [
+        "email, client, messaging, communication, interface, synchronization, secure, integration, email management, cloud-based"
+      ],
+      "pick" : "phone.arrow.up.right.fill",
+      "pickScore" : 0,
+      "query" : "email client",
+      "reason" : "\nThis symbol is concrete and recognizable as a phone with an arrow pointing upwards, directly aligning with the project's focus on an email client.",
+      "totalSeconds" : 2.2669869661331177,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "car.side.hill.down.and.gauge.open.with.lines.needle.25percent.and.arrowtriangle.fill",
+        "gauge.with.dots.needle.67percent",
+        "lock.open.fill",
+        "lock.badge.clock",
+        "blood.pressure.cuff.badge.gauge.with.needle"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-password",
+      "keywords" : [
+        "password manager, secure vault, encryption, secure storage, secure login"
+      ],
+      "pick" : "lock.shield.fill",
+      "pickScore" : 0.9,
+      "query" : "password manager with secure vault",
+      "reason" : "\nThis symbol is concrete and recognizable, clearly representing a secure vault, which aligns well with the project's focus on a password manager.",
+      "totalSeconds" : 2.259935975074768,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "robotic.vacuum.and.arrowtriangle.up.fill",
+        "visionpro.and.arrow.forward.fill",
+        "apple.haptics.and.music.note.slash",
+        "square.and.pencil.circle",
+        "apple.haptics.and.music.note"
+      ],
+      "candidateCount" : 0,
+      "id" : "en-chat",
+      "keywords" : [
+        "team chat messaging"
+      ],
+      "pick" : "mail.and.text.magnifyingglass.rtl",
+      "pickScore" : 0,
+      "query" : "team chat and messaging",
+      "reason" : "Best keyword match",
+      "totalSeconds" : 0.5121840238571167,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "shared.with.you",
+        "text.page.fill",
+        "building.columns.fill",
+        "shared.with.you.circle",
+        "poweroutlet.type.a.fill"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-reading",
+      "keywords" : [
+        "ebook reader, personal library, digital books, reading, e-book"
+      ],
+      "pick" : "character.book.closed.fill.si",
+      "pickScore" : 0,
+      "query" : "ebook reader with a personal library",
+      "reason" : "\nThis symbol is concrete and directly represents a closed book, aligning well with the project's theme of an ebook reader with a personal library.",
+      "totalSeconds" : 2.1162428855895996,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "robotic.vacuum.and.arrowtriangle.up.fill",
+        "visionpro.and.arrow.forward.fill",
+        "apple.haptics.and.music.note.slash",
+        "square.and.pencil.circle",
+        "apple.haptics.and.music.note"
+      ],
+      "candidateCount" : 15,
+      "id" : "en-recipe",
+      "keywords" : [
+        "recipe collection cooking timer"
+      ],
+      "pick" : "timer.circle",
+      "pickScore" : 0.4,
+      "query" : "recipe collection and cooking timer",
+      "reason" : "\nThis symbol is both concrete and recognizable as a timer, fitting well with the project's cooking timer feature.",
+      "totalSeconds" : 1.1178059577941895,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "robotic.vacuum.and.arrowtriangle.up.fill",
+        "visionpro.and.arrow.forward.fill",
+        "apple.haptics.and.music.note.slash",
+        "square.and.pencil.circle",
+        "apple.haptics.and.music.note"
+      ],
+      "candidateCount" : 0,
+      "id" : "en-travel",
+      "keywords" : [
+        "flight booking, travel planner, itinerary, accommodation, destination, budget, booking, booking system, travel management"
+      ],
+      "pick" : "mail.and.text.magnifyingglass.rtl",
+      "pickScore" : 0,
+      "query" : "flight booking and travel planner",
+      "reason" : "Best keyword match",
+      "totalSeconds" : 1.062952995300293,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "car.rear.road.lane.distance.5.and.gauge.open.with.lines.needle.67percent.and.arrowtriangle",
+        "car.rear.waves.up.fill",
+        "car.top.video.rear.left.fill",
+        "car.window.right.exclamationmark",
+        "car.rear.road.lane.distance.3.and.gauge.open.with.lines.needle.67percent.and.arrowtriangle"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-car-log",
+      "keywords" : [
+        "car maintenance, log, software, project, maintenance"
+      ],
+      "pick" : "car.top.radiowaves.rear.right.fill",
+      "pickScore" : 0,
+      "query" : "car maintenance log",
+      "reason" : "\nThis symbol is specifically designed to represent a car's rear radio, making it the most relevant and concrete option for the project sidebar.",
+      "totalSeconds" : 2.278671979904175,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "hearingdevice.and.signal.meter",
+        "thermometer.variable.and.figure.circle.fill",
+        "bubbles.and.sparkles",
+        "bubbles.and.sparkles.fill",
+        "hearingdevice.and.signal.meter.fill"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-proj-dogcare",
+      "keywords" : [
+        "automates, dog, care, feeding, schedules, walk, reminders, pet, health"
+      ],
+      "pick" : "dog.circle.fill",
+      "pickScore" : 1,
+      "query" : "A software project that automates dog care: feeding schedules, walk reminders, and pet health tracking.",
+      "reason" : "\nThis symbol is specific and recognizable as an animal, directly relating to the project's focus on dog care.",
+      "totalSeconds" : 2.1263630390167236,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "arrow.right.to.line",
+        "arrow.right.to.line.alt",
+        "arrow.left.to.line.square.fill",
+        "arrow.right.to.line.circle",
+        "arrow.left.to.line.compact"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-proj-cloudsync",
+      "keywords" : [
+        "command line tool, sync, local files, cloud storage, automatic"
+      ],
+      "pick" : "arrow.right.to.line",
+      "pickScore" : 0,
+      "query" : "A command line tool that syncs local files to cloud storage automatically.",
+      "reason" : "\nThis symbol is specific to the action of syncing, making it the best match for the project's description.",
+      "totalSeconds" : 2.0110859870910645,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "car.rear.road.lane.distance.1.and.gauge.open.with.lines.needle.67percent.and.arrowtriangle",
+        "gauge.open.with.lines.needle.33percent.and.arrowtriangle",
+        "convertible.side.hill.down.and.gauge.open.with.lines.needle.25percent.and.arrowtriangle.fill",
+        "convertible.side.hill.down.and.gauge.open.with.lines.needle.25percent.and.arrowtriangle",
+        "gauge.open.with.lines.needle.33percent.and.arrowtriangle.from.0percent.to.50percent"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-proj-notes",
+      "keywords" : [
+        "note-taking, app, tags, backlinks"
+      ],
+      "pick" : "music.note",
+      "pickScore" : 0,
+      "query" : "Markdown note-taking app with tags and backlinks.",
+      "reason" : "\nThis symbol is highly concrete and directly represents the core functionality of the app, making it the most suitable choice.",
+      "totalSeconds" : 1.691406011581421,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "graph.2d",
+        "poweroutlet.type.a.fill",
+        "textformat.superscript",
+        "poweroutlet.type.a",
+        "textformat.subscript"
+      ],
+      "candidateCount" : 9,
+      "id" : "en-proj-game",
+      "keywords" : [
+        "game engine, 2D, platformer, games"
+      ],
+      "pick" : "engine.combustion",
+      "pickScore" : 0,
+      "query" : "A game engine for 2D platformer games.",
+      "reason" : "\nThis symbol is concrete and directly represents the core concept of a game engine, making it ideal for a 2D platformer project.",
+      "totalSeconds" : 1.4161289930343628,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "h.square.on.square",
+        "rectangle.on.rectangle.circle.fill",
+        "plus.rectangle.on.rectangle",
+        "j.square.fill.on.square.fill",
+        "rectangle.on.rectangle.circle"
+      ],
+      "candidateCount" : 60,
+      "id" : "en-proj-ml",
+      "keywords" : [
+        "Machine learning, framework, on-device, inference."
+      ],
+      "pick" : "play.rectangle.on.rectangle.circle.fill",
+      "pickScore" : 0,
+      "query" : "Machine learning framework for on-device inference.",
+      "reason" : "\nThis symbol effectively conveys the concept of an on-device inference process by combining the idea of a computer screen with the action of playing or processing.",
+      "totalSeconds" : 2.2875059843063354,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "signpost.right.and.left.fill",
+        "fork.knife.circle",
+        "personalhotspot.circle.fill",
+        "personalhotspot.slash",
+        "personalhotspot"
+      ],
+      "candidateCount" : 4,
+      "id" : "en-proj-blog",
+      "keywords" : [
+        "Static site generator, personal blogs"
+      ],
+      "pick" : "personalhotspot.circle",
+      "pickScore" : 0,
+      "query" : "Static site generator for personal blogs.",
+      "reason" : "\nThis symbol is clear and directly represents a personal hotspot, aligning well with the project's focus on personal blogs.",
+      "totalSeconds" : 1.3341690301895142,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "signpost.right.and.left",
+        "signpost.right.and.left.circle",
+        "signpost.right.and.left.circle.fill",
+        "fork.knife.circle.fill",
+        "fork.knife.circle"
+      ],
+      "candidateCount" : 0,
+      "id" : "en-proj-health",
+      "keywords" : [
+        "Medication reminder elderly patients."
+      ],
+      "pick" : "signpost.right.and.left",
+      "pickScore" : 0,
+      "query" : "Medication reminder for elderly patients.",
+      "reason" : "Best keyword match",
+      "totalSeconds" : 0.6678140163421631,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 0,
+      "id" : "zh-finance",
+      "keywords" : [
+        "accounting, finance, expense management, budgeting, tracking"
+      ],
+      "pick" : "app",
+      "pickScore" : 0,
+      "query" : "一个记账应用，帮助管理每月开销",
+      "reason" : "Default fallback",
+      "totalSeconds" : 0.64472496509552,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 10,
+      "id" : "zh-dog",
+      "keywords" : [
+        "pet care, dog feeding, reminders"
+      ],
+      "pick" : "dog.fill",
+      "pickScore" : 1,
+      "query" : "宠物狗的日常照顾和喂食提醒",
+      "reason" : "\nThis symbol is a clear and recognizable representation of a dog, making it ideal for the context of a pet-related project.",
+      "totalSeconds" : 1.2600290775299072,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 9,
+      "id" : "zh-sleep",
+      "keywords" : [
+        "sleep tracking application"
+      ],
+      "pick" : "bed.double.badge.checkmark.fill",
+      "pickScore" : 0,
+      "query" : "睡眠追踪应用",
+      "reason" : "\nThis symbol is more concrete and recognizable than the others, making it ideal for representing a specific feature or action in the application.",
+      "totalSeconds" : 1.2596369981765747,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 60,
+      "id" : "ja-weather",
+      "keywords" : [
+        "weather, forecast, app, software, project"
+      ],
+      "pick" : "sun.max.trianglebadge.exclamationmark",
+      "pickScore" : 0,
+      "query" : "天気予報アプリ",
+      "reason" : "\nThis symbol clearly indicates a warning or alert, which is relevant for a weather app.",
+      "totalSeconds" : 1.6932419538497925,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 60,
+      "id" : "ja-photos",
+      "keywords" : [
+        "photo, organize, app, software, project, tools, photos"
+      ],
+      "pick" : "photo",
+      "pickScore" : 0.9,
+      "query" : "写真を整理するアプリ",
+      "reason" : "This symbol is highly specific to photographs and aligns well with the project's focus on organizing photos.",
+      "totalSeconds" : 1.9570480585098267,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 2,
+      "id" : "es-language",
+      "keywords" : [
+        "software, language, learning, application, idiomas"
+      ],
+      "pick" : "globe.badge.chevron.backward",
+      "pickScore" : 0,
+      "query" : "aplicación para aprender idiomas",
+      "reason" : "\nThis symbol is more specific and concrete, representing an action related to language learning.",
+      "totalSeconds" : 1.4427669048309326,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 0,
+      "id" : "fr-meditation",
+      "keywords" : [
+
+      ],
+      "pick" : "<error>",
+      "pickScore" : 0,
+      "query" : "application de méditation et de relaxation",
+      "reason" : "exceededContextWindowSize(FoundationModels.LanguageModelSession.GenerationError.Context(debugDescription: \"Content contains 4090 tokens, which exceeds the maximum allowed context size of 4096.\", underlyingErrors: [Provided 4,090 tokens, but the maximum allowed is 4,096.], errorDescriptionOverride: nil))",
+      "totalSeconds" : 70.27296805381775,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "die.face.4.fill",
+        "die.face.5",
+        "die.face.5.fill",
+        "die.face.6",
+        "die.face.6.fill"
+      ],
+      "candidateCount" : 60,
+      "id" : "de-bike",
+      "keywords" : [
+        "Bike navigation, city, urban, cycling, route, directions, GPS, smartphone, app."
+      ],
+      "pick" : "die.face.1",
+      "pickScore" : 0,
+      "query" : "Fahrrad-Navigation für die Stadt",
+      "reason" : "Best keyword match",
+      "totalSeconds" : 2.2701600790023804,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 52,
+      "id" : "ko-coffee",
+      "keywords" : [
+        "coffee, ordering, app"
+      ],
+      "pick" : "cup.and.saucer.fill",
+      "pickScore" : 1,
+      "query" : "커피 주문 앱",
+      "reason" : "\nThis symbol is concrete and directly represents the core functionality of the coffee ordering app.",
+      "totalSeconds" : 1.4307351112365723,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+
+      ],
+      "candidateCount" : 60,
+      "id" : "en-speed",
+      "keywords" : [
+        "speed, performance, efficiency, optimization, automation, data analysis, user interface, integration, workflow management."
+      ],
+      "pick" : "person.crop.circle.badge.ellipsis.fill",
+      "pickScore" : 0,
+      "query" : "speed",
+      "reason" : "\nThis symbol clearly represents a contact or user with an ellipsis, which is more concrete and recognizable than the other options.",
+      "totalSeconds" : 2.7858710289001465,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "apple.intelligence.badge.xmark"
+      ],
+      "candidateCount" : 2,
+      "id" : "en-ai",
+      "keywords" : [
+        "artificial intelligence assistant"
+      ],
+      "pick" : "apple.intelligence",
+      "pickScore" : 1,
+      "query" : "artificial intelligence assistant",
+      "reason" : "\nThis symbol is more specific and conveys a stronger association with artificial intelligence than the generic \"folder\" symbol.",
+      "totalSeconds" : 1.1047389507293701,
+      "usedFallback" : false
+    }
+  ],
+  "dataset" : "train-v1",
+  "fallbackRate" : 0.14705882352941177,
+  "meanAlternateHitRatio" : 0.014705882352941176,
+  "meanPickScore" : 0.23823529411764705,
+  "meanSeconds" : 5.534170028041391,
+  "missRate" : 0.7352941176470589,
+  "perfectRate" : 0.14705882352941177,
+  "variant" : "v0"
+}

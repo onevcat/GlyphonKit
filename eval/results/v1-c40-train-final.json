@@ -1,0 +1,965 @@
+{
+  "acceptableRate" : 1,
+  "cases" : [
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "pawprint",
+        "service.dog",
+        "cat",
+        "teddybear"
+      ],
+      "candidateCount" : 12,
+      "id" : "en-dog",
+      "keywords" : [
+        "dog",
+        "pet",
+        "puppy",
+        "canine",
+        "animal",
+        "furry friend",
+        "companion",
+        "pet owner",
+        "animal lover"
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "dog",
+      "reason" : "Den mest direkte repræsentation af anmodningen er 'dog', da den specifikt viser et dyr.",
+      "totalSeconds" : 2.6106449365615845,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "pawprint",
+        "bed.double",
+        "sleep",
+        "bed.double.badge.checkmark"
+      ],
+      "candidateCount" : 35,
+      "id" : "en-cat-sleep",
+      "keywords" : [
+        "cat",
+        "sleeping",
+        "pet",
+        "animal",
+        "feline",
+        "furry",
+        "sleep",
+        "rest",
+        "nap"
+      ],
+      "pick" : "cat",
+      "pickScore" : 1,
+      "query" : "a cute cat sleeping",
+      "reason" : "Directly depicts a sleeping cat",
+      "totalSeconds" : 2.9135589599609375,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 1,
+      "alternates" : [
+        "cup.and.saucer",
+        "cup.and.heat.waves",
+        "storefront",
+        "takeoutbag.and.cup.and.straw"
+      ],
+      "candidateCount" : 29,
+      "id" : "en-coffee-shop",
+      "keywords" : [
+        "coffee shop",
+        "loyalty app",
+        "coffee shop loyalty",
+        "coffee shop rewards",
+        "coffee shop app",
+        "coffee shop rewards program",
+        "coffee shop rewards app",
+        "coffee shop rewards",
+        "coffee shop rewards program"
+      ],
+      "pick" : "mug",
+      "pickScore" : 0.9,
+      "query" : "coffee shop loyalty app",
+      "reason" : "A mug is the most direct symbol for a coffee shop loyalty app, representing the primary product and service offered.",
+      "totalSeconds" : 3.3347420692443848,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "cloud.sun.rain",
+        "sun.rain",
+        "cloud.bolt.rain",
+        "cloud.moon.rain"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-weather-rain",
+      "keywords" : [
+        "weather",
+        "app",
+        "rain",
+        "forecast",
+        "weather app",
+        "weather forecast app",
+        "weather prediction",
+        "weather app with rain",
+        "weather app with rain forecast"
+      ],
+      "pick" : "cloud.rain",
+      "pickScore" : 1,
+      "query" : "weather app with rain forecast",
+      "reason" : "This icon directly depicts rain, which is the main subject of the request.",
+      "totalSeconds" : 3.2111730575561523,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "checklist.rtl",
+        "checklist.checked",
+        "checklist.unchecked",
+        "list.bullet"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-todo",
+      "keywords" : [
+        "to-do list",
+        "task manager",
+        "task organizer",
+        "task planner",
+        "task scheduler",
+        "task management tool",
+        "task management app",
+        "task management software",
+        "task management system"
+      ],
+      "pick" : "checklist",
+      "pickScore" : 1,
+      "query" : "a to-do list manager",
+      "reason" : "The checklist icon most directly represents a to-do list manager, as it visually signifies tasks and their completion status.",
+      "totalSeconds" : 3.778578042984009,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "wallet.pass",
+        "wallet.bifold",
+        "dollarsign",
+        "chart.pie"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-finance",
+      "keywords" : [
+        "monthly budget",
+        "finance tracker",
+        "budget",
+        "money",
+        "wallet",
+        "coin",
+        "finance",
+        "expense tracker",
+        "spending tracker"
+      ],
+      "pick" : "banknote",
+      "pickScore" : 0.9,
+      "query" : "personal finance tracker for monthly budgets",
+      "reason" : "Closest match to your description.",
+      "totalSeconds" : 1.1954870223999023,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "headphones.dots",
+        "beats.headphones",
+        "headphones.over.ear",
+        "homepod"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-music",
+      "keywords" : [
+        "music player",
+        "audio player",
+        "sound",
+        "audio",
+        "music",
+        "play",
+        "listen",
+        "music app",
+        "audio app"
+      ],
+      "pick" : "headphones",
+      "pickScore" : 0.8,
+      "query" : "music player app",
+      "reason" : "The headphones icon most directly represents a music player app, as it visually signifies audio and sound, which are central to music playback.",
+      "totalSeconds" : 3.754788041114807,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.3333333333333333,
+      "alternates" : [
+        "photo.badge.magnifyingglass",
+        "photo.badge.checkmark",
+        "photo.badge.exclamationmark",
+        "camera.filters"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-photo-edit",
+      "keywords" : [
+        "photo editing tool",
+        "filters",
+        "image editing software",
+        "image processing",
+        "photo enhancement",
+        "visual effects",
+        "image manipulation",
+        "image editing app",
+        "image editing software"
+      ],
+      "pick" : "camera.filters",
+      "pickScore" : 1,
+      "query" : "photo editing tool with filters",
+      "reason" : "This icon directly represents photo editing with filters, as it shows a photo with a filter applied.",
+      "totalSeconds" : 3.9098418951034546,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "figure.mind.and.body",
+        "figure.step.training",
+        "figure.core.training",
+        "figure.run"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-fitness",
+      "keywords" : [
+        "workout",
+        "fitness",
+        "exercise",
+        "health",
+        "body",
+        "training",
+        "workout tracker",
+        "fitness app",
+        "workout plan"
+      ],
+      "pick" : "figure.cross.training",
+      "pickScore" : 0.8,
+      "query" : "fitness app for workout tracking",
+      "reason" : "This icon directly represents the concept of a fitness app for workout tracking, focusing on structured exercise routines.",
+      "totalSeconds" : 3.6390119791030884,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "tray",
+        "tray.badge",
+        "tray.2",
+        "tray.full"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-email",
+      "keywords" : [
+        "email",
+        "email client",
+        "email account",
+        "email inbox",
+        "email management",
+        "email communication",
+        "email service",
+        "email software",
+        "email tool"
+      ],
+      "pick" : "paperplane",
+      "pickScore" : 0.7,
+      "query" : "email client",
+      "reason" : "Paperplane is a direct and iconic symbol for sending emails.",
+      "totalSeconds" : 4.1128990650177,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "key",
+        "key.viewfinder",
+        "person.badge.key",
+        "lock.open"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-password",
+      "keywords" : [
+        "password manager",
+        "secure vault",
+        "secure storage",
+        "data protection",
+        "digital wallet",
+        "secure account",
+        "secure vault",
+        "secure password",
+        "secure storage"
+      ],
+      "pick" : "lock",
+      "pickScore" : 0.9,
+      "query" : "password manager with secure vault",
+      "reason" : "The lock icon most directly represents a password manager with a secure vault, as it symbolizes security and protection, which are key aspects of such a feature.",
+      "totalSeconds" : 4.144316911697388,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "person.bubble",
+        "plus.message",
+        "message.badge",
+        "ellipsis.message"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-chat",
+      "keywords" : [
+        "team chat",
+        "messaging",
+        "chat",
+        "conversation",
+        "group chat",
+        "group messaging",
+        "team communication",
+        "team talk",
+        "group chat app"
+      ],
+      "pick" : "message",
+      "pickScore" : 1,
+      "query" : "team chat and messaging",
+      "reason" : "Directly represents chat and messaging.",
+      "totalSeconds" : 3.05968701839447,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "bookmark",
+        "text.page",
+        "text.book.closed",
+        "book.pages"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-reading",
+      "keywords" : [
+        "ebook reader",
+        "personal library",
+        "digital library",
+        "book collection",
+        "reading device",
+        "e-book storage",
+        "book management",
+        "reading app",
+        "library app"
+      ],
+      "pick" : "book",
+      "pickScore" : 1,
+      "query" : "ebook reader with a personal library",
+      "reason" : "The 'book' icon most directly represents an ebook reader with a personal library, as it visually signifies a book, which is the primary focus of the request.",
+      "totalSeconds" : 4.037777900695801,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "fork.knife",
+        "carrot",
+        "signpost.right.and.left",
+        "oven"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-recipe",
+      "keywords" : [
+        "recipe",
+        "cooking",
+        "meal",
+        "food",
+        "diet",
+        "nutrition",
+        "calorie",
+        "calorie count",
+        "calorie tracker"
+      ],
+      "pick" : "frying.pan",
+      "pickScore" : 1,
+      "query" : "recipe collection and cooking timer",
+      "reason" : "This icon directly represents cooking, which is a key component of the recipe collection and cooking timer functionality.",
+      "totalSeconds" : 3.6747689247131348,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "airplane.ticket",
+        "airplane.cloud",
+        "airplane.landed",
+        "airplane.arrival"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-travel",
+      "keywords" : [
+        "flight",
+        "booking",
+        "travel",
+        "planner",
+        "airline",
+        "ticket",
+        "destination",
+        "schedule",
+        "trip"
+      ],
+      "pick" : "airplane",
+      "pickScore" : 1,
+      "query" : "flight booking and travel planner",
+      "reason" : "Directly represents flight booking and travel planning",
+      "totalSeconds" : 3.273706078529358,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "car.badge.gearshape",
+        "car.2",
+        "car.rear",
+        "bolt.car"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-car-log",
+      "keywords" : [
+        "car",
+        "maintenance",
+        "log",
+        "records",
+        "checklist",
+        "schedule",
+        "engine",
+        "service",
+        "oil"
+      ],
+      "pick" : "car",
+      "pickScore" : 0.9,
+      "query" : "car maintenance log",
+      "reason" : "The car icon most directly represents a car maintenance log.",
+      "totalSeconds" : 3.4361090660095215,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "service.dog",
+        "teddybear",
+        "pet.carrier",
+        "cat"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-dogcare",
+      "keywords" : [
+        "dog",
+        "pet",
+        "dog care",
+        "pet care",
+        "pet owner",
+        "pet health",
+        "dog walking",
+        "dog feeding",
+        "pet tracking"
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "A software project that automates dog care: feeding schedules, walk reminders, and pet health tracking.",
+      "reason" : "Directly represents the main subject of the software project.",
+      "totalSeconds" : 3.0470430850982666,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "clock.arrow.trianglehead.2.counterclockwise.rotate.90",
+        "exclamationmark.arrow.trianglehead.2.clockwise.rotate.90",
+        "arrow.clockwise.icloud",
+        "arrow.counterclockwise.icloud"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-cloudsync",
+      "keywords" : [
+        "sync",
+        "cloud storage",
+        "local files",
+        "automation",
+        "file transfer",
+        "storage",
+        "backup",
+        "cloud",
+        "online storage"
+      ],
+      "pick" : "arrow.trianglehead.2.clockwise.rotate.90",
+      "pickScore" : 0.5,
+      "query" : "A command line tool that syncs local files to cloud storage automatically.",
+      "reason" : "This icon directly represents the action of syncing files, as indicated by the 'sync' and 'syncing' hints.",
+      "totalSeconds" : 4.628351926803589,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "note",
+        "music.note",
+        "note.text.badge.plus",
+        "tv.music.note"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-notes",
+      "keywords" : [
+        "note-taking app",
+        "note-taking software",
+        "note-taking tool",
+        "note-taking application",
+        "note-taking app for students",
+        "note-taking app for professionals",
+        "note-taking app with tags",
+        "note-taking app with backlinks",
+        "note-taking app with organization"
+      ],
+      "pick" : "note.text",
+      "pickScore" : 1,
+      "query" : "Markdown note-taking app with tags and backlinks.",
+      "reason" : "This icon directly represents the core functionality of a note-taking app, focusing on text-based notes, which is central to the request.",
+      "totalSeconds" : 4.071463108062744,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "arcade.stick.console",
+        "arcade.stick.and.arrow.up",
+        "arcade.stick.and.arrow.left",
+        "arcade.stick.and.arrow.down"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-game",
+      "keywords" : [
+        "game engine",
+        "2D platformer",
+        "game development",
+        "game design",
+        "game programming",
+        "game assets",
+        "game graphics",
+        "game mechanics",
+        "game level design"
+      ],
+      "pick" : "arcade.stick",
+      "pickScore" : 0.8,
+      "query" : "A game engine for 2D platformer games.",
+      "reason" : "This icon directly represents the core functionality of a 2D platformer game, which involves player movement and interaction with the game environment.",
+      "totalSeconds" : 4.257912993431091,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "brain",
+        "memorychip",
+        "clock.arrow.trianglehead.counterclockwise.rotate.90",
+        "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-ml",
+      "keywords" : [
+        "machine learning",
+        "framework",
+        "on-device inference",
+        "AI",
+        "deep learning",
+        "neural networks",
+        "model training",
+        "data processing",
+        "cloud computing"
+      ],
+      "pick" : "cpu",
+      "pickScore" : 0.8,
+      "query" : "Machine learning framework for on-device inference.",
+      "reason" : "CPU is the central processing unit of a computer, directly related to machine learning frameworks for on-device inference.",
+      "totalSeconds" : 4.431878924369812,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 1,
+      "alternates" : [
+        "doc.text",
+        "doc.text",
+        "safari",
+        "globe"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-blog",
+      "keywords" : [
+        "blog",
+        "website",
+        "personal site",
+        "online journal",
+        "digital diary",
+        "web log",
+        "personal publishing",
+        "online portfolio",
+        "digital archive"
+      ],
+      "pick" : "doc.richtext",
+      "pickScore" : 0.8,
+      "query" : "Static site generator for personal blogs.",
+      "reason" : "This icon directly represents the concept of a static site generator for personal blogs, as it symbolizes text editing and content creation, which are central to blogging.",
+      "totalSeconds" : 4.097287893295288,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 1,
+      "alternates" : [
+        "pill",
+        "cross",
+        "cross.vial",
+        "cross.case"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-proj-health",
+      "keywords" : [
+        "medication reminder",
+        "elderly patient",
+        "elderly care",
+        "health reminder",
+        "elderly assistance",
+        "elderly medication",
+        "elderly wellness",
+        "elderly healthcare",
+        "elderly monitoring"
+      ],
+      "pick" : "pills",
+      "pickScore" : 1,
+      "query" : "Medication reminder for elderly patients.",
+      "reason" : "Closest match to your description.",
+      "totalSeconds" : 1.3322649002075195,
+      "usedFallback" : true
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "person.crop",
+        "chart.pie",
+        "person.crop.circle.badge.plus",
+        "chart.bar"
+      ],
+      "candidateCount" : 40,
+      "id" : "zh-finance",
+      "keywords" : [
+        "budget",
+        "expense tracker",
+        "finance",
+        "money",
+        "wallet",
+        "account",
+        "spending",
+        "monthly expenses",
+        "income"
+      ],
+      "pick" : "dollarsign",
+      "pickScore" : 0.9,
+      "query" : "一个记账应用，帮助管理每月开销",
+      "reason" : "最直接的图标是货币符号，因为它最能代表记账应用的主要功能，即管理每月开销。",
+      "totalSeconds" : 4.54121196269989,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "service.dog",
+        "pawprint",
+        "teddybear",
+        "pet.carrier"
+      ],
+      "candidateCount" : 40,
+      "id" : "zh-dog",
+      "keywords" : [
+        "dog",
+        "pet",
+        "pet care",
+        "dog food",
+        "dog training",
+        "dog grooming",
+        "dog health",
+        "dog walking",
+        "dog toys"
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "宠物狗的日常照顾和喂食提醒",
+      "reason" : "狗是最直接反映用户请求的主体，它最能引起用户的注意和理解。",
+      "totalSeconds" : 3.338999032974243,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "sleep",
+        "bed.double.badge.checkmark",
+        "powersleep",
+        "moon.zzz"
+      ],
+      "candidateCount" : 40,
+      "id" : "zh-sleep",
+      "keywords" : [
+        "sleep tracker",
+        "sleep monitor",
+        "sleep app",
+        "sleep timer",
+        "sleep log",
+        "sleep analysis",
+        "sleep quality",
+        "sleep habits",
+        "sleep management"
+      ],
+      "pick" : "bed.double",
+      "pickScore" : 1,
+      "query" : "睡眠追踪应用",
+      "reason" : "床双人床是最直接反映睡眠追踪应用主题的图标。",
+      "totalSeconds" : 3.682739019393921,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "cloud.rain",
+        "sun.rain",
+        "cloud.sun",
+        "cloud.bolt.rain"
+      ],
+      "candidateCount" : 40,
+      "id" : "ja-weather",
+      "keywords" : [
+        "weather",
+        "forecast",
+        "weather app",
+        "weather prediction",
+        "weather forecast app",
+        "weather forecast",
+        "weather forecast app",
+        "weather forecast",
+        "weather forecast"
+      ],
+      "pick" : "cloud.sun.rain",
+      "pickScore" : 0.9,
+      "query" : "天気予報アプリ",
+      "reason" : "このアイコンは、天気予報アプリの主な機能である天気情報を視覚的に表現するのに最も効果的です。",
+      "totalSeconds" : 3.4596080780029297,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "photo.tv",
+        "photo.on",
+        "photo.stack",
+        "photo.artframe"
+      ],
+      "candidateCount" : 40,
+      "id" : "ja-photos",
+      "keywords" : [
+        "photo organizer",
+        "photo management",
+        "photo storage",
+        "image organizer",
+        "image management",
+        "photo management app",
+        "image organizer app",
+        "photo management software",
+        "image organizer software"
+      ],
+      "pick" : "photo",
+      "pickScore" : 0.9,
+      "query" : "写真を整理するアプリ",
+      "reason" : "写真整理アプリは写真に関連する機能を提供するため、写真アイコンが最も適切です。",
+      "totalSeconds" : 4.0196380615234375,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "globe.badge.chevron.backward",
+        "translate",
+        "graduationcap",
+        "brain"
+      ],
+      "candidateCount" : 40,
+      "id" : "es-language",
+      "keywords" : [
+        "language learning app",
+        "language learning tool",
+        "language app",
+        "language learning",
+        "language learning app",
+        "language learning tool",
+        "language learning",
+        "language learning app",
+        "language learning"
+      ],
+      "pick" : "globe",
+      "pickScore" : 0.7,
+      "query" : "aplicación para aprender idiomas",
+      "reason" : "El icono 'globe' representa directamente el aprendizaje de idiomas, ya que simboliza el mundo y la comunicación entre diferentes culturas.",
+      "totalSeconds" : 3.853521943092346,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "brain",
+        "figure.mind.and.body",
+        "leaf",
+        "apple.meditate.square.stack"
+      ],
+      "candidateCount" : 11,
+      "id" : "fr-meditation",
+      "keywords" : [
+        "meditation",
+        "relaxation",
+        "mindfulness",
+        "calm",
+        "stress relief",
+        "inner peace",
+        "mental wellness",
+        "wellness",
+        " tranquility"
+      ],
+      "pick" : "apple.meditate",
+      "pickScore" : 1,
+      "query" : "application de méditation et de relaxation",
+      "reason" : "L'icône 'apple.meditate' représente directement la méditation et la relaxation, ce qui la rend la meilleure option pour cette application.",
+      "totalSeconds" : 2.6669509410858154,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "map",
+        "figure.outdoor.cycle",
+        "airtag",
+        "location"
+      ],
+      "candidateCount" : 40,
+      "id" : "de-bike",
+      "keywords" : [
+        "bike",
+        "navigation",
+        "city",
+        "route",
+        "path",
+        "map",
+        "GPS",
+        "trip",
+        "destination"
+      ],
+      "pick" : "bicycle",
+      "pickScore" : 1,
+      "query" : "Fahrrad-Navigation für die Stadt",
+      "reason" : "Das Fahrrad ist das zentrale Element der Fahrradnavigation für die Stadt.",
+      "totalSeconds" : 3.416390061378479,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "cup.and.saucer",
+        "cup.and.heat.waves",
+        "takeoutbag.and.cup.and.straw",
+        "wineglass"
+      ],
+      "candidateCount" : 40,
+      "id" : "ko-coffee",
+      "keywords" : [
+        "coffee",
+        "order",
+        "drink",
+        "brew",
+        "cup",
+        "espresso",
+        "barista",
+        "cafeteria",
+        "menu"
+      ],
+      "pick" : "mug",
+      "pickScore" : 0.9,
+      "query" : "커피 주문 앱",
+      "reason" : "커피 주문 앱의 주제는 커피를 주문하는 것이므로, 가장 직접적으로 커피를 나타내는 mug가 가장 적합합니다.",
+      "totalSeconds" : 3.8634389638900757,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "gauge.with.dots.needle.67percent",
+        "gauge.with.dots.needle.100percent",
+        "eye",
+        "gauge.with.dots.needle.0percent"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-speed",
+      "keywords" : [
+        "speed",
+        "velocity",
+        "fast",
+        "quick",
+        "fastness",
+        "speedometer",
+        "high",
+        "high-speed",
+        "fast-moving"
+      ],
+      "pick" : "speedometer",
+      "pickScore" : 0.9,
+      "query" : "speed",
+      "reason" : "Speedometer directly represents speed, making it the most appropriate icon for the request.",
+      "totalSeconds" : 3.933843970298767,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "brain",
+        "apple.intelligence.badge.xmark",
+        "brain.head.profile",
+        "brain.filled.head.profile"
+      ],
+      "candidateCount" : 40,
+      "id" : "en-ai",
+      "keywords" : [
+        "artificial intelligence",
+        "ai",
+        "machine learning",
+        "neural networks",
+        "deep learning",
+        "robotics",
+        "automation",
+        "data science",
+        "algorithms"
+      ],
+      "pick" : "apple.intelligence",
+      "pickScore" : 1,
+      "query" : "artificial intelligence assistant",
+      "reason" : "This icon directly represents artificial intelligence, making it the most suitable choice for the user request.",
+      "totalSeconds" : 3.9312270879745483,
+      "usedFallback" : false
+    }
+  ],
+  "dataset" : "train-v1",
+  "fallbackRate" : 0.058823529411764705,
+  "meanAlternateHitRatio" : 0.428921568627451,
+  "meanPickScore" : 0.9117647058823527,
+  "meanSeconds" : 3.548848909490249,
+  "missRate" : 0,
+  "perfectRate" : 0.5,
+  "variant" : "v1-c40"
+}

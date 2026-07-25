@@ -1,0 +1,461 @@
+{
+  "acceptableRate" : 0.8125,
+  "cases" : [
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "tree",
+        "leaf",
+        "waveform",
+        "note.text"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-birdwatch",
+      "keywords" : [
+        "bird",
+        "watching",
+        "journal",
+        "nature",
+        "wildlife",
+        "observation",
+        "field",
+        "notes",
+        "record"
+      ],
+      "pick" : "bird",
+      "pickScore" : 1,
+      "query" : "bird watching journal",
+      "reason" : "The bird icon most directly represents the request for a bird-watching journal.",
+      "totalSeconds" : 2.879944086074829,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "headphones.dots",
+        "beats.headphones",
+        "waveform",
+        "headphones.over.ear"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-podcast",
+      "keywords" : [
+        "podcast player",
+        "episode downloads",
+        "audio player",
+        "download app",
+        "podcast app",
+        "audio streaming",
+        "podcast app",
+        "podcast player",
+        "podcast app"
+      ],
+      "pick" : "headphones",
+      "pickScore" : 0.8,
+      "query" : "podcast player with episode downloads",
+      "reason" : "Directly represents podcast player with audio focus",
+      "totalSeconds" : 2.68457293510437,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "network",
+        "lock",
+        "network.badge.shield.half.filled",
+        "hand.raised"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-vpn",
+      "keywords" : [
+        "VPN",
+        "network privacy",
+        "security",
+        "privacy",
+        "online protection",
+        "safe browsing",
+        "data encryption",
+        "secure connection",
+        "privacy shield"
+      ],
+      "pick" : "lock.heart",
+      "pickScore" : 0,
+      "query" : "VPN and network privacy tool",
+      "reason" : "This icon directly represents privacy and security, which are key aspects of a VPN and network privacy tool.",
+      "totalSeconds" : 2.9163399934768677,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "tree",
+        "camera.macro",
+        "leaf",
+        "sprinkler"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-garden",
+      "keywords" : [
+        "watering",
+        "reminder",
+        "plant",
+        "garden",
+        "garden tool",
+        "garden app",
+        "garden maintenance",
+        "garden care",
+        "watering schedule"
+      ],
+      "pick" : "sprinkler.and.droplets",
+      "pickScore" : 0.9,
+      "query" : "plant watering reminder",
+      "reason" : "Watering reminder icon.",
+      "totalSeconds" : 1.504983901977539,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "banknote",
+        "dollarsign",
+        "wallet.pass",
+        "wallet.bifold"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-invoice",
+      "keywords" : [
+        "invoice scanner",
+        "expense tracker",
+        "bill scanner",
+        "expense management",
+        "accounting software",
+        "financial app",
+        "budget tool",
+        "payroll software",
+        "tax software"
+      ],
+      "pick" : "scanner",
+      "pickScore" : 0.6,
+      "query" : "发票扫描和报销工具",
+      "reason" : "扫描发票",
+      "totalSeconds" : 1.518225073814392,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "train.side.rear.car",
+        "train.side.front.car",
+        "cablecar",
+        "tram"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-ja-train",
+      "keywords" : [
+        "train schedule",
+        "train timetable",
+        "train",
+        "railway",
+        "rail",
+        "railway schedule",
+        "train journey",
+        "train travel",
+        "train schedule app"
+      ],
+      "pick" : "train.side.middle.car",
+      "pickScore" : 0,
+      "query" : "電車の時刻表アプリ",
+      "reason" : "電車は時刻表アプリのメインテーマであり、このアイコンは電車を最も具体的に表しています。",
+      "totalSeconds" : 3.166161894798279,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
+        "dollarsign",
+        "dollarsign.ring",
+        "dollarsign.ring.dashed"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-stocks",
+      "keywords" : [
+        "stock market",
+        "stock market tracker",
+        "stock market app",
+        "stock market tracker app",
+        "stock market tracker",
+        "stock market tracker app",
+        "stock market tracker",
+        "stock market tracker app",
+        "stock market tracker"
+      ],
+      "pick" : "dollarsign.gauge.chart.lefthalf.righthalf",
+      "pickScore" : 0,
+      "query" : "stock market tracker",
+      "reason" : "This icon most directly depicts a stock market tracker by showing a gauge with a chart, which is commonly used to visualize stock market data.",
+      "totalSeconds" : 3.8554030656814575,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "clock",
+        "hourglass",
+        "globe.badge.clock",
+        "clock.badge.checkmark"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-fr-cook",
+      "keywords" : [
+        "minuteur",
+        "cuisine",
+        "timer",
+        "cooking",
+        "food",
+        "meal",
+        "clock",
+        "time",
+        "kitchen"
+      ],
+      "pick" : "timer",
+      "pickScore" : 1,
+      "query" : "minuteur de cuisine",
+      "reason" : "Le timer est l'icon le plus direct représentant la demande de minuteur de cuisine.",
+      "totalSeconds" : 2.8044880628585815,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "wallet.pass",
+        "wallet.sensor.tag.radiowaves.left.and.right",
+        "chart.pie",
+        "person.crop"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-de-budget",
+      "keywords" : [
+        "student",
+        "budget",
+        "finance",
+        "wallet",
+        "money",
+        "budget",
+        "account",
+        "savings",
+        "expenses"
+      ],
+      "pick" : "wallet.bifold",
+      "pickScore" : 0.9,
+      "query" : "Haushaltsbuch für Studenten",
+      "reason" : "Das Wallet mit zwei Fächern ist das am besten geeignete Symbol für das Budgetbuch für Studenten, da es die finanziellen Ausgaben und Einnahmen übersichtlich darstellen kann.",
+      "totalSeconds" : 3.4575949907302856,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "sleep",
+        "bed.double.badge.checkmark",
+        "powersleep",
+        "stroller"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-baby",
+      "keywords" : [
+        "baby",
+        "sleep",
+        "monitor",
+        "sleep tracker",
+        "infant",
+        "rest",
+        "night",
+        "sleep aid",
+        "sleep schedule"
+      ],
+      "pick" : "bed.double",
+      "pickScore" : 0.6,
+      "query" : "baby sleep monitor",
+      "reason" : "Directly depicts a baby's sleeping area.",
+      "totalSeconds" : 2.552174925804138,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "server.rack",
+        "macpro.gen3.server",
+        "globe",
+        "network.badge.shield.half.filled"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-cli-http",
+      "keywords" : [
+        "http",
+        "client",
+        "rest",
+        "api",
+        "testing",
+        "request",
+        "response",
+        "json",
+        "data"
+      ],
+      "pick" : "network",
+      "pickScore" : 0.9,
+      "query" : "HTTP client for testing REST APIs",
+      "reason" : "This icon directly represents the HTTP client for testing REST APIs, as it symbolizes the internet and network connections.",
+      "totalSeconds" : 2.6982319355010986,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "gym.bag",
+        "flame",
+        "figure.mind.and.body",
+        "flame.gauge.open"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-es-gym",
+      "keywords" : [
+        "gym",
+        "workout",
+        "fitness",
+        "exercise",
+        "health",
+        "body",
+        "muscle",
+        "workout routine",
+        "workout plan"
+      ],
+      "pick" : "dumbbell",
+      "pickScore" : 1,
+      "query" : "rutinas de gimnasio",
+      "reason" : "El icono de mancuernas muestra directamente el tema de rutinas de gimnasio, siendo más específico y conciso que otros símbolos relacionados con el ejercicio.",
+      "totalSeconds" : 3.2797369956970215,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "book.pages",
+        "book.closed",
+        "character.book.closed",
+        "pencil"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-vocab",
+      "keywords" : [
+        "study",
+        "learning",
+        "education",
+        "knowledge",
+        "academics",
+        "school",
+        "course",
+        "study tool",
+        "learning aid"
+      ],
+      "pick" : "book",
+      "pickScore" : 0.8,
+      "query" : "背单词的应用",
+      "reason" : "书本是最直接反映背单词应用的主体，它清晰地传达了学习和记忆的主题。",
+      "totalSeconds" : 3.0901269912719727,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "key",
+        "lock",
+        "bolt",
+        "camera"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-camera",
+      "keywords" : [
+        "home security camera",
+        "security camera viewer",
+        "security system",
+        "surveillance camera",
+        "video monitoring",
+        "camera app",
+        "security software",
+        "home security",
+        "monitor camera"
+      ],
+      "pick" : "web.camera",
+      "pickScore" : 1,
+      "query" : "home security camera viewer",
+      "reason" : "Directly depicts the request's main subject, a home security camera viewer.",
+      "totalSeconds" : 2.6797109842300415,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "pawprint",
+        "service.dog",
+        "teddybear",
+        "cat"
+      ],
+      "candidateCount" : 11,
+      "id" : "test-emoji-dog",
+      "keywords" : [
+        "dog",
+        "pet",
+        "puppy",
+        "canine",
+        "animal",
+        "pet",
+        "doggy",
+        "furry friend",
+        "pet owner"
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "🐶",
+      "reason" : "The icon 'dog' most directly depicts the request for a dog, as it is a specific and concrete symbol for the main subject.",
+      "totalSeconds" : 2.4057871103286743,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "control",
+        "switch.2",
+        "traction.control.tirepressure",
+        "traction.control.tirepressure.exclamationmark"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-drone",
+      "keywords" : [
+        "drone",
+        "flight controller",
+        "remote control",
+        "aircraft",
+        "navigation",
+        "control system",
+        "aerospace",
+        "technology",
+        "robotics"
+      ],
+      "pick" : "drone",
+      "pickScore" : 1,
+      "query" : "drone flight controller",
+      "reason" : "The drone icon most directly depicts the request for a drone flight controller.",
+      "totalSeconds" : 2.9832290410995483,
+      "usedFallback" : false
+    }
+  ],
+  "dataset" : "test-v1",
+  "fallbackRate" : 0,
+  "meanAlternateHitRatio" : 0.359375,
+  "meanPickScore" : 0.7187500000000001,
+  "meanSeconds" : 2.7797944992780685,
+  "missRate" : 0.1875,
+  "perfectRate" : 0.375,
+  "variant" : "v1"
+}
