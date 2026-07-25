@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain info
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+      - name: Build (library + glyphon-extract)
+        run: swift build --build-tests
+      - name: Test (FM-free suite)
+        run: swift test --skip-build
