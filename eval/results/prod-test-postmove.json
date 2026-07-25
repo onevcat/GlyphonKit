@@ -1,0 +1,332 @@
+{
+  "acceptableRate" : 1,
+  "cases" : [
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "tree",
+        "leaf",
+        "waveform",
+        "note.text"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-birdwatch",
+      "keywords" : [
+
+      ],
+      "pick" : "bird",
+      "pickScore" : 1,
+      "query" : "bird watching journal",
+      "reason" : "Directly depicts the main subject of bird watching.",
+      "totalSeconds" : 2.7019259929656982,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "headphones.dots",
+        "beats.headphones",
+        "headphones.over.ear",
+        "waveform.and.mic"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-podcast",
+      "keywords" : [
+
+      ],
+      "pick" : "headphones",
+      "pickScore" : 0.8,
+      "query" : "podcast player with episode downloads",
+      "reason" : "Directly represents audio playback and downloads",
+      "totalSeconds" : 3.1065480709075928,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "network",
+        "hand.raised",
+        "lock",
+        "shield"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-vpn",
+      "keywords" : [
+
+      ],
+      "pick" : "network.badge.shield.half.filled",
+      "pickScore" : 1,
+      "query" : "VPN and network privacy tool",
+      "reason" : "This icon directly represents a VPN and network privacy tool, emphasizing security and privacy through the shield symbol.",
+      "totalSeconds" : 3.2261279821395874,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "camera.macro",
+        "sprinkler.and.droplets",
+        "leaf",
+        "sprinkler"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-garden",
+      "keywords" : [
+
+      ],
+      "pick" : "tree",
+      "pickScore" : 0.5,
+      "query" : "plant watering reminder",
+      "reason" : "Closest match to your description.",
+      "totalSeconds" : 1.6079139709472656,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "banknote",
+        "dollarsign",
+        "wallet.pass",
+        "creditcard.viewfinder"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-invoice",
+      "keywords" : [
+
+      ],
+      "pick" : "scanner",
+      "pickScore" : 0.6,
+      "query" : "发票扫描和报销工具",
+      "reason" : "最直接的图标是扫描仪，它直接展示了发票扫描和报销工具的主要功能。",
+      "totalSeconds" : 3.5953779220581055,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 1,
+      "alternates" : [
+        "train.side.middle.car",
+        "train.side.rear.car",
+        "cablecar",
+        "tram"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-ja-train",
+      "keywords" : [
+
+      ],
+      "pick" : "train.side.front.car",
+      "pickScore" : 1,
+      "query" : "電車の時刻表アプリ",
+      "reason" : "電車は最も直接的な主題を表しているため、最も適切なアイコンです。",
+      "totalSeconds" : 3.405732035636902,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
+        "dollarsign.ring",
+        "chart.bar",
+        "dollarsign.arrow.trianglehead.counterclockwise.rotate.90"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-stocks",
+      "keywords" : [
+
+      ],
+      "pick" : "dollarsign.gauge.chart.lefthalf.righthalf",
+      "pickScore" : 0.4,
+      "query" : "stock market tracker",
+      "reason" : "This icon most directly represents a stock market tracker by showing a gauge with a chart, which is commonly used to visualize stock prices and trends.",
+      "totalSeconds" : 4.147691011428833,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "clock",
+        "clock.badge",
+        "clock.badge.checkmark",
+        "fork.knife"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-fr-cook",
+      "keywords" : [
+
+      ],
+      "pick" : "timer",
+      "pickScore" : 1,
+      "query" : "minuteur de cuisine",
+      "reason" : "Le plus direct est le symbole du minuteur, car il représente précisément le concept de minuteur de cuisine.",
+      "totalSeconds" : 3.1723179817199707,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.6666666666666666,
+      "alternates" : [
+        "wallet.pass",
+        "chart.pie",
+        "dollarsign"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-de-budget",
+      "keywords" : [
+
+      ],
+      "pick" : "wallet.bifold",
+      "pickScore" : 0.9,
+      "query" : "Haushaltsbuch für Studenten",
+      "reason" : "Das Wallet mit zwei Fächern ist das am besten geeignete Symbol für das Budgetbuch für Studenten, da es die finanzielle Verwaltung und die Verwaltung von Geldmitteln darstellt.",
+      "totalSeconds" : 3.626332998275757,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "sleep",
+        "bed.double.badge.checkmark",
+        "powersleep",
+        "stroller"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-baby",
+      "keywords" : [
+
+      ],
+      "pick" : "bed.double",
+      "pickScore" : 0.6,
+      "query" : "baby sleep monitor",
+      "reason" : "Directly depicts a baby's sleeping area.",
+      "totalSeconds" : 2.7972599267959595,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "server.rack",
+        "macpro.gen3.server",
+        "network.badge.shield.half.filled",
+        "globe"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-cli-http",
+      "keywords" : [
+
+      ],
+      "pick" : "network",
+      "pickScore" : 0.9,
+      "query" : "HTTP client for testing REST APIs",
+      "reason" : "This icon directly represents the HTTP client for testing REST APIs, as it symbolizes the network and connectivity required for such tasks.",
+      "totalSeconds" : 3.144231081008911,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "gym.bag",
+        "flame",
+        "figure.mind.and.body",
+        "flame.gauge.open"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-es-gym",
+      "keywords" : [
+
+      ],
+      "pick" : "dumbbell",
+      "pickScore" : 1,
+      "query" : "rutinas de gimnasio",
+      "reason" : "El icono de mancuernas muestra directamente el tema de las rutinas de gimnasio, siendo un símbolo universalmente reconocido para el ejercicio físico.",
+      "totalSeconds" : 3.552422046661377,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "book.pages",
+        "book.closed",
+        "character.book.closed",
+        "pencil"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-vocab",
+      "keywords" : [
+
+      ],
+      "pick" : "book",
+      "pickScore" : 0.8,
+      "query" : "背单词的应用",
+      "reason" : "书本是最直接反映背单词应用的主体，其他选项虽然相关，但不如书本形象清晰。",
+      "totalSeconds" : 3.3875550031661987,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "key",
+        "lock",
+        "bolt",
+        "camera"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-camera",
+      "keywords" : [
+
+      ],
+      "pick" : "web.camera",
+      "pickScore" : 1,
+      "query" : "home security camera viewer",
+      "reason" : "Directly depicts the request's main subject, a home security camera viewer.",
+      "totalSeconds" : 3.02981698513031,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "pawprint",
+        "service.dog",
+        "teddybear",
+        "cat"
+      ],
+      "candidateCount" : 11,
+      "id" : "test-emoji-dog",
+      "keywords" : [
+
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "🐶",
+      "reason" : "The icon 'dog' most directly depicts the request for a dog, as it is a specific and concrete symbol for the main subject.",
+      "totalSeconds" : 2.609701991081238,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "control",
+        "switch.2",
+        "traction.control.tirepressure",
+        "traction.control.tirepressure.exclamationmark"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-drone",
+      "keywords" : [
+
+      ],
+      "pick" : "drone",
+      "pickScore" : 1,
+      "query" : "drone flight controller",
+      "reason" : "The request specifically asks for a drone flight controller, and the drone icon most directly depicts this subject.",
+      "totalSeconds" : 3.5688560009002686,
+      "usedFallback" : false
+    }
+  ],
+  "dataset" : "test-v1",
+  "fallbackRate" : 0,
+  "meanAlternateHitRatio" : 0.4010416666666667,
+  "meanPickScore" : 0.8437500000000001,
+  "meanSeconds" : 3.1674881875514984,
+  "missRate" : 0,
+  "perfectRate" : 0.5,
+  "variant" : "prod"
+}
