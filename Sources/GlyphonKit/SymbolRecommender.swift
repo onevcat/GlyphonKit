@@ -310,14 +310,7 @@ public struct SymbolRecommender: Sendable {
   /// reason in it. The model cannot reliably infer "same language as the
   /// request" on its own.
   private func reasonLanguage(for text: String) -> String {
-    let recognizer = NLLanguageRecognizer()
-    recognizer.processString(text)
-    guard
-      let language = recognizer.dominantLanguage,
-      language != .undetermined,
-      let name = Locale(identifier: "en").localizedString(forLanguageCode: language.rawValue)
-    else { return "English" }
-    return name
+    ReasonLanguage.name(for: text)
   }
 
   // MARK: - No-FM degradation
@@ -351,5 +344,72 @@ public struct SymbolRecommender: Sendable {
     #if DEBUG
     print(message)
     #endif
+  }
+}
+
+/// The language of a recommendation's reason.
+///
+/// Short Latin-script requests are often ambiguous to the recognizer:
+/// "gameconsole" (a keyboard that ate the space) reads as Italian with 0.39
+/// confidence. A weak guess must not decide the reason's language, so the
+/// detected language is used only when it is clear; otherwise the reason is
+/// in a language the user reads (if the recognizer considers it at all), or
+/// in English.
+enum ReasonLanguage {
+  /// The share of the detected language (all its script variants together)
+  /// needed to trust it.
+  static let confidenceThreshold = 0.7
+  /// The least share a preferred language needs to be chosen when the
+  /// detection is not clear.
+  static let plausibleThreshold = 0.05
+
+  /// The English name of the reason language for `text`, for the prompt.
+  static func name(for text: String, preferredLanguages: [String] = Locale.preferredLanguages) -> String {
+    let recognizer = NLLanguageRecognizer()
+    recognizer.processString(text)
+    let hypotheses = recognizer.languageHypotheses(withMaximum: 5)
+      .reduce(into: [String: Double]()) { $0[$1.key.rawValue] = $1.value }
+    let code = code(hypotheses: hypotheses, preferredLanguages: recognizerCodes(preferredLanguages: preferredLanguages))
+    return name(forCode: code)
+  }
+
+  /// Chooses a recognizer language code (`"en"`, `"zh-Hans"`, ...).
+  static func code(hypotheses: [String: Double], preferredLanguages: [String]) -> String {
+    let byLanguage = Dictionary(grouping: hypotheses, by: { baseLanguage(of: $0.key) })
+    let strongest = byLanguage
+      .map { (language: $0.key, share: $0.value.reduce(0) { $0 + $1.value }, members: $0.value) }
+      .max { $0.share < $1.share }
+
+    if let strongest, strongest.share >= confidenceThreshold {
+      // A clear language; pick the script the user prefers, if any.
+      if let preferred = preferredLanguages.first(where: { hypotheses[$0] != nil && baseLanguage(of: $0) == strongest.language }) {
+        return preferred
+      }
+      return strongest.members.max { $0.value < $1.value }!.key
+    }
+    if let preferred = preferredLanguages.first(where: { (hypotheses[$0] ?? 0) >= plausibleThreshold }) {
+      return preferred
+    }
+    return "en"
+  }
+
+  /// Reduces locale identifiers (`"zh-Hans-JP"`, `"pt-BR"`) to the codes the
+  /// recognizer uses (`"zh-Hans"`, `"pt"`).
+  static func recognizerCodes(preferredLanguages: [String]) -> [String] {
+    preferredLanguages.compactMap { identifier in
+      let language = Locale.Language(identifier: identifier)
+      guard let code = language.languageCode?.identifier else { return nil }
+      guard code == "zh" else { return code }
+      let script = language.script?.identifier ?? "Hans"
+      return "zh-\(script)"
+    }
+  }
+
+  static func name(forCode code: String) -> String {
+    Locale(identifier: "en").localizedString(forIdentifier: code) ?? "English"
+  }
+
+  private static func baseLanguage(of code: String) -> String {
+    String(code.prefix { $0 != "-" })
   }
 }
