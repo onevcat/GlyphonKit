@@ -169,9 +169,13 @@
         {
           "root": "doc.text",
           "weight": 0.4
+        },
+        {
+          "root": "receipt",
+          "weight": 0.8
         }
       ],
-      "notes": null
+      "notes": "Label fix: 发票 is an invoice or receipt; the receipt symbol shows the main subject and was missing."
     },
     {
       "id": "test-ja-train",
@@ -317,9 +321,13 @@
         {
           "root": "book",
           "weight": 0.3
+        },
+        {
+          "root": "book.closed",
+          "weight": 0.3
         }
       ],
-      "notes": null
+      "notes": "Label fix: the same book picture as the accepted `book`."
     },
     {
       "id": "test-en-baby",
@@ -457,9 +465,17 @@
         {
           "root": "textformat.abc",
           "weight": 0.6
+        },
+        {
+          "root": "book.pages",
+          "weight": 0.7
+        },
+        {
+          "root": "book.closed",
+          "weight": 0.7
         }
       ],
-      "notes": null
+      "notes": "Label fix: these are the same book picture as the accepted `book`."
     },
     {
       "id": "test-en-camera",

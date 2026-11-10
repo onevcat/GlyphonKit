@@ -60,6 +60,13 @@ Two-stage pipeline on top of a root-deduplicated retrieval index:
    candidate list, so the model cannot hallucinate a symbol name; the
    reason is written in the request's detected language.
 
+The on-device model changes with the major system release, and a new
+model reads the same prompt differently. Each model generation
+(`ModelGeneration`: macOS/iOS 26, macOS/iOS 27) has its own prompts and
+retrieval settings, tuned on that system with the eval harness. On
+macOS/iOS 27 the first stage asks for icon suggestions instead of
+keywords, and the model chooses from the 6 best candidates.
+
 Every failure mode degrades gracefully (schema refusal → plain-text
 retry → retrieval-only → `sparkles`); the pipeline never throws to the
 caller except for `CancellationError`. `recommend(from:)` is

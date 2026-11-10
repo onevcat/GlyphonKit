@@ -140,7 +140,7 @@ struct EvalMain {
     let engine = SymbolSearchEngine(database: database)
     let result = try await variant.recommend(query: text, database: database, engine: engine)
     print("keywords:   \(result.keywords)")
-    print("candidates: \(result.candidateCount)")
+    print("candidates: \(result.candidateCount) \(result.candidates)")
     print("pick:       \(result.pickName)")
     print("alternates: \(result.alternates)")
     print("reason:     \(result.reason)")
