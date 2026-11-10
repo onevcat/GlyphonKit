@@ -153,8 +153,10 @@ public final class SymbolDatabase: Sendable {
       }
     }
 
+    // Equal scores are common; order them by name so the result does not
+    // depend on dictionary order and stays the same between calls.
     return scores
-      .sorted { $0.value > $1.value }
+      .sorted { $0.value != $1.value ? $0.value > $1.value : $0.key < $1.key }
       .prefix(limit)
       .compactMap { byName[$0.key] }
   }

@@ -1,0 +1,332 @@
+{
+  "acceptableRate" : 0.5625,
+  "cases" : [
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "note.text",
+        "note",
+        "field.of.view.wide",
+        "book"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-birdwatch",
+      "keywords" : [
+
+      ],
+      "pick" : "bird",
+      "pickScore" : 1,
+      "query" : "bird watching journal",
+      "reason" : "The main subject is bird watching, so a bird icon is most direct.",
+      "totalSeconds" : 3.296394944190979,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "homepod",
+        "homepod.2",
+        "homepod.mini",
+        "airpods"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-podcast",
+      "keywords" : [
+
+      ],
+      "pick" : "homepod.arrow.forward",
+      "pickScore" : 0,
+      "query" : "podcast player with episode downloads",
+      "reason" : "Shows audio playback with download capability via arrow.",
+      "totalSeconds" : 3.54843008518219,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "shield.checkered",
+        "shield.checkerboard",
+        "firewall"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-vpn",
+      "keywords" : [
+
+      ],
+      "pick" : "shield",
+      "pickScore" : 0.8,
+      "query" : "VPN and network privacy tool",
+      "reason" : "Shield symbolizes protection and privacy for VPN and network tools.",
+      "totalSeconds" : 3.204998016357422,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "drop",
+        "drop.triangle",
+        "water.waves",
+        "drop.degreesign"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-garden",
+      "keywords" : [
+
+      ],
+      "pick" : "sprinkler.and.droplets",
+      "pickScore" : 0.9,
+      "query" : "plant watering reminder",
+      "reason" : "Direct symbol of watering with water droplets.",
+      "totalSeconds" : 3.414406895637512,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "doc.text.image",
+        "doc.text.viewfinder",
+        "doc.text.magnifyingglass",
+        "doc.text.below.ecg"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-invoice",
+      "keywords" : [
+
+      ],
+      "pick" : "receipt",
+      "pickScore" : 0,
+      "query" : "发票扫描和报销工具",
+      "reason" : "图标直接象征发票，符合扫描和报销的核心功能",
+      "totalSeconds" : 3.237688899040222,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.75,
+      "alternates" : [
+        "train.side.front.car",
+        "train.side.middle.car",
+        "tram",
+        "tram.card"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-ja-train",
+      "keywords" : [
+
+      ],
+      "pick" : "train.side.rear.car",
+      "pickScore" : 0.7,
+      "query" : "電車の時刻表アプリ",
+      "reason" : "電車時刻表アプリは電車を主対象としているため、車両を示すアイコンが適切",
+      "totalSeconds" : 3.591667056083679,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.3333333333333333,
+      "alternates" : [
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
+        "dollarsign",
+        "dollarsign.bank.building"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-stocks",
+      "keywords" : [
+
+      ],
+      "pick" : "dollarsign.gauge.chart.lefthalf.righthalf",
+      "pickScore" : 0.4,
+      "query" : "stock market tracker",
+      "reason" : "The icon directly combines a gauge with a chart, matching the stock market theme.",
+      "totalSeconds" : 4.6304320096969604,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "timer",
+        "clock.badge",
+        "gauge.with.needle",
+        "calendar.badge.clock"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-fr-cook",
+      "keywords" : [
+
+      ],
+      "pick" : "clock",
+      "pickScore" : 0,
+      "query" : "minuteur de cuisine",
+      "reason" : "Le terme désigne une courte durée, symbolisée par une horloge.",
+      "totalSeconds" : 3.266232967376709,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "book.pages",
+        "a.book.closed",
+        "book.badge.plus",
+        "book.pages"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-de-budget",
+      "keywords" : [
+
+      ],
+      "pick" : "book.closed",
+      "pickScore" : 0,
+      "query" : "Haushaltsbuch für Studenten",
+      "reason" : "Das Wort ",
+      "totalSeconds" : 2.9950250387191772,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "alarm",
+        "light.beacon.min",
+        "light.beacon.max",
+        "stroller"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-baby",
+      "keywords" : [
+
+      ],
+      "pick" : "alarm.waves.left.and.right",
+      "pickScore" : 0,
+      "query" : "baby sleep monitor",
+      "reason" : "The icon directly represents sound alerts, matching the sleep monitor's function.",
+      "totalSeconds" : 3.61539089679718,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "network",
+        "network.badge.shield.half.filled",
+        "phone.connection",
+        "phone.fill.connection"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-cli-http",
+      "keywords" : [
+
+      ],
+      "pick" : "server.rack",
+      "pickScore" : 0.5,
+      "query" : "HTTP client for testing REST APIs",
+      "reason" : "Represents a backend server hosting REST APIs.",
+      "totalSeconds" : 3.0451819896698,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "figure.strengthtraining.functional",
+        "figure.strengthtraining.traditional",
+        "figure.step.training",
+        "figure.core.training"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-es-gym",
+      "keywords" : [
+
+      ],
+      "pick" : "dumbbell",
+      "pickScore" : 1,
+      "query" : "rutinas de gimnasio",
+      "reason" : "El peso libre representa directamente la actividad física de rutina de gimnasio.",
+      "totalSeconds" : 3.5808340311050415,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.5,
+      "alternates" : [
+        "book",
+        "book.closed",
+        "text.book.closed",
+        "banknote"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-zh-vocab",
+      "keywords" : [
+
+      ],
+      "pick" : "book.pages",
+      "pickScore" : 0,
+      "query" : "背单词的应用",
+      "reason" : "图片直接显示学习材料的页面结构",
+      "totalSeconds" : 2.9899990558624268,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "camera",
+        "camera.viewfinder.badge.automatic",
+        "ipad.rear.camera",
+        "iphone.rear.camera"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-camera",
+      "keywords" : [
+
+      ],
+      "pick" : "camera.viewfinder",
+      "pickScore" : 0,
+      "query" : "home security camera viewer",
+      "reason" : "Direct symbol for viewing camera footage.",
+      "totalSeconds" : 3.1753350496292114,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0.25,
+      "alternates" : [
+        "service.dog",
+        "pawprint",
+        "cat",
+        "hare"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-emoji-dog",
+      "keywords" : [
+
+      ],
+      "pick" : "dog",
+      "pickScore" : 1,
+      "query" : "🐶",
+      "reason" : "The icon directly represents a dog, matching the request's main subject.",
+      "totalSeconds" : 3.171483039855957,
+      "usedFallback" : false
+    },
+    {
+      "alternateHitRatio" : 0,
+      "alternates" : [
+        "control",
+        "battery.100.bolt",
+        "battery.100percent.bolt",
+        "battery.100.bolt.rtl"
+      ],
+      "candidateCount" : 25,
+      "id" : "test-en-drone",
+      "keywords" : [
+
+      ],
+      "pick" : "drone",
+      "pickScore" : 1,
+      "query" : "drone flight controller",
+      "reason" : "The main subject is a drone, so the drone icon is most direct.",
+      "totalSeconds" : 3.5676599740982056,
+      "usedFallback" : false
+    }
+  ],
+  "dataset" : "test-v1",
+  "fallbackRate" : 0,
+  "meanAlternateHitRatio" : 0.22395833333333331,
+  "meanPickScore" : 0.45625000000000004,
+  "meanSeconds" : 3.395697496831417,
+  "missRate" : 0.4375,
+  "perfectRate" : 0.25,
+  "variant" : "prod"
+}

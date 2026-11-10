@@ -263,6 +263,22 @@ struct SymbolDatabaseRelatedTests {
     #expect(related.count < db.count)
   }
 
+  @Test func relatedSymbolsHaveAStableOrderForEqualScores() {
+    // Each candidate shares only the category with the target, so all
+    // score the same. Ties must not depend on dictionary order.
+    let db = SymbolDatabase(symbols: [
+      SymbolEntry(name: "heart", year: "2019", categories: ["health"], terms: []),
+      SymbolEntry(name: "zeta", year: "2019", categories: ["health"], terms: []),
+      SymbolEntry(name: "alpha", year: "2019", categories: ["health"], terms: []),
+      SymbolEntry(name: "mid", year: "2019", categories: ["health"], terms: []),
+      SymbolEntry(name: "kilo", year: "2019", categories: ["health"], terms: []),
+    ])
+    let heart = db.symbol(named: "heart")!
+    for _ in 0..<50 {
+      #expect(db.relatedSymbols(for: heart).map(\.name) == ["alpha", "kilo", "mid", "zeta"])
+    }
+  }
+
   @Test func relatedSymbolsExcludesLocaleVariants() {
     let star = db.symbol(named: "star")!
     let related = db.relatedSymbols(for: star)

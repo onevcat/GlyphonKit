@@ -28,6 +28,21 @@ baseline before trusting comparisons.
 | reference scores (prod) | train 0.900 / acceptable 100% · test 0.769–0.844 / acceptable 93.8–100% · ~2.9 s/query |
 | run-to-run noise | treat meanPickScore deltas < ~0.04 as noise (guardrail classifier is nondeterministic) |
 
+### macOS 27 re-baseline (2026-11-10)
+
+The on-device model changed with macOS 27. The `prod` scores dropped
+well below the macOS 26 reference with the same code; treat these as
+the current baseline, not as a regression of a change:
+
+| item | value |
+|---|---|
+| macOS | 27.0.1 (build 26A434) |
+| Xcode | 27.2 (27B52) |
+| prod, master `22e6be5` | train 0.715 / acceptable 76.5% · test 0.456 / acceptable 56.2% · ~3.3 s/query |
+| raw reports | `results/prod-macos27-train.json`, `results/prod-macos27-test.json` |
+
+Recovering the macOS 26 quality needs its own tuning round on `train.json`.
+
 Scores are weighted: 1.0 = ideal symbol, ~0.7 = good, ~0.4 = barely
 acceptable, 0 = miss. "acceptable" = score > 0.
 
