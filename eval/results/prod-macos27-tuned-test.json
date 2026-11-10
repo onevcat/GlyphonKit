@@ -53,7 +53,7 @@
       "query" : "bird watching journal",
       "reason" : "The main subject is bird watching, so a bird icon is direct.",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.523545980453491,
+      "totalSeconds" : 2.5072500705718994,
       "usedFallback" : false
     },
     {
@@ -107,7 +107,7 @@
       "query" : "podcast player with episode downloads",
       "reason" : "Directly represents audio content without unnecessary details",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.204832077026367,
+      "totalSeconds" : 2.2787230014801025,
       "usedFallback" : false
     },
     {
@@ -162,7 +162,7 @@
       "query" : "VPN and network privacy tool",
       "reason" : "Directly represents network connectivity, the core subject of VPN and privacy tools",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.2718390226364136,
+      "totalSeconds" : 2.372973084449768,
       "usedFallback" : false
     },
     {
@@ -216,7 +216,7 @@
       "query" : "plant watering reminder",
       "reason" : "The icon directly represents water, the main subject of watering.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.1377129554748535,
+      "totalSeconds" : 2.1872689723968506,
       "usedFallback" : false
     },
     {
@@ -270,7 +270,7 @@
       "query" : "发票扫描和报销工具",
       "reason" : "显示扫描的核心功能，简洁明了",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.1533470153808594,
+      "totalSeconds" : 2.18326199054718,
       "usedFallback" : false
     },
     {
@@ -324,7 +324,7 @@
       "query" : "電車の時刻表アプリ",
       "reason" : "電車を意味する最もシンプルなアイコンである",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.2351300716400146,
+      "totalSeconds" : 2.2377809286117554,
       "usedFallback" : false
     },
     {
@@ -378,7 +378,7 @@
       "query" : "stock market tracker",
       "reason" : "The symbol directly represents the financial theme of the request",
       "retrievalCeiling" : 0.8,
-      "totalSeconds" : 2.189963936805725,
+      "totalSeconds" : 2.175081968307495,
       "usedFallback" : false
     },
     {
@@ -433,7 +433,7 @@
       "query" : "minuteur de cuisine",
       "reason" : "Le terme indique une durée, donc un chronomètre est pertinent",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.604093909263611,
+      "totalSeconds" : 2.5327439308166504,
       "usedFallback" : false
     },
     {
@@ -487,7 +487,7 @@
       "query" : "Haushaltsbuch für Studenten",
       "reason" : "Das Wort zeigt das Hauptthema: ein Haushaltsbuch.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.0944401025772095,
+      "totalSeconds" : 2.0848710536956787,
       "usedFallback" : false
     },
     {
@@ -542,7 +542,7 @@
       "query" : "baby sleep monitor",
       "reason" : "Directly represents sleep monitoring as a medical device.",
       "retrievalCeiling" : 0.8,
-      "totalSeconds" : 2.196632981300354,
+      "totalSeconds" : 2.2082159519195557,
       "usedFallback" : false
     },
     {
@@ -597,7 +597,7 @@
       "query" : "HTTP client for testing REST APIs",
       "reason" : "Directly represents HTTP and REST API testing",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.282312035560608,
+      "totalSeconds" : 2.2583709955215454,
       "usedFallback" : false
     },
     {
@@ -640,7 +640,7 @@
       "query" : "rutinas de gimnasio",
       "reason" : "representa directamente la actividad principal de la rutina de gimnasio",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.0308300256729126,
+      "totalSeconds" : 2.003274083137512,
       "usedFallback" : false
     },
     {
@@ -695,7 +695,7 @@
       "query" : "背单词的应用",
       "reason" : "图标直接表示背单词的应用主题",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.4804240465164185,
+      "totalSeconds" : 2.4822360277175903,
       "usedFallback" : false
     },
     {
@@ -750,7 +750,7 @@
       "query" : "home security camera viewer",
       "reason" : "Directly shows the main subject: home security camera",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.265470027923584,
+      "totalSeconds" : 2.240213990211487,
       "usedFallback" : false
     },
     {
@@ -789,7 +789,7 @@
       "query" : "🐶",
       "reason" : "The icon directly represents the animal requested.",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 1.9524279832839966,
+      "totalSeconds" : 1.944135069847107,
       "usedFallback" : false
     },
     {
@@ -844,7 +844,7 @@
       "query" : "drone flight controller",
       "reason" : "Directly represents the main subject of the request",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.02859103679657,
+      "totalSeconds" : 2.103286027908325,
       "usedFallback" : false
     }
   ],
@@ -854,7 +854,7 @@
   "meanCandidateCeiling" : 0.93125,
   "meanPickScore" : 0.74375,
   "meanRetrievalCeiling" : 0.9437500000000001,
-  "meanSeconds" : 2.2282245755195618,
+  "meanSeconds" : 2.2374804466962814,
   "missRate" : 0.0625,
   "perfectRate" : 0.3125,
   "variant" : "prod"
