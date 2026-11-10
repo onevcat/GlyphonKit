@@ -255,13 +255,29 @@ struct SymbolsFile: Codable {
 
     // On this system, an old name whose new name is not available is the
     // only name of the symbol. Give it the metadata that moved to the new
-    // name, or it cannot be found by term or category.
-    var inherited: [String: SymbolEntry] = [:]
+    // name, or it cannot be found by term or category. A symbol can have
+    // several old names; only the newest had the metadata before the
+    // rename.
+    var years: [String: String] = [:]
+    for symbol in available {
+      years[symbol.name] = symbol.year
+    }
+    var oldNames: [String: [String]] = [:]
     for (old, new) in aliases ?? [:] {
-      if let target = unavailable[new] {
-        inherited[old] = target
+      if unavailable[new] != nil {
+        oldNames[new, default: []].append(old)
       } else {
         replacements[old] = new
+      }
+    }
+    var inherited: [String: SymbolEntry] = [:]
+    for (new, olds) in oldNames {
+      let known = olds.filter { years[$0] != nil }
+      guard let newest = known.map({ years[$0]! }).max(by: { SymbolYear.compare($0, $1) == .orderedAscending }) else {
+        continue
+      }
+      for old in known where years[old] == newest {
+        inherited[old] = unavailable[new]
       }
     }
     if !inherited.isEmpty {
