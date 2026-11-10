@@ -10,6 +10,9 @@ struct CaseScore: Codable {
   let alternateHitRatio: Double
   let reason: String
   let keywords: [String]
+  let candidates: [String]?
+  /// The best score a pick from `candidates` can get: the retrieval ceiling.
+  let candidateCeiling: Double?
   let candidateCount: Int
   let usedFallback: Bool
   let totalSeconds: Double
@@ -25,6 +28,8 @@ struct EvalReport: Codable {
   let fallbackRate: Double
   let meanAlternateHitRatio: Double
   let meanSeconds: Double
+  /// The mean retrieval ceiling over the cases that report candidates.
+  let meanCandidateCeiling: Double?
   let cases: [CaseScore]
 }
 
@@ -55,6 +60,10 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, dat
     alternateHitRatio: ratio,
     reason: result.reason,
     keywords: result.keywords,
+    candidates: result.candidates.isEmpty ? nil : result.candidates,
+    candidateCeiling: result.candidates.isEmpty
+      ? nil
+      : result.candidates.map { matchScore(name: $0, expected: evalCase.expected, database: database) }.max(),
     candidateCount: result.candidateCount,
     usedFallback: result.usedFallback,
     totalSeconds: seconds
@@ -86,6 +95,7 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
   let fallback = Double(scores.filter(\.usedFallback).count) / max(count, 1)
   let altMean = scores.map(\.alternateHitRatio).reduce(0, +) / max(count, 1)
   let secMean = scores.map(\.totalSeconds).reduce(0, +) / max(count, 1)
+  let ceilings = scores.compactMap(\.candidateCeiling)
   return EvalReport(
     variant: variant,
     dataset: dataset,
@@ -96,6 +106,7 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
     fallbackRate: fallback,
     meanAlternateHitRatio: altMean,
     meanSeconds: secMean,
+    meanCandidateCeiling: ceilings.isEmpty ? nil : ceilings.reduce(0, +) / Double(ceilings.count),
     cases: scores
   )
 }
@@ -106,13 +117,14 @@ private func pad(_ text: String, _ width: Int) -> String {
 
 func printReport(_ report: EvalReport) {
   print("")
-  print("\(pad("case", 28)) \(pad("score", 5))  \(pad("pick", 34)) alt-hit")
+  print("\(pad("case", 28)) \(pad("score", 5))  \(pad("pick", 34)) alt-hit  ceiling")
   print(String(repeating: "-", count: 84))
   for score in report.cases {
     let flag = score.usedFallback ? " [FB]" : ""
     let scoreText = String(format: "%5.2f", score.pickScore)
     let ratioText = String(format: "%4.2f", score.alternateHitRatio)
-    print("\(pad(score.id, 28)) \(scoreText)  \(pad(score.pick, 34)) \(ratioText)\(flag)")
+    let ceilingText = score.candidateCeiling.map { String(format: "%4.2f", $0) } ?? "   -"
+    print("\(pad(score.id, 28)) \(scoreText)  \(pad(score.pick, 34)) \(ratioText)     \(ceilingText)\(flag)")
   }
   print(String(repeating: "-", count: 84))
   print("variant=\(report.variant) dataset=\(report.dataset)")
@@ -123,4 +135,7 @@ func printReport(_ report: EvalReport) {
   print(String(format: "fallbackRate      %.1f%%", report.fallbackRate * 100))
   print(String(format: "altHitRatio       %.3f", report.meanAlternateHitRatio))
   print(String(format: "meanSeconds       %.2f", report.meanSeconds))
+  if let ceiling = report.meanCandidateCeiling {
+    print(String(format: "candidateCeiling  %.3f", ceiling))
+  }
 }

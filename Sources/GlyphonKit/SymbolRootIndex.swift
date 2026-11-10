@@ -18,6 +18,10 @@ struct SymbolRootIndex: Sendable {
     let terms: [String]
     let tokens: Set<String>
     let phrases: Set<String>
+    /// Whether another root shows the same concept: a script or direction
+    /// variant that `SymbolEntry.isLocaleVariant` does not know
+    /// (`checklist.rtl`, `character.book.closed.ta`).
+    let isDuplicate: Bool
   }
 
   struct WeightedKeyword: Sendable {
@@ -30,10 +34,15 @@ struct SymbolRootIndex: Sendable {
   private let phraseIndex: [String: [Int]]
   private let tokenDamping: [String: Double]
 
-  init(database: SymbolDatabase) {
+  /// - Parameter mergesRenamedSymbols: Puts the old name of a renamed
+  ///   symbol into the root of its new name, instead of a root of its own.
+  ///   The words of the old name (`note.text`) then find the new name
+  ///   (`text.pad.header`), and the concept is in the candidate list once.
+  init(database: SymbolDatabase, mergesRenamedSymbols: Bool = false) {
     var byRoot: [String: [SymbolEntry]] = [:]
     for symbol in database.symbols where !symbol.isLocaleVariant {
-      byRoot[SymbolDatabase.semanticRoot(of: symbol.name), default: []].append(symbol)
+      let name = mergesRenamedSymbols ? database.currentName(for: symbol.name) : symbol.name
+      byRoot[SymbolDatabase.semanticRoot(of: name), default: []].append(symbol)
     }
 
     var roots: [Root] = []
@@ -43,6 +52,24 @@ struct SymbolRootIndex: Sendable {
         ?? entries.min { $0.name.count < $1.name.count }!
       var terms: [String] = []
       var seenTerms = Set<String>()
+      var tokens = Set<String>()
+      for segment in rootName.split(separator: ".") {
+        tokens.insert(String(segment))
+      }
+      if mergesRenamedSymbols {
+        // An old name is a hint for the model too: it often says more
+        // than the new one.
+        for entry in entries {
+          let oldRoot = SymbolDatabase.semanticRoot(of: entry.name)
+          guard database.currentName(for: entry.name) != entry.name, seenTerms.insert(oldRoot).inserted else {
+            continue
+          }
+          terms.append(oldRoot)
+          for segment in oldRoot.split(separator: ".") {
+            tokens.insert(String(segment))
+          }
+        }
+      }
       for entry in entries {
         for term in entry.terms {
           let lowered = term.lowercased()
@@ -51,24 +78,24 @@ struct SymbolRootIndex: Sendable {
           }
         }
       }
-      var tokens = Set<String>()
       var phrases = Set<String>()
-      for segment in rootName.split(separator: ".") {
-        tokens.insert(String(segment))
-      }
       for term in terms {
         let words = term.split(separator: " ").map(String.init)
         if words.count > 1 {
           phrases.insert(term)
         }
-        for word in words {
+        for word in words where !word.contains(".") {
           tokens.insert(word)
         }
       }
       for category in display.categories {
         tokens.insert(category)
       }
-      roots.append(Root(name: rootName, displayEntry: display, terms: terms, tokens: tokens, phrases: phrases))
+      let segments = rootName.split(separator: ".")
+      let isDuplicate = segments.count > 1 && Self.scriptVariantSuffixes.contains(segments.last!)
+      roots.append(Root(
+        name: rootName, displayEntry: display, terms: terms, tokens: tokens, phrases: phrases,
+        isDuplicate: isDuplicate))
     }
     roots.sort { $0.name < $1.name }
     self.roots = roots
@@ -106,6 +133,11 @@ struct SymbolRootIndex: Sendable {
     "user", "users", "interface", "framework", "library", "client",
   ]
 
+  /// Words that connect other words in a keyword phrase.
+  static let stopWords: Set<String> = [
+    "a", "an", "and", "as", "at", "by", "for", "from", "in", "of", "on", "or", "the", "to", "with",
+  ]
+
   /// Query-time expansion: common concept words → tokens that actually occur
   /// in SF Symbol names. The symbol metadata has almost no synonyms (e.g. no
   /// symbol is findable via "money"), so this map bridges everyday vocabulary
@@ -129,6 +161,9 @@ struct SymbolRootIndex: Sendable {
     "invest": ["chart", "dollarsign"],
     "investment": ["chart", "dollarsign"],
     "stock": ["chart", "dollarsign"],
+    "portfolio": ["chart", "briefcase"],
+    "crypto": ["bitcoinsign", "chart"],
+    "cryptocurrency": ["bitcoinsign", "chart"],
     "stocks": ["chart", "dollarsign"],
     // communication
     "email": ["envelope", "paperplane", "tray"],
@@ -350,6 +385,9 @@ struct SymbolRootIndex: Sendable {
     "gift": ["gift", "shippingbox"],
     "weight": ["scalemass", "dumbbell", "figure"],
     "camera": ["camera", "video", "web"],
+    "cam": ["camera", "video"],
+    "webcam": ["web", "camera", "video"],
+    "dashcam": ["video", "camera", "car"],
     "surveillance": ["web", "video", "eye", "camera"],
     "monitor": ["display", "eye", "gauge", "waveform"],
     "scan": ["viewfinder", "scanner", "qrcode", "doc"],
@@ -387,8 +425,31 @@ struct SymbolRootIndex: Sendable {
     "ebook": ["book", "books", "bookmark", "text"],
   ]
 
+  /// How `search` reads the keywords and builds the candidate list. The
+  /// default is the behavior that the macOS 26 prompts were tuned with.
+  struct SearchOptions: Sendable {
+    /// The most roots to return with the same first name segment
+    /// (`headphones`, `headphones.dots`, ...). Without a limit, one large
+    /// family can fill the list and push out other concepts.
+    var maxPerFamily: Int? = nil
+    /// Leaves out the roots that show the concept of another root again
+    /// (`Root.isDuplicate`).
+    var skipsDuplicates = false
+    /// Also looks up the words of a keyword as one token. SF Symbols names
+    /// write many compounds as one word ("game controller" is
+    /// `gamecontroller`, "paper plane" is `paperplane`).
+    var joinsCompounds = false
+    /// Ignores words that only connect other words ("chat and messaging"),
+    /// so that they do not take a share of the keyword's weight.
+    var ignoresStopWords = false
+  }
+
+  private static let scriptVariantSuffixes: Set<Substring> = [
+    "rtl", "mni", "or", "mr", "pa", "ml", "kn", "gu", "te", "sat", "ta", "si", "el", "ru",
+  ]
+
   /// Rank roots for a list of weighted keywords.
-  func search(keywords: [WeightedKeyword], limit: Int) -> [Root] {
+  func search(keywords: [WeightedKeyword], limit: Int, options: SearchOptions = SearchOptions()) -> [Root] {
     var scores: [Int: Double] = [:]
 
     for keyword in keywords {
@@ -397,10 +458,17 @@ struct SymbolRootIndex: Sendable {
       let words = text.split { !$0.isLetter && !$0.isNumber }
         .map(String.init)
         .filter { !Self.noiseWords.contains($0) }
+        .filter { !options.ignoresStopWords || !Self.stopWords.contains($0) }
 
       if words.count > 1, let hits = phraseIndex[words.joined(separator: " ")] {
         for index in hits {
           scores[index, default: 0] += 2.0 * keyword.weight
+        }
+      }
+
+      if options.joinsCompounds, words.count > 1, let hits = tokenIndex[words.joined()] {
+        for index in hits {
+          scores[index, default: 0] += keyword.weight
         }
       }
 
@@ -427,7 +495,7 @@ struct SymbolRootIndex: Sendable {
           // Prefix fallback for morphology: "running" -> "run", "cycling" -> "cycle".
           for (token, hits) in tokenIndex
           where token.hasPrefix(word) || (word.hasPrefix(token) && token.count >= 4 && word.count <= token.count + 4) {
-            let perToken = 0.35 * keyword.weight / Double(words.count)
+            let perToken = 0.35 * perWordWeight
             for index in hits {
               scores[index, default: 0] += perToken
             }
@@ -444,12 +512,27 @@ struct SymbolRootIndex: Sendable {
       return (index: index, score: score / (1.0 + 0.2 * Double(segments - 1)))
     }
 
-    return ranked
-      .sorted { lhs, rhs in
-        if lhs.score != rhs.score { return lhs.score > rhs.score }
-        return roots[lhs.index].name.count < roots[rhs.index].name.count
+    // The name is the last tiebreak: equal scores are common, and the
+    // order must not depend on dictionary order.
+    let sorted = ranked.sorted { lhs, rhs in
+      if lhs.score != rhs.score { return lhs.score > rhs.score }
+      let lhsName = roots[lhs.index].name, rhsName = roots[rhs.index].name
+      if lhsName.count != rhsName.count { return lhsName.count < rhsName.count }
+      return lhsName < rhsName
+    }
+    var result: [Root] = []
+    var familyCounts: [Substring: Int] = [:]
+    for entry in sorted {
+      let root = roots[entry.index]
+      if options.skipsDuplicates, root.isDuplicate { continue }
+      if let maxPerFamily = options.maxPerFamily {
+        let family = root.name.prefix { $0 != "." }
+        guard familyCounts[family, default: 0] < maxPerFamily else { continue }
+        familyCounts[family, default: 0] += 1
       }
-      .prefix(limit)
-      .map { roots[$0.index] }
+      result.append(root)
+      if result.count == limit { break }
+    }
+    return result
   }
 }
