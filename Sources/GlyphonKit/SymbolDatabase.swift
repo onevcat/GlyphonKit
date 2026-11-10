@@ -25,19 +25,43 @@ public final class SymbolDatabase: Sendable {
 
   // MARK: - Loading
 
+  static var bundledURL: URL? {
+    Bundle.module.url(forResource: "symbols", withExtension: "json")
+  }
+
   /// Load from the bundled symbols.json resource.
+  ///
+  /// Symbols that the running system does not have are left out, so every
+  /// symbol in the database can be drawn.
   public static func bundled() throws -> SymbolDatabase {
-    guard let url = Bundle.module.url(forResource: "symbols", withExtension: "json") else {
+    guard let url = bundledURL else {
       throw GlyphonError.resourceNotFound
     }
     return try load(from: url)
   }
 
   /// Load from a JSON file at the given URL.
+  ///
+  /// If the file has release data, symbols that the running system does
+  /// not have are left out.
   public static func load(from url: URL) throws -> SymbolDatabase {
+    try load(from: url, systemVersion: ProcessInfo.processInfo.operatingSystemVersion)
+  }
+
+  static func load(
+    from url: URL,
+    platform: String = SymbolAvailability.currentPlatform,
+    systemVersion: OperatingSystemVersion
+  ) throws -> SymbolDatabase {
     let data = try Data(contentsOf: url)
-    let wrapper = try JSONDecoder().decode(SymbolsFile.self, from: data)
-    return SymbolDatabase(symbols: wrapper.symbols)
+    let file = try JSONDecoder().decode(SymbolsFile.self, from: data)
+    guard let releases = file.releases else {
+      return SymbolDatabase(symbols: file.symbols)
+    }
+    let availability = SymbolAvailability(releases: releases)
+    return SymbolDatabase(symbols: file.symbols.filter {
+      availability.isAvailable(year: $0.year, platform: platform, version: systemVersion)
+    })
   }
 
   // MARK: - Indexing
@@ -193,5 +217,8 @@ public final class SymbolDatabase: Sendable {
 struct SymbolsFile: Codable {
   let version: String
   let count: Int
+  /// Release year -> platform name -> the first system version with the
+  /// symbols of that year. Files from before SF Symbols 2026 do not have it.
+  let releases: [String: [String: String]]?
   let symbols: [SymbolEntry]
 }
