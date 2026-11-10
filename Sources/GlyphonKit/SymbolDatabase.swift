@@ -5,17 +5,34 @@ public final class SymbolDatabase: Sendable {
   public let symbols: [SymbolEntry]
   private let byName: [String: SymbolEntry]
   private let invertedIndex: [String: [Int]]
+  /// Old name -> new name, for renamed symbols whose new name is in the
+  /// database.
+  private let replacements: [String: String]
 
   public var count: Int { symbols.count }
 
-  public init(symbols: [SymbolEntry]) {
+  public convenience init(symbols: [SymbolEntry]) {
+    self.init(symbols: symbols, replacements: [:])
+  }
+
+  init(symbols: [SymbolEntry], replacements: [String: String]) {
     self.symbols = symbols
+    self.replacements = replacements
     self.byName = Dictionary(uniqueKeysWithValues: symbols.map { ($0.name, $0) })
     self.invertedIndex = Self.buildIndex(symbols)
   }
 
   public func symbol(named name: String) -> SymbolEntry? {
     byName[name]
+  }
+
+  /// The name that the running system uses for a symbol.
+  ///
+  /// SF Symbols releases rename symbols and keep the old names as aliases.
+  /// For an old name whose new name is in the database, this is the new
+  /// name. For all other names it is the name itself.
+  public func currentName(for name: String) -> String {
+    replacements[name] ?? name
   }
 
   /// Returns symbol indices matching the given term via the inverted index.
@@ -55,13 +72,10 @@ public final class SymbolDatabase: Sendable {
   ) throws -> SymbolDatabase {
     let data = try Data(contentsOf: url)
     let file = try JSONDecoder().decode(SymbolsFile.self, from: data)
-    guard let releases = file.releases else {
-      return SymbolDatabase(symbols: file.symbols)
-    }
-    let availability = SymbolAvailability(releases: releases)
-    return SymbolDatabase(symbols: file.symbols.filter {
-      availability.isAvailable(year: $0.year, platform: platform, version: systemVersion)
-    })
+    let unavailableYears = file.releases.map {
+      SymbolAvailability(releases: $0).unavailableYears(platform: platform, version: systemVersion)
+    } ?? []
+    return file.database(withoutYears: unavailableYears)
   }
 
   // MARK: - Indexing
@@ -220,5 +234,66 @@ struct SymbolsFile: Codable {
   /// Release year -> platform name -> the first system version with the
   /// symbols of that year. Files from before SF Symbols 2026 do not have it.
   let releases: [String: [String: String]]?
+  /// Old name -> new name of the renamed symbols. An old name stays a
+  /// symbol of its own, but the data has no terms or categories for it.
+  let aliases: [String: String]?
   let symbols: [SymbolEntry]
+
+  private static let whatsNew = "whatsnew"
+
+  /// The database of a system that does not have the symbols of
+  /// `unavailableYears`.
+  func database(withoutYears unavailableYears: Set<String>) -> SymbolDatabase {
+    guard !unavailableYears.isEmpty else {
+      return SymbolDatabase(symbols: symbols, replacements: aliases ?? [:])
+    }
+
+    let unavailable = Dictionary(
+      uniqueKeysWithValues: symbols.lazy.filter { unavailableYears.contains($0.year) }.map { ($0.name, $0) })
+    var available = symbols.filter { !unavailableYears.contains($0.year) }
+    var replacements: [String: String] = [:]
+
+    // On this system, an old name whose new name is not available is the
+    // only name of the symbol. Give it the metadata that moved to the new
+    // name, or it cannot be found by term or category.
+    var inherited: [String: SymbolEntry] = [:]
+    for (old, new) in aliases ?? [:] {
+      if let target = unavailable[new] {
+        inherited[old] = target
+      } else {
+        replacements[old] = new
+      }
+    }
+    if !inherited.isEmpty {
+      available = available.map { symbol in
+        guard let target = inherited[symbol.name], symbol.terms.isEmpty, symbol.categories.isEmpty else {
+          return symbol
+        }
+        return SymbolEntry(
+          name: symbol.name,
+          year: symbol.year,
+          categories: target.categories.filter { $0 != Self.whatsNew },
+          terms: target.terms
+        )
+      }
+    }
+
+    // The data marks only its own newest release as "whatsnew". A system
+    // without that release still has a newest release of its own.
+    if !available.contains(where: { $0.categories.contains(Self.whatsNew) }),
+       let newest = available.map(\.year).max(by: { SymbolYear.compare($0, $1) == .orderedAscending }) {
+      let major = newest.prefix { $0 != "." }
+      available = available.map { symbol in
+        guard symbol.year.prefix(while: { $0 != "." }) == major else { return symbol }
+        return SymbolEntry(
+          name: symbol.name,
+          year: symbol.year,
+          categories: symbol.categories + [Self.whatsNew],
+          terms: symbol.terms
+        )
+      }
+    }
+
+    return SymbolDatabase(symbols: available, replacements: replacements)
+  }
 }

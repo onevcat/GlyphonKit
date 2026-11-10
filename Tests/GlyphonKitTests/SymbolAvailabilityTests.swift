@@ -80,4 +80,64 @@ struct SymbolAvailabilityTests {
     #expect(onMacOS27.symbol(named: "calendar.day")?.year == "2026")
     #expect(onMacOS27.count > onMacOS26.count)
   }
+
+  // MARK: - Renamed symbols
+
+  private func load(_ json: String, _ systemVersion: OperatingSystemVersion) throws -> SymbolDatabase {
+    let url = FileManager.default.temporaryDirectory.appending(path: "glyphon-availability-\(UUID().uuidString).json")
+    try Data(json.utf8).write(to: url)
+    defer { try? FileManager.default.removeItem(at: url) }
+    return try SymbolDatabase.load(from: url, platform: "macOS", systemVersion: systemVersion)
+  }
+
+  /// `mic.old` was renamed to `mic.new` in 2026. As in the data from Apple,
+  /// the old name has no terms or categories of its own.
+  private let renamedJSON = """
+    {"version":"2026","count":3,
+     "releases":{"2019":{"macOS":"10.15"},"2025":{"macOS":"26.0"},"2026":{"macOS":"27.0"}},
+     "aliases":{"mic.old":"mic.new"},
+     "symbols":[
+      {"name":"mic.new","year":"2026","categories":["media","whatsnew"],"terms":["microphone"]},
+      {"name":"mic.old","year":"2019","categories":[],"terms":[]},
+      {"name":"star","year":"2025","categories":["shapes"],"terms":[]}]}
+    """
+
+  @Test func oldNameKeepsTheMetadataWhenTheSystemDoesNotHaveTheNewName() throws {
+    let database = try load(renamedJSON, version(26, 5))
+    let old = try #require(database.symbol(named: "mic.old"))
+    #expect(old.terms == ["microphone"])
+    // "whatsnew" belongs to the new name's release, not to the old name.
+    #expect(old.categories == ["media"])
+    #expect(database.symbol(named: "mic.new") == nil)
+    #expect(database.currentName(for: "mic.old") == "mic.old")
+  }
+
+  @Test func oldNamePointsToTheNewNameWhenTheSystemHasIt() throws {
+    let database = try load(renamedJSON, version(27, 0))
+    #expect(database.symbol(named: "mic.old")?.terms == [])
+    #expect(database.currentName(for: "mic.old") == "mic.new")
+    #expect(database.currentName(for: "mic.new") == "mic.new")
+    #expect(database.currentName(for: "star") == "star")
+  }
+
+  @Test func whatsNewIsTheNewestReleaseTheSystemHas() throws {
+    // The data marks only its own newest release. An older system still
+    // has a newest release of its own.
+    let older = try load(renamedJSON, version(26, 5))
+    #expect(older.symbols(inCategory: "whatsnew").map(\.name) == ["star"])
+    let newer = try load(renamedJSON, version(27, 0))
+    #expect(newer.symbols(inCategory: "whatsnew").map(\.name) == ["mic.new"])
+  }
+
+  @Test func bundledDataKeepsTheMacOS26Metadata() throws {
+    let url = try #require(SymbolDatabase.bundledURL)
+    let onMacOS26 = try SymbolDatabase.load(from: url, platform: "macOS", systemVersion: version(26, 5, 1))
+    // Renamed in 2026 (to microphone.dynamic.on.stand, building.classical.columns).
+    #expect(onMacOS26.symbol(named: "music.microphone")?.terms.contains("microphone") == true)
+    #expect(onMacOS26.symbol(named: "building.columns")?.terms == ["library"])
+    #expect(onMacOS26.symbol(named: "music.microphone")?.categories == ["objectsandtools"])
+    let whatsNew = onMacOS26.symbols(inCategory: "whatsnew")
+    #expect(!whatsNew.isEmpty)
+    #expect(whatsNew.allSatisfy { $0.year.hasPrefix("2025") })
+  }
 }

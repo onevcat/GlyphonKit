@@ -30,9 +30,12 @@ struct SymbolAvailability: Sendable {
   /// nothing to decide on.
   func isAvailable(year: String, platform: String, version: OperatingSystemVersion) -> Bool {
     guard let release = releases[year]?[platform] else { return true }
-    let parts = release.split(separator: ".").map { Int($0) ?? 0 }
-    let required = [parts.first ?? 0, parts.count > 1 ? parts[1] : 0, parts.count > 2 ? parts[2] : 0]
-    let current = [version.majorVersion, version.minorVersion, version.patchVersion]
-    return !current.lexicographicallyPrecedes(required)
+    let current = "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
+    return SymbolYear.compare(release, current) != .orderedDescending
+  }
+
+  /// The release years whose symbols the system does not have.
+  func unavailableYears(platform: String, version: OperatingSystemVersion) -> Set<String> {
+    Set(releases.keys.filter { !isAvailable(year: $0, platform: platform, version: version) })
   }
 }

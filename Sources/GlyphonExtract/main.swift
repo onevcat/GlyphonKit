@@ -21,6 +21,9 @@ let (sourcePath, outputPath): (String, String?) = {
     source = arguments[index + 1]
     arguments.removeSubrange(index...(index + 1))
   }
+  guard arguments.count <= 1, arguments.allSatisfy({ !$0.hasPrefix("-") }) else {
+    fatalError("usage: glyphon-extract [--source <metadata directory>] [<output path>]")
+  }
   return (source, arguments.first)
 }()
 
@@ -44,6 +47,15 @@ guard let releases = availability["year_to_release"] as? [String: [String: Strin
   fatalError("Missing 'year_to_release' key in name_availability.plist")
 }
 
+/// Old name -> new name of the renamed symbols ("key" = "value"; lines).
+let aliases: [String: String] = {
+  let url = URL(fileURLWithPath: "\(sourcePath)/name_aliases.strings")
+  guard let dictionary = NSDictionary(contentsOf: url) as? [String: String] else {
+    fatalError("Cannot read name_aliases.strings")
+  }
+  return dictionary.filter { symbolsDict[$0.key] != nil && symbolsDict[$0.value] != nil }
+}()
+
 struct SymbolJSON: Codable {
   let name: String
   let year: String
@@ -55,6 +67,7 @@ struct OutputJSON: Codable {
   let version: String
   let count: Int
   let releases: [String: [String: String]]
+  let aliases: [String: String]
   let symbols: [SymbolJSON]
 }
 
@@ -71,7 +84,7 @@ let symbols = symbolsDict.keys.sorted().map { name in
 let version = Set(symbolsDict.values)
   .max { $0.compare($1, options: .numeric) == .orderedAscending } ?? ""
 
-let output = OutputJSON(version: version, count: symbols.count, releases: releases, symbols: symbols)
+let output = OutputJSON(version: version, count: symbols.count, releases: releases, aliases: aliases, symbols: symbols)
 let encoder = JSONEncoder()
 encoder.outputFormatting = [.sortedKeys]
 let data = try encoder.encode(output)
