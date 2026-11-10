@@ -112,6 +112,24 @@ struct SymbolAvailabilityTests {
     #expect(database.currentName(for: "mic.old") == "mic.old")
   }
 
+  @Test func onlyTheNewestOldNameKeepsTheMetadata() throws {
+    // `mic.first` became `mic.second` in 2024 and `mic.third` in 2026. The
+    // rename table points both old names at the newest name. Before 2026
+    // only `mic.second` had the metadata.
+    let json = """
+      {"version":"2026","count":3,
+       "releases":{"2019":{"macOS":"10.15"},"2024":{"macOS":"15.0"},"2026":{"macOS":"27.0"}},
+       "aliases":{"mic.first":"mic.third","mic.second":"mic.third"},
+       "symbols":[
+        {"name":"mic.first","year":"2019","categories":[],"terms":[]},
+        {"name":"mic.second","year":"2024","categories":[],"terms":[]},
+        {"name":"mic.third","year":"2026","categories":["media"],"terms":["microphone"]}]}
+      """
+    let database = try load(json, version(26, 5))
+    #expect(database.symbol(named: "mic.second")?.terms == ["microphone"])
+    #expect(database.symbol(named: "mic.first")?.terms == [])
+  }
+
   @Test func oldNamePointsToTheNewNameWhenTheSystemHasIt() throws {
     let database = try load(renamedJSON, version(27, 0))
     #expect(database.symbol(named: "mic.old")?.terms == [])
@@ -136,6 +154,8 @@ struct SymbolAvailabilityTests {
     #expect(onMacOS26.symbol(named: "music.microphone")?.terms.contains("microphone") == true)
     #expect(onMacOS26.symbol(named: "building.columns")?.terms == ["library"])
     #expect(onMacOS26.symbol(named: "music.microphone")?.categories == ["objectsandtools"])
+    // An older name of the same symbol had no metadata before the rename.
+    #expect(onMacOS26.symbol(named: "music.mic")?.terms == [])
     let whatsNew = onMacOS26.symbols(inCategory: "whatsnew")
     #expect(!whatsNew.isEmpty)
     #expect(whatsNew.allSatisfy { $0.year.hasPrefix("2025") })
