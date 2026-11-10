@@ -36,7 +36,8 @@
       "pickScore" : 1,
       "query" : "dog",
       "reason" : "The icon directly shows the main subject without additional details.",
-      "totalSeconds" : 2.494485020637512,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.100950002670288,
       "usedFallback" : false
     },
     {
@@ -90,7 +91,8 @@
       "pickScore" : 1,
       "query" : "a cute cat sleeping",
       "reason" : "The icon directly shows the main subject: a cat",
-      "totalSeconds" : 2.09962797164917,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1103639602661133,
       "usedFallback" : false
     },
     {
@@ -127,8 +129,8 @@
         "waveform.path.ecg.text.page",
         "document",
         "bag",
-        "list.dash",
-        "list.star"
+        "cart",
+        "list.dash"
       ],
       "id" : "en-coffee-shop",
       "keywords" : [
@@ -144,7 +146,8 @@
       "pickScore" : 0.9,
       "query" : "coffee shop loyalty app",
       "reason" : "Depicts coffee, the main subject of the loyalty app",
-      "totalSeconds" : 2.1037501096725464,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1633750200271606,
       "usedFallback" : false
     },
     {
@@ -198,7 +201,8 @@
       "pickScore" : 1,
       "query" : "weather app with rain forecast",
       "reason" : "Directly represents rain forecast as the main weather subject",
-      "totalSeconds" : 2.1738359928131104,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.186432957649231,
       "usedFallback" : false
     },
     {
@@ -221,11 +225,12 @@
         "pad.header",
         "pencil.and.list.clipboard",
         "text.pad.header",
-        "calendar",
-        "calendar.badge.clock",
         "pencil",
+        "calendar.badge.clock",
+        "calendar",
         "music.note.tv",
         "trash",
+        "pencil.tip",
         "1.calendar",
         "2.calendar",
         "3.calendar",
@@ -235,8 +240,7 @@
         "7.calendar",
         "8.calendar",
         "9.calendar",
-        "10.calendar",
-        "11.calendar"
+        "10.calendar"
       ],
       "id" : "en-todo",
       "keywords" : [
@@ -252,43 +256,44 @@
       "pickScore" : 1,
       "query" : "a to-do list manager",
       "reason" : "The icon directly represents a to-do list function.",
-      "totalSeconds" : 2.115198016166687,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1496750116348267,
       "usedFallback" : false
     },
     {
       "alternateHitRatio" : 0.75,
       "alternates" : [
+        "dollarsign.building.classical",
         "dollarsign.ring",
         "banknote",
-        "dollarsign.building.classical",
         "chart.pie"
       ],
       "candidateCeiling" : 0.9,
       "candidateCount" : 25,
       "candidates" : [
         "dollarsign",
+        "dollarsign.building.classical",
         "dollarsign.ring",
         "banknote",
-        "dollarsign.building.classical",
         "chart.pie",
         "receipt",
         "book",
         "wallet.pass",
         "wallet.bifold",
-        "person.number.sign",
         "text.book.closed",
+        "person.number.sign",
         "book.pages",
         "book.closed",
+        "character.book.closed",
         "number.sign",
         "numero.sign",
         "music.note.list",
-        "wallet.sensor.tag.radiowaves.left.and.right",
         "person.text",
-        "chart.bar.horizontal.page",
+        "wallet.sensor.tag.radiowaves.left.and.right",
         "text.pad.header",
-        "character.book.closed",
-        "bookmark",
+        "chart.bar.horizontal.page",
         "chart.line.text.clipboard",
+        "bookmark",
         "music.note",
         "pad.header"
       ],
@@ -305,8 +310,9 @@
       "pick" : "dollarsign",
       "pickScore" : 0.9,
       "query" : "personal finance tracker for monthly budgets",
-      "reason" : "Direct symbol for money, central to budgeting concept",
-      "totalSeconds" : 2.1659659147262573,
+      "reason" : "The symbol directly represents money, the core of budgeting.",
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.329347014427185,
       "usedFallback" : false
     },
     {
@@ -335,16 +341,16 @@
         "play",
         "memories",
         "record",
+        "speaker",
         "text.pad.header",
         "play.tv",
         "play.house",
         "figure.play",
         "livephoto.play",
-        "speaker",
         "pad.header",
-        "ipad.badge.play",
-        "pano.badge.play",
-        "iphone.badge.play"
+        "speaker.plus",
+        "speaker.minus",
+        "ipad.badge.play"
       ],
       "id" : "en-music",
       "keywords" : [
@@ -360,16 +366,17 @@
       "pickScore" : 1,
       "query" : "music player app",
       "reason" : "Directly represents a music player app without extra details",
-      "totalSeconds" : 2.064785957336426,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1716800928115845,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0,
+      "alternateHitRatio" : 0.25,
       "alternates" : [
         "eyedropper",
         "web.camera",
-        "eyedropper.full",
-        "eyedropper.halffull"
+        "photo",
+        "eyedropper.full"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
@@ -377,9 +384,9 @@
         "camera.filters",
         "eyedropper",
         "web.camera",
+        "photo",
         "eyedropper.full",
         "eyedropper.halffull",
-        "photo",
         "crop",
         "skew",
         "lasso",
@@ -414,7 +421,8 @@
       "pickScore" : 1,
       "query" : "photo editing tool with filters",
       "reason" : "Directly represents photo editing with filters",
-      "totalSeconds" : 2.105695962905884,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.141621947288513,
       "usedFallback" : false
     },
     {
@@ -468,7 +476,8 @@
       "pickScore" : 1,
       "query" : "fitness app for workout tracking",
       "reason" : "Direct symbol for fitness and workout tracking",
-      "totalSeconds" : 2.049954056739807,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.121641993522644,
       "usedFallback" : false
     },
     {
@@ -491,8 +500,8 @@
         "tray.2",
         "tray.full",
         "printer.inverse",
-        "calendar",
         "calendar.badge.clock",
+        "calendar",
         "bell",
         "flag",
         "mail",
@@ -522,7 +531,8 @@
       "pickScore" : 1,
       "query" : "email client",
       "reason" : "Directly represents email without additional details",
-      "totalSeconds" : 2.0085829496383667,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.078605055809021,
       "usedFallback" : false
     },
     {
@@ -558,9 +568,9 @@
         "truck.pickup.side.lock",
         "convertible.side.lock.open",
         "truck.pickup.side.lock.open",
+        "shippingbox",
         "wifi.badge.lock",
-        "calendar.badge.lock",
-        "hourglass.badge.lock"
+        "calendar.badge.lock"
       ],
       "id" : "en-password",
       "keywords" : [
@@ -575,7 +585,8 @@
       "pickScore" : 1,
       "query" : "password manager with secure vault",
       "reason" : "The icon directly represents security and password storage.",
-      "totalSeconds" : 2.1668800115585327,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.232100009918213,
       "usedFallback" : false
     },
     {
@@ -586,7 +597,7 @@
         "text.bubble.badge.sparkles",
         "rectangle.3.group.bubble"
       ],
-      "candidateCeiling" : 1,
+      "candidateCeiling" : 0.8,
       "candidateCount" : 25,
       "candidates" : [
         "text.bubble",
@@ -594,15 +605,9 @@
         "person.bubble",
         "text.bubble.badge.sparkles",
         "rectangle.3.group.bubble",
-        "message",
         "bubble",
+        "message",
         "bubble.left.and.text.bubble.right",
-        "plus.message",
-        "message.badge",
-        "ellipsis.message",
-        "checkmark.message",
-        "questionmark.message",
-        "exclamationmark.message",
         "bubble.left",
         "info.bubble",
         "play.bubble",
@@ -613,7 +618,13 @@
         "video.bubble",
         "backward.bubble",
         "captions.bubble",
-        "ellipsis.bubble"
+        "ellipsis.bubble",
+        "character.bubble",
+        "checkmark.bubble",
+        "questionmark.bubble",
+        "exclamationmark.bubble",
+        "plus.message",
+        "message.badge"
       ],
       "id" : "en-chat",
       "keywords" : [
@@ -628,8 +639,9 @@
       "pick" : "text.bubble",
       "pickScore" : 0.7,
       "query" : "team chat and messaging",
-      "reason" : "Directly represents messaging without extra details",
-      "totalSeconds" : 2.5045310258865356,
+      "reason" : "Directly represents messaging and team communication",
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.726699948310852,
       "usedFallback" : false
     },
     {
@@ -656,18 +668,18 @@
         "lamp.desk",
         "lamp.floor",
         "lamp.table",
-        "eyeglasses",
         "text.below.photo",
-        "rays",
-        "chandelier",
+        "eyeglasses",
         "heart.text",
         "person.text",
         "square.text",
         "document.viewfinder",
-        "light.max",
-        "light.min",
-        "ring.light",
-        "light.panel"
+        "rays",
+        "chandelier",
+        "heart.text.clipboard",
+        "character.cursor.ibeam",
+        "character.text.justify",
+        "questionmark.text.page"
       ],
       "id" : "en-reading",
       "keywords" : [
@@ -683,7 +695,8 @@
       "pickScore" : 1,
       "query" : "ebook reader with a personal library",
       "reason" : "The icon clearly represents an ebook reader and library",
-      "totalSeconds" : 2.237908959388733,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.217181921005249,
       "usedFallback" : false
     },
     {
@@ -703,7 +716,6 @@
         "frying.pan",
         "clock",
         "clock.badge",
-        "timer",
         "app.badge.clock",
         "bolt.badge.clock",
         "cart.badge.clock",
@@ -716,6 +728,7 @@
         "person.badge.clock",
         "calendar.badge.clock",
         "document.badge.clock",
+        "timer",
         "figure.bowling",
         "truck.box.badge.clock",
         "text.bubble.badge.clock",
@@ -737,7 +750,8 @@
       "pickScore" : 0.7,
       "query" : "recipe collection and cooking timer",
       "reason" : "Depicts cooking, the main subject of the request",
-      "totalSeconds" : 2.042402982711792,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.028978943824768,
       "usedFallback" : false
     },
     {
@@ -762,15 +776,15 @@
         "checkmark.circle.badge.airplane",
         "suitcase.cart",
         "suitcase.rolling",
-        "figure.walk.suitcase.rolling",
         "globe.badge.clock",
+        "figure.walk.suitcase.rolling",
         "globe",
         "mappin",
-        "globe.desk",
         "clock",
+        "globe.desk",
         "wallet.pass",
-        "mappin.and.ellipse",
         "clock.badge",
+        "mappin.and.ellipse",
         "book",
         "app.badge.clock",
         "bolt.badge.clock",
@@ -791,7 +805,8 @@
       "pickScore" : 1,
       "query" : "flight booking and travel planner",
       "reason" : "Directly represents travel and flight services",
-      "totalSeconds" : 2.004544973373413,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.0123530626296997,
       "usedFallback" : false
     },
     {
@@ -845,7 +860,8 @@
       "pickScore" : 0.9,
       "query" : "car maintenance log",
       "reason" : "The icon shows the main subject without additional details.",
-      "totalSeconds" : 1.8536490201950073,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 1.8041490316390991,
       "usedFallback" : false
     },
     {
@@ -854,7 +870,7 @@
         "service.dog",
         "stethoscope",
         "syringe",
-        "calendar"
+        "calendar.badge.clock"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
@@ -863,8 +879,8 @@
         "service.dog",
         "stethoscope",
         "syringe",
-        "calendar",
         "calendar.badge.clock",
+        "calendar",
         "1.calendar",
         "2.calendar",
         "3.calendar",
@@ -898,8 +914,9 @@
       "pick" : "dog",
       "pickScore" : 1,
       "query" : "A software project that automates dog care: feeding schedules, walk reminders, and pet health tracking.",
-      "reason" : "The icon shows the main subject: a dog, the focus of the care project.",
-      "totalSeconds" : 2.0816869735717773,
+      "reason" : "The main subject is a dog, so this icon directly represents the project",
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.087648034095764,
       "usedFallback" : false
     },
     {
@@ -922,22 +939,22 @@
         "icloud.and.arrow.down",
         "cloud",
         "document.badge.arrow.up",
+        "shippingbox",
+        "folder",
         "cloud.fog",
         "cloud.sun",
         "airplane.cloud",
         "leaf.arrow.trianglehead.clockwise",
         "icloud",
-        "folder",
         "externaldrive.badge.icloud",
-        "shippingbox",
+        "document",
         "escape",
         "repeat",
         "sunset",
         "moonset",
         "shuffle",
         "sunrise",
-        "firewall",
-        "memories"
+        "firewall"
       ],
       "id" : "en-proj-cloudsync",
       "keywords" : [
@@ -953,7 +970,8 @@
       "pickScore" : 0.7,
       "query" : "A command line tool that syncs local files to cloud storage automatically.",
       "reason" : "The icon clearly represents synchronization, the core function of the tool.",
-      "totalSeconds" : 2.8202309608459473,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.8494319915771484,
       "usedFallback" : false
     },
     {
@@ -981,17 +999,17 @@
         "pencil.tip",
         "pencil.line",
         "questionmark.text.page",
-        "bubble.and.pencil",
-        "square.and.pencil",
         "heart.text",
         "person.text",
         "square.text",
-        "book",
-        "bookmark",
-        "link",
+        "bubble.and.pencil",
+        "square.and.pencil",
         "heart.text.clipboard",
         "character.cursor.ibeam",
-        "character.text.justify"
+        "character.text.justify",
+        "sparkle.text.clipboard",
+        "book",
+        "bookmark"
       ],
       "id" : "en-proj-notes",
       "keywords" : [
@@ -1007,7 +1025,8 @@
       "pickScore" : 0.9,
       "query" : "Markdown note-taking app with tags and backlinks.",
       "reason" : "The icon shows the main subject of note-taking without extra details.",
-      "totalSeconds" : 2.4486130475997925,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.472234010696411,
       "usedFallback" : false
     },
     {
@@ -1057,7 +1076,8 @@
       "pickScore" : 1,
       "query" : "A game engine for 2D platformer games.",
       "reason" : "Directly represents a game engine for platformer games",
-      "totalSeconds" : 2.1889429092407227,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.2400619983673096,
       "usedFallback" : false
     },
     {
@@ -1076,14 +1096,13 @@
         "brain.head.profile",
         "network",
         "cylinder",
-        "brain.filled.head.profile",
         "tablecells",
+        "brain.filled.head.profile",
         "cylinder.split.1x2",
         "computermouse",
-        "tablecells.badge.ellipsis",
+        "tablecells.fill.badge.ellipsis",
         "base.unit",
         "network.badge.shield.half.filled",
-        "tablecells.fill.badge.ellipsis",
         "cpu",
         "memorychip",
         "arrow.trianglehead.clockwise.rotate.90",
@@ -1095,7 +1114,8 @@
         "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90",
         "chart.bar.xaxis",
         "clock.arrow.trianglehead.2.counterclockwise.rotate.90",
-        "server.rack"
+        "server.rack",
+        "gauge.chart.lefthalf.righthalf"
       ],
       "id" : "en-proj-ml",
       "keywords" : [
@@ -1111,16 +1131,17 @@
       "pickScore" : 1,
       "query" : "Machine learning framework for on-device inference.",
       "reason" : "The main subject is machine learning, represented by a brain.",
-      "totalSeconds" : 2.2866400480270386,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.3682769536972046,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0.75,
+      "alternateHitRatio" : 0.5,
       "alternates" : [
         "richtext.page",
         "text.document",
         "document.viewfinder",
-        "globe"
+        "text.rectangle.page"
       ],
       "candidateCeiling" : 0.8,
       "candidateCount" : 25,
@@ -1129,24 +1150,24 @@
         "text.page",
         "text.document",
         "document.viewfinder",
-        "globe",
         "text.rectangle.page",
         "questionmark.text.page",
+        "globe",
+        "macbook.and.ipad",
+        "macbook.and.iphone",
         "mug",
         "cup.and.saucer",
         "pencil",
+        "long.text.page.and.pencil",
         "globe.desk",
         "globe.americas",
-        "long.text.page.and.pencil",
-        "cup.and.heat.waves",
         "waveform.path.ecg.text.page",
-        "umbrella",
         "document",
+        "cup.and.heat.waves",
+        "umbrella",
         "pencil.tip",
         "pencil.line",
         "laptopcomputer",
-        "beach.umbrella",
-        "umbrella.percent",
         "append.page",
         "zipper.page",
         "lock.document"
@@ -1163,8 +1184,9 @@
       "pick" : "text.page",
       "pickScore" : 0.4,
       "query" : "Static site generator for personal blogs.",
-      "reason" : "Directly represents a personal blog website layout.",
-      "totalSeconds" : 2.057654023170471,
+      "reason" : "Directly represents a text-based personal blog site.",
+      "retrievalCeiling" : 0.8,
+      "totalSeconds" : 2.0765620470046997,
       "usedFallback" : false
     },
     {
@@ -1218,7 +1240,8 @@
       "pickScore" : 1,
       "query" : "Medication reminder for elderly patients.",
       "reason" : "Directly represents medication, the main subject of the request",
-      "totalSeconds" : 2.4049469232559204,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.4495139122009277,
       "usedFallback" : false
     },
     {
@@ -1240,7 +1263,7 @@
         "dollarsign",
         "dollarsign.building.classical",
         "wallet.sensor.tag.radiowaves.left.and.right",
-        "dollarsign.ring",
+        "dollarsign.gauge.chart.lefthalf.righthalf",
         "chart.bar.horizontal.page",
         "music.note.list",
         "chart.line.text.clipboard",
@@ -1253,10 +1276,10 @@
         "pad.header",
         "gauge.chart.lefthalf.righthalf",
         "questionmark.text.page",
+        "person.text.rectangle.badge.clock",
+        "person.text.rectangle.trianglebadge.exclamationmark",
         "kipsign.gauge.chart.lefthalf.righthalf",
-        "wonsign.gauge.chart.lefthalf.righthalf",
-        "yensign.gauge.chart.lefthalf.righthalf",
-        "bahtsign.gauge.chart.lefthalf.righthalf"
+        "wonsign.gauge.chart.lefthalf.righthalf"
       ],
       "id" : "zh-finance",
       "keywords" : [
@@ -1272,7 +1295,8 @@
       "pickScore" : 0.9,
       "query" : "一个记账应用，帮助管理每月开销",
       "reason" : "直接代表财务记录和每月开销",
-      "totalSeconds" : 2.4315329790115356,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.4303489923477173,
       "usedFallback" : false
     },
     {
@@ -1315,7 +1339,8 @@
       "pickScore" : 1,
       "query" : "宠物狗的日常照顾和喂食提醒",
       "reason" : "显示了日常照顾和喂食提醒的核心主题",
-      "totalSeconds" : 2.35718309879303,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.3697890043258667,
       "usedFallback" : false
     },
     {
@@ -1334,10 +1359,10 @@
         "sleep",
         "powersleep",
         "moon.zzz",
-        "calendar.badge.clock",
         "zzz",
-        "calendar",
+        "calendar.badge.clock",
         "speaker.zzz",
+        "calendar",
         "moon",
         "1.calendar",
         "2.calendar",
@@ -1368,8 +1393,9 @@
       "pick" : "bed.double",
       "pickScore" : 1,
       "query" : "睡眠追踪应用",
-      "reason" : "简洁图标直接代表睡眠追踪的核心主题",
-      "totalSeconds" : 2.160343050956726,
+      "reason" : "直接表示睡眠追踪的核心主题：睡眠与床垫",
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.423651933670044,
       "usedFallback" : false
     },
     {
@@ -1394,8 +1420,8 @@
         "carbon.dioxide.cloud",
         "carbon.monoxide.cloud",
         "umbrella",
-        "thermometer.low",
         "photo",
+        "thermometer.low",
         "airplane.cloud",
         "beach.umbrella",
         "umbrella.percent",
@@ -1423,12 +1449,14 @@
       "pickScore" : 0.9,
       "query" : "天気予報アプリ",
       "reason" : "天気予報アプリは天気を示すアイコンが必要だ",
-      "totalSeconds" : 2.1633780002593994,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.275141954421997,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0,
+      "alternateHitRatio" : 0.25,
       "alternates" : [
+        "photo.on.rectangle",
         "photo.tv",
         "text.below.photo",
         "web.camera"
@@ -1476,7 +1504,8 @@
       "pickScore" : 0.9,
       "query" : "写真を整理するアプリ",
       "reason" : "シンプルで画像の整理を示す",
-      "totalSeconds" : 2.0775309801101685,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.1114319562911987,
       "usedFallback" : false
     },
     {
@@ -1497,13 +1526,12 @@
         "character.book.closed",
         "character.bubble",
         "book",
-        "tree",
-        "bubble",
-        "text.book.closed",
         "character",
+        "text.book.closed",
         "book.pages",
         "book.closed",
-        "graduationcap",
+        "bubble",
+        "tree",
         "bubble.left",
         "info.bubble",
         "play.bubble",
@@ -1514,7 +1542,8 @@
         "phone.bubble",
         "quote.bubble",
         "video.bubble",
-        "person.bubble"
+        "person.bubble",
+        "backward.bubble"
       ],
       "id" : "es-language",
       "keywords" : [
@@ -1530,7 +1559,8 @@
       "pickScore" : 0.7,
       "query" : "aplicación para aprender idiomas",
       "reason" : "representa el aprendizaje de idiomas de forma sencilla",
-      "totalSeconds" : 2.277969002723694,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.37444806098938,
       "usedFallback" : false
     },
     {
@@ -1577,7 +1607,8 @@
       "pickScore" : 1,
       "query" : "application de méditation et de relaxation",
       "reason" : "L'app renvoie à la méditation et à la relaxation, qui sont liées à l'esprit et au corps.",
-      "totalSeconds" : 2.7188329696655273,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.706286907196045,
       "usedFallback" : false
     },
     {
@@ -1612,9 +1643,9 @@
         "lamp.desk",
         "lamp.floor",
         "lamp.table",
-        "globe",
         "location.app",
         "location.north",
+        "globe",
         "person.number.sign"
       ],
       "id" : "de-bike",
@@ -1631,7 +1662,8 @@
       "pickScore" : 0.6,
       "query" : "Fahrrad-Navigation für die Stadt",
       "reason" : "Die Karte zeigt das zentrale Thema der Stadtnavigation.",
-      "totalSeconds" : 2.3174049854278564,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.3416930437088013,
       "usedFallback" : false
     },
     {
@@ -1653,22 +1685,22 @@
         "spoon.serving",
         "person.bust",
         "bag",
-        "shippingbox.and.arrow.backward",
         "cart",
+        "shippingbox.and.arrow.backward",
         "duffle.bag",
         "ivfluid.bag",
         "suitcase.cart",
-        "bag.badge.plus",
-        "bag.badge.minus",
         "list.dash",
         "list.star",
         "list.bullet",
+        "bag.badge.plus",
+        "bag.badge.minus",
         "cart.badge.plus",
         "cart.badge.clock",
         "music.note.list",
+        "pencil.and.list.clipboard",
         "paintpalette",
         "theatermasks",
-        "pencil.and.list.clipboard",
         "paintbrush"
       ],
       "id" : "ko-coffee",
@@ -1685,7 +1717,8 @@
       "pickScore" : 0.9,
       "query" : "커피 주문 앱",
       "reason" : "주제인 커피를 간결하게 나타낸다",
-      "totalSeconds" : 2.7417819499969482,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.637561082839966,
       "usedFallback" : false
     },
     {
@@ -1739,7 +1772,8 @@
       "pickScore" : 1,
       "query" : "speed",
       "reason" : "Direct symbol for speed, simple and recognizable.",
-      "totalSeconds" : 2.2799270153045654,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.282425045967102,
       "usedFallback" : false
     },
     {
@@ -1750,7 +1784,7 @@
         "brain.head.profile",
         "brain.filled.head.profile"
       ],
-      "candidateCeiling" : 1,
+      "candidateCeiling" : 0.9,
       "candidateCount" : 25,
       "candidates" : [
         "brain",
@@ -1764,20 +1798,20 @@
         "computermouse",
         "apple.intelligence.badge.xmark",
         "cylinder",
-        "gearshape",
         "tablecells",
+        "sparkles",
+        "gearshape",
         "microphone.badge.plus",
         "microphone.badge.xmark",
         "waveform.badge.microphone",
-        "sparkles",
-        "gearshape.2",
-        "cylinder.split.1x2",
         "sparkles.2",
         "sparkles.tv",
-        "car.badge.gearshape",
-        "folder.badge.gearshape",
-        "person.badge.gearshape",
-        "document.badge.gearshape"
+        "gearshape.2",
+        "cylinder.split.1x2",
+        "wand.and.sparkles",
+        "hands.and.sparkles",
+        "bubbles.and.sparkles",
+        "lasso.badge.sparkles"
       ],
       "id" : "en-ai",
       "keywords" : [
@@ -1793,16 +1827,17 @@
       "pickScore" : 0.9,
       "query" : "artificial intelligence assistant",
       "reason" : "The icon directly represents the main subject: artificial intelligence.",
-      "totalSeconds" : 2.07068407535553,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1600840091705322,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0,
+      "alternateHitRatio" : 0.25,
       "alternates" : [
         "gauge.with.needle",
         "pizza.slice",
         "gauge.range.33to100.dotted.with.needle",
-        "fan.desk"
+        "clock"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
@@ -1811,16 +1846,14 @@
         "gauge.with.needle",
         "pizza.slice",
         "gauge.range.33to100.dotted.with.needle",
+        "clock",
         "fan.desk",
         "lamp.desk",
         "globe.desk",
-        "clock",
         "pencil",
         "clock.badge",
         "pencil.tip",
         "pencil.line",
-        "music.note",
-        "pad.header",
         "app.badge.clock",
         "bolt.badge.clock",
         "cart.badge.clock",
@@ -1831,7 +1864,9 @@
         "camera.badge.clock",
         "nosign.badge.clock",
         "person.badge.clock",
-        "calendar.badge.clock"
+        "calendar.badge.clock",
+        "document.badge.clock",
+        "music.note"
       ],
       "id" : "en-pomodoro",
       "keywords" : [
@@ -1846,15 +1881,17 @@
       "pick" : "timer",
       "pickScore" : 1,
       "query" : "pomodoro focus timer",
-      "reason" : "The main subject is a focus timer, so a simple timer icon is direct.",
-      "totalSeconds" : 2.2963500022888184,
+      "reason" : "Directly represents the focus timer function",
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.094089984893799,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0.6666666666666666,
+      "alternateHitRatio" : 0.75,
       "alternates" : [
         "stethoscope",
         "bolt.heart",
+        "heart.text.square",
         "lock.heart"
       ],
       "candidateCeiling" : 0.9,
@@ -1873,18 +1910,18 @@
         "bubble.left.and.heart.bubble.right",
         "pills",
         "bandage",
-        "clock",
         "drop",
+        "clock",
         "cross",
-        "clock.badge",
         "drop.triangle",
         "drop.degreesign",
+        "clock.badge",
         "cross.case",
         "cross.vial",
+        "blood.pressure.cuff",
         "chart.bar.xaxis.ascending.badge.clock",
         "app.badge.clock",
-        "bolt.badge.clock",
-        "cart.badge.clock"
+        "bolt.badge.clock"
       ],
       "id" : "en-heart-monitor",
       "keywords" : [
@@ -1899,26 +1936,27 @@
       "pickScore" : 0.9,
       "query" : "heart rate monitor",
       "reason" : "The icon directly represents the main subject of heart rate monitoring.",
-      "totalSeconds" : 2.111796021461487,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.129809021949768,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0,
+      "alternateHitRatio" : 0.25,
       "alternates" : [
         "car.card",
         "car.rear.road.lane",
         "bolt.car",
-        "list.dash"
+        "video"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
       "candidates" : [
         "car.card",
-        "car.rear.road.lane",
         "car",
+        "car.rear.road.lane",
         "bolt.car",
-        "list.dash",
         "video",
+        "list.dash",
         "air.car.side",
         "key.car.side",
         "steeringwheel.road.lane",
@@ -1928,16 +1966,16 @@
         "train.side.front.car",
         "train.side.middle.car",
         "key.car.radiowaves.forward",
-        "steeringwheel.road.lane.dashed",
-        "headset",
         "video.bubble",
         "airplay.video",
         "video.doorbell",
         "questionmark.video",
+        "steeringwheel.road.lane.dashed",
+        "headset",
         "list.dash.badge.ellipsis",
         "wave.3.down.car.side",
         "cable.connector.video",
-        "questionmark.video.ar"
+        "road.lanes"
       ],
       "id" : "en-dashcam",
       "keywords" : [
@@ -1952,15 +1990,17 @@
       "pickScore" : 0.6,
       "query" : "dash cam recorder for road trips",
       "reason" : "Directly represents a vehicle for road trips",
-      "totalSeconds" : 2.0310999155044556,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.005856990814209,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0.6666666666666666,
+      "alternateHitRatio" : 0.5,
       "alternates" : [
         "web.camera",
         "bolt",
-        "binoculars"
+        "binoculars",
+        "camera.on.rectangle"
       ],
       "candidateCeiling" : 0.8,
       "candidateCount" : 25,
@@ -1980,15 +2020,15 @@
         "signpost.right",
         "arrow.trianglehead.2.clockwise.rotate.90.camera",
         "signpost.right.and.left",
+        "video",
         "app.connected.to.app.below",
         "point.forward.to.point.capsulepath",
-        "video",
-        "point.topleft.down.to.point.bottomright.curvepath",
-        "point.bottomleft.forward.to.arrow.triangle.scurvepath",
         "video.bubble",
         "airplay.video",
         "video.doorbell",
         "questionmark.video",
+        "point.topleft.down.to.point.bottomright.curvepath",
+        "point.bottomleft.forward.to.arrow.triangle.scurvepath",
         "cable.connector.video"
       ],
       "id" : "en-trail-camera",
@@ -2003,7 +2043,8 @@
       "pickScore" : 0.8,
       "query" : "wildlife trail camera viewer",
       "reason" : "Directly represents the main subject: wildlife trail camera",
-      "totalSeconds" : 2.0527859926223755,
+      "retrievalCeiling" : 0.8,
+      "totalSeconds" : 2.0780251026153564,
       "usedFallback" : false
     },
     {
@@ -2057,37 +2098,38 @@
       "pickScore" : 0.5,
       "query" : "crypto portfolio tracker",
       "reason" : "The icon shows the main subject (crypto) without unnecessary details.",
-      "totalSeconds" : 2.2117691040039062,
+      "retrievalCeiling" : 0.8,
+      "totalSeconds" : 2.230180025100708,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 1,
+      "alternateHitRatio" : 0.75,
       "alternates" : [
+        "character.book.closed",
         "text.book.closed",
         "translate",
-        "book",
-        "globe"
+        "book.pages"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
       "candidates" : [
         "character.book.closed",
         "text.book.closed",
-        "translate",
         "book",
-        "globe",
+        "translate",
         "book.pages",
         "book.closed",
+        "globe",
         "globe.and.person",
-        "globe.badge.chevron.backward",
-        "pencil",
-        "text.pad.header",
-        "pencil.tip",
-        "pencil.line",
-        "bubble.and.pencil",
-        "long.text.page.and.pencil",
         "character.cursor.ibeam",
         "character.text.justify",
+        "globe.badge.chevron.backward",
+        "pencil",
+        "pencil.tip",
+        "pencil.line",
+        "text.pad.header",
+        "bubble.and.pencil",
+        "long.text.page.and.pencil",
         "square.and.pencil",
         "text.pad.header.badge.plus",
         "music.note",
@@ -2106,11 +2148,12 @@
         "globe",
         "language symbols"
       ],
-      "pick" : "character.book.closed",
-      "pickScore" : 1,
+      "pick" : "book",
+      "pickScore" : 0.7,
       "query" : "Wörterbuch Deutsch-Englisch",
-      "reason" : "Das Hauptthema ist Wörterbuch, dargestellt durch Buchsymbol",
-      "totalSeconds" : 2.1343750953674316,
+      "reason" : "Das Wortbuch zeigt das Hauptthema: Wörterbuch.",
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1921589374542236,
       "usedFallback" : false
     },
     {
@@ -2138,8 +2181,8 @@
         "pad.header",
         "wallet.sensor.tag.radiowaves.left.and.right",
         "text.pad.header.badge.plus",
-        "music.note.tv",
         "person.text",
+        "music.note.tv",
         "chart.bar.horizontal.page",
         "text.page",
         "document.viewfinder",
@@ -2163,7 +2206,8 @@
       "pickScore" : 0.5,
       "query" : "家計簿アプリ",
       "reason" : "請求書は家計簿の主な対象を示す",
-      "totalSeconds" : 2.526293992996216,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.5549800395965576,
       "usedFallback" : false
     },
     {
@@ -2217,17 +2261,19 @@
       "pickScore" : 1,
       "query" : "听播客和有声书",
       "reason" : "显示音频内容，是最直接的图标",
-      "totalSeconds" : 2.0117459297180176,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.054679036140442,
       "usedFallback" : false
     }
   ],
   "dataset" : "train-v1",
   "fallbackRate" : 0,
-  "meanAlternateHitRatio" : 0.46626984126984133,
-  "meanCandidateCeiling" : 0.9714285714285712,
-  "meanPickScore" : 0.8857142857142855,
-  "meanSeconds" : 2.225078523159027,
+  "meanAlternateHitRatio" : 0.47619047619047616,
+  "meanCandidateCeiling" : 0.9642857142857141,
+  "meanPickScore" : 0.8785714285714283,
+  "meanRetrievalCeiling" : 0.9714285714285712,
+  "meanSeconds" : 2.251703001203991,
   "missRate" : 0,
-  "perfectRate" : 0.5238095238095238,
+  "perfectRate" : 0.5,
   "variant" : "prod"
 }

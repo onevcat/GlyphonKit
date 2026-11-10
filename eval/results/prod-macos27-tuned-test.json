@@ -22,21 +22,21 @@
         "leaf",
         "music.note.tv",
         "music.note.list",
-        "apple.haptics.and.music.note",
         "text.book.closed",
-        "leaf.arrow.trianglehead.clockwise",
-        "mountain.2",
-        "pencil",
-        "long.text.page.and.pencil",
+        "apple.haptics.and.music.note",
         "book",
-        "pencil.tip",
-        "pencil.line",
+        "pencil",
         "book.pages",
         "book.closed",
+        "mountain.2",
+        "leaf.arrow.trianglehead.clockwise",
+        "long.text.page.and.pencil",
+        "character.book.closed",
+        "pencil.tip",
+        "pencil.line",
         "bubble.and.pencil",
         "square.and.pencil",
-        "ant",
-        "cat"
+        "ant"
       ],
       "id" : "test-en-birdwatch",
       "keywords" : [
@@ -52,7 +52,8 @@
       "pickScore" : 1,
       "query" : "bird watching journal",
       "reason" : "The main subject is bird watching, so a bird icon is direct.",
-      "totalSeconds" : 2.4911619424819946,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.523545980453491,
       "usedFallback" : false
     },
     {
@@ -105,7 +106,8 @@
       "pickScore" : 0.8,
       "query" : "podcast player with episode downloads",
       "reason" : "Directly represents audio content without unnecessary details",
-      "totalSeconds" : 2.215796947479248,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.204832077026367,
       "usedFallback" : false
     },
     {
@@ -159,7 +161,8 @@
       "pickScore" : 0.7,
       "query" : "VPN and network privacy tool",
       "reason" : "Directly represents network connectivity, the core subject of VPN and privacy tools",
-      "totalSeconds" : 2.2893810272216797,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.2718390226364136,
       "usedFallback" : false
     },
     {
@@ -212,7 +215,8 @@
       "pickScore" : 0.9,
       "query" : "plant watering reminder",
       "reason" : "The icon directly represents water, the main subject of watering.",
-      "totalSeconds" : 2.1478090286254883,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.1377129554748535,
       "usedFallback" : false
     },
     {
@@ -240,13 +244,13 @@
         "questionmark.text.page",
         "arrow.up.page.on.clipboard",
         "arrow.right.page.on.clipboard",
-        "document",
         "heart.text.clipboard",
         "sparkle.text.clipboard",
-        "music.note.list",
+        "document",
         "chart.line.text.clipboard",
-        "clipboard",
+        "music.note.list",
         "waveform.path.ecg.text.page",
+        "clipboard",
         "append.page",
         "zipper.page",
         "lock.document",
@@ -265,7 +269,8 @@
       "pickScore" : 0.6,
       "query" : "发票扫描和报销工具",
       "reason" : "显示扫描的核心功能，简洁明了",
-      "totalSeconds" : 2.194064974784851,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.1533470153808594,
       "usedFallback" : false
     },
     {
@@ -288,8 +293,8 @@
         "tram.card",
         "calendar.badge.clock",
         "house.and.flag",
-        "tram.fill.tunnel",
         "clock.badge",
+        "tram.fill.tunnel",
         "app.badge.clock",
         "bolt.badge.clock",
         "cart.badge.clock",
@@ -318,7 +323,8 @@
       "pickScore" : 0.7,
       "query" : "電車の時刻表アプリ",
       "reason" : "電車を意味する最もシンプルなアイコンである",
-      "totalSeconds" : 2.199062943458557,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.2351300716400146,
       "usedFallback" : false
     },
     {
@@ -329,7 +335,7 @@
         "chart.pie",
         "graph.2d"
       ],
-      "candidateCeiling" : 0.8,
+      "candidateCeiling" : 0.6,
       "candidateCount" : 25,
       "candidates" : [
         "dollarsign",
@@ -371,7 +377,8 @@
       "pickScore" : 0.6,
       "query" : "stock market tracker",
       "reason" : "The symbol directly represents the financial theme of the request",
-      "totalSeconds" : 2.1895699501037598,
+      "retrievalCeiling" : 0.8,
+      "totalSeconds" : 2.189963936805725,
       "usedFallback" : false
     },
     {
@@ -406,10 +413,10 @@
         "text.bubble.badge.clock",
         "envelope.open.badge.clock",
         "thermometer.variable.badge.clock",
-        "gauge.with.needle",
         "arrow.up.circle.badge.clock",
         "text.pad.header.badge.clock",
-        "person.crop.circle.badge.clock"
+        "person.crop.circle.badge.clock",
+        "pointer.arrow.click.badge.clock"
       ],
       "id" : "test-fr-cook",
       "keywords" : [
@@ -425,16 +432,17 @@
       "pickScore" : 0,
       "query" : "minuteur de cuisine",
       "reason" : "Le terme indique une durée, donc un chronomètre est pertinent",
-      "totalSeconds" : 2.494257926940918,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.604093909263611,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0.5,
+      "alternateHitRatio" : 0.25,
       "alternates" : [
         "book.pages",
         "book.closed",
-        "banknote",
-        "graduationcap"
+        "text.book.closed",
+        "character.book.closed"
       ],
       "candidateCeiling" : 0.9,
       "candidateCount" : 25,
@@ -442,13 +450,13 @@
         "book",
         "book.pages",
         "book.closed",
-        "banknote",
-        "graduationcap",
         "text.book.closed",
         "character.book.closed",
+        "banknote",
+        "graduationcap",
         "bookmark",
-        "books.vertical",
         "pencil",
+        "books.vertical",
         "dollarsign",
         "music.note",
         "pad.header",
@@ -477,8 +485,9 @@
       "pick" : "book",
       "pickScore" : 0.3,
       "query" : "Haushaltsbuch für Studenten",
-      "reason" : "Das Wort zeigt den Hauptgegenstand: ein Haushaltsbuch.",
-      "totalSeconds" : 2.1067490577697754,
+      "reason" : "Das Wort zeigt das Hauptthema: ein Haushaltsbuch.",
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.0944401025772095,
       "usedFallback" : false
     },
     {
@@ -505,8 +514,8 @@
         "display.2",
         "lock.display",
         "play.display",
-        "alarm",
         "waveform",
+        "alarm",
         "sleep",
         "dot.scope.display",
         "lock.open.display",
@@ -514,9 +523,9 @@
         "laptopcomputer.display.clean",
         "waveform.low",
         "waveform.mid",
-        "light.beacon.max",
-        "light.beacon.min",
-        "alarm.badge.minus"
+        "ear.badge.waveform",
+        "bell.badge.waveform",
+        "phone.badge.waveform"
       ],
       "id" : "test-en-baby",
       "keywords" : [
@@ -532,7 +541,8 @@
       "pickScore" : 0.6,
       "query" : "baby sleep monitor",
       "reason" : "Directly represents sleep monitoring as a medical device.",
-      "totalSeconds" : 2.1541969776153564,
+      "retrievalCeiling" : 0.8,
+      "totalSeconds" : 2.196632981300354,
       "usedFallback" : false
     },
     {
@@ -586,7 +596,8 @@
       "pickScore" : 0.9,
       "query" : "HTTP client for testing REST APIs",
       "reason" : "Directly represents HTTP and REST API testing",
-      "totalSeconds" : 2.299296021461487,
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.282312035560608,
       "usedFallback" : false
     },
     {
@@ -628,31 +639,32 @@
       "pickScore" : 1,
       "query" : "rutinas de gimnasio",
       "reason" : "representa directamente la actividad principal de la rutina de gimnasio",
-      "totalSeconds" : 2.002562999725342,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.0308300256729126,
       "usedFallback" : false
     },
     {
       "alternateHitRatio" : 0.75,
       "alternates" : [
         "text.word.spacing",
-        "graduationcap",
         "book.pages",
-        "book.closed"
+        "book.closed",
+        "text.book.closed"
       ],
       "candidateCeiling" : 0.9,
       "candidateCount" : 25,
       "candidates" : [
         "text.word.spacing",
         "book",
-        "graduationcap",
         "book.pages",
         "book.closed",
         "text.book.closed",
         "character.book.closed",
+        "graduationcap",
         "brain",
         "bookmark",
-        "calendar",
         "calendar.badge.clock",
+        "calendar",
         "books.vertical",
         "brain.head.profile",
         "headphones",
@@ -681,8 +693,9 @@
       "pick" : "book",
       "pickScore" : 0.8,
       "query" : "背单词的应用",
-      "reason" : "图标直接代表背单词这个主题",
-      "totalSeconds" : 2.3983880281448364,
+      "reason" : "图标直接表示背单词的应用主题",
+      "retrievalCeiling" : 0.9,
+      "totalSeconds" : 2.4804240465164185,
       "usedFallback" : false
     },
     {
@@ -736,7 +749,8 @@
       "pickScore" : 1,
       "query" : "home security camera viewer",
       "reason" : "Directly shows the main subject: home security camera",
-      "totalSeconds" : 2.159938097000122,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.265470027923584,
       "usedFallback" : false
     },
     {
@@ -774,7 +788,8 @@
       "pickScore" : 1,
       "query" : "🐶",
       "reason" : "The icon directly represents the animal requested.",
-      "totalSeconds" : 1.9127470254898071,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 1.9524279832839966,
       "usedFallback" : false
     },
     {
@@ -782,8 +797,8 @@
       "alternates" : [
         "control",
         "battery.100percent.bolt",
-        "switch.2",
-        "battery.0percent"
+        "battery.0percent",
+        "battery.25percent"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
@@ -791,9 +806,9 @@
         "drone",
         "control",
         "battery.100percent.bolt",
-        "switch.2",
         "battery.0percent",
         "battery.25percent",
+        "switch.2",
         "antenna.radiowaves.left.and.right",
         "traction.control.tirepressure",
         "traction.control.tirepressure.exclamationmark",
@@ -802,8 +817,8 @@
         "suv.side.hill.descent.control",
         "truck.side.hill.descent.control",
         "convertible.side.hill.descent.control",
-        "airplane",
         "airplane.path.dotted",
+        "airplane",
         "gauge.open.with.lines.needle.33percent",
         "gauge.open.with.lines.needle.84percent.exclamation",
         "airplane.cloud",
@@ -828,16 +843,18 @@
       "pickScore" : 1,
       "query" : "drone flight controller",
       "reason" : "Directly represents the main subject of the request",
-      "totalSeconds" : 2.0050100088119507,
+      "retrievalCeiling" : 1,
+      "totalSeconds" : 2.02859103679657,
       "usedFallback" : false
     }
   ],
   "dataset" : "test-v1",
   "fallbackRate" : 0,
-  "meanAlternateHitRatio" : 0.390625,
-  "meanCandidateCeiling" : 0.9437500000000001,
+  "meanAlternateHitRatio" : 0.375,
+  "meanCandidateCeiling" : 0.93125,
   "meanPickScore" : 0.74375,
-  "meanSeconds" : 2.2037495598196983,
+  "meanRetrievalCeiling" : 0.9437500000000001,
+  "meanSeconds" : 2.2282245755195618,
   "missRate" : 0.0625,
   "perfectRate" : 0.3125,
   "variant" : "prod"

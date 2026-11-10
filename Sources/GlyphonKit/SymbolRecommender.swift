@@ -24,8 +24,9 @@ struct IconSuggestion {
 /// Recommends SF Symbols using a two-stage pipeline:
 /// 1. Guided keyword extraction (any input language → weighted English
 ///    keywords), ranked against the root-deduplicated index.
-/// 2. Constrained pick: the model chooses the best symbol and alternates
-///    from the candidate list, and explains why in the request's language.
+/// 2. Constrained pick: the model chooses the best symbol from the
+///    candidate list and explains why in the request's language. The
+///    alternates are the model's choice or the next candidates.
 ///
 /// Empty input becomes a random "feeling lucky" draw. Every failure mode
 /// degrades to pure retrieval, never to an error.
@@ -44,7 +45,7 @@ public struct SymbolRecommender: Sendable {
 
   init(database: SymbolDatabase, generation: ModelGeneration) {
     self.database = database
-    self.index = SymbolRootIndex(database: database, mergesRenamedSymbols: generation == .os27)
+    self.index = SymbolRootIndex(database: database, mergesDuplicates: generation == .os27)
     self.generation = generation
   }
 
@@ -52,7 +53,10 @@ public struct SymbolRecommender: Sendable {
   /// harness uses it to tell retrieval problems from pick problems.
   struct Trace: Sendable {
     var keywords: [String] = []
+    /// The retrieved roots, best first.
     var candidates: [String] = []
+    /// The part of `candidates` that the model chooses from.
+    var pickList: [String] = []
   }
 
   /// Recommend a symbol based on a natural language description.
@@ -60,7 +64,9 @@ public struct SymbolRecommender: Sendable {
   /// - Parameters:
   ///   - text: Any natural language text, in any language. Empty text
   ///     yields a random lucky pick.
-  ///   - candidateLimit: Number of candidates for the model to choose from.
+  ///   - candidateLimit: Number of candidates to retrieve. The alternates
+  ///     come from them. The model chooses from all of them or from the
+  ///     best of them, as the prompts of its generation were tuned.
   /// - Returns: A recommendation with the chosen symbol, alternates, and reasoning.
   public func recommend(from text: String, candidateLimit: Int = 25) async throws -> SymbolRecommendation {
     try await recommendWithTrace(from: text, candidateLimit: candidateLimit).recommendation
@@ -100,6 +106,7 @@ public struct SymbolRecommender: Sendable {
     }
 
     let pickList = pickList(from: candidates)
+    trace.pickList = pickList.map(\.name)
     let pick: IconPick
     do {
       do {
@@ -120,14 +127,17 @@ public struct SymbolRecommender: Sendable {
       return (recommendation(fromRanked: candidates, isLucky: false), trace)
     }
 
-    let bestEntry = database.symbol(named: pick.best) ?? candidates[0].displayEntry
+    // A root name is not always a symbol name (`heart.text` has only
+    // `heart.text.square`), so resolve names through the candidates.
+    let entries = Dictionary(candidates.map { ($0.name, $0.displayEntry) }, uniquingKeysWith: { first, _ in first })
+    let bestEntry = entries[pick.best] ?? candidates[0].displayEntry
     var alternateNames = pick.alternates.filter { $0 != pick.best }
     for candidate in candidates where alternateNames.count < 4 {
       if candidate.name != pick.best && !alternateNames.contains(candidate.name) {
         alternateNames.append(candidate.name)
       }
     }
-    let alternates = alternateNames.compactMap { database.symbol(named: $0) }
+    let alternates = alternateNames.compactMap { entries[$0] }
 
     debugLog("AI Step 2 - pick: \(bestEntry.name) — \(pick.reason)")
     let recommendation = SymbolRecommendation(
@@ -303,7 +313,8 @@ public struct SymbolRecommender: Sendable {
       SymbolRootIndex.SearchOptions()
     case .os27:
       SymbolRootIndex.SearchOptions(
-        maxPerFamily: 3, skipsDuplicates: true, joinsCompounds: true, ignoresStopWords: true)
+        maxPerFamily: 3, joinsCompounds: true, ignoresStopWords: true,
+        additionalAliases: SymbolRootIndex.aliasAdditionsOS27)
     }
   }
 
@@ -461,7 +472,7 @@ public struct SymbolRecommender: Sendable {
       """
     let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
     let session = LanguageModelSession(model: model)
-    let response = try await session.respond(to: prompt, options: GenerationOptions(sampling: .greedy))
+    let response = try await session.respond(to: prompt, options: plainTextPickOptions)
     let lines = response.content
       .split(separator: "\n", omittingEmptySubsequences: true)
       .map { $0.trimmingCharacters(in: .whitespaces) }
@@ -473,6 +484,15 @@ public struct SymbolRecommender: Sendable {
       throw GlyphonError.recommendationFailed("plain-text pick not in candidates: \(rawName)")
     }
     return IconPick(best: rawName, alternates: [], reason: lines.count > 1 ? lines[1] : "")
+  }
+
+  private var plainTextPickOptions: GenerationOptions {
+    switch generation {
+    case .os26:
+      GenerationOptions(sampling: .greedy)
+    case .os27:
+      GenerationOptions(sampling: .greedy, maximumResponseTokens: Self.maximumResponseTokensOS27)
+    }
   }
 
   /// Name the query's language in English so the prompt can demand the
@@ -490,7 +510,7 @@ public struct SymbolRecommender: Sendable {
       .split { !$0.isLetter && !$0.isNumber }
       .prefix(12)
       .map { SymbolRootIndex.WeightedKeyword(text: String($0), weight: 1.0) }
-    let hits = index.search(keywords: Array(words), limit: 5)
+    let hits = index.search(keywords: Array(words), limit: 5, options: searchOptions)
     guard !hits.isEmpty else {
       let fallback = database.symbol(named: "sparkles") ?? database.symbols[0]
       return SymbolRecommendation(symbol: fallback, reason: "", isLucky: false, usedAI: false)

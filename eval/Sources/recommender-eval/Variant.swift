@@ -10,6 +10,9 @@ struct VariantResult {
   /// The retrieved candidate roots, best first (empty if the variant does
   /// not report them).
   var candidates: [String] = []
+  /// The part of `candidates` that the model could choose from (empty if
+  /// it is all of them).
+  var pickList: [String] = []
   var candidateCount: Int = 0
   var usedFallback: Bool = false
   var stageSeconds: [String: Double] = [:]

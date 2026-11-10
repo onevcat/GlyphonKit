@@ -66,7 +66,7 @@ meanPickScore (acceptable):
 | macOS 26 reference (2025.1 data) | 0.929 (100%) | 0.929 (100%) | - | 0.844 (100%) | 0.844 (100%) |
 | macOS 27, macOS 26 prompts, run 1 | 0.735 (79.4%) | 0.800 (91.2%) | - | 0.456 (56.2%) | 0.569 (75.0%) |
 | macOS 27, macOS 26 prompts, run 2 | 0.709 (76.5%) | 0.774 (88.2%) | - | 0.456 (56.2%) | 0.569 (75.0%) |
-| macOS 27, tuned, run 1 and run 2 | 0.871 (94.1%) | 0.909 (100%) | 0.886 (100%) | 0.744 (93.8%) | 0.744 (93.8%) |
+| macOS 27, tuned, run 1 and run 2 | 0.871 (94.1%) | 0.909 (100%) | 0.879 (100%) | 0.744 (93.8%) | 0.744 (93.8%) |
 
 - "Labels before" and "labels now" separate the two effects. The label
   review added reasonable symbols that scored 0 (13 train cases, 3 test
@@ -80,12 +80,13 @@ meanPickScore (acceptable):
   matched (0.921 in the report itself).
 - The tuned pipeline takes about 2.2 s per query (the macOS 26 prompts:
   3.3 s), and two runs give the same picks.
-- Current baseline: train 0.886 / acceptable 100% · test 0.744 /
+- Current baseline: train 0.879 / acceptable 100% · test 0.744 /
   acceptable 93.8%. Raw reports: `results/prod-macos27-tuned-train.json`,
   `results/prod-macos27-tuned-test.json`.
-- Not recovered: test stays about 0.10 below macOS 26. The remaining
-  misses are picks that take a weaker candidate although a better one is
-  earlier in the list (`clock` for a kitchen timer).
+- Not recovered: test stays about 0.10 below macOS 26. The model could
+  reach 0.931 on test with the candidates that it gets; the remaining
+  misses are picks of a weaker candidate (`clock` for a kitchen timer
+  with `timer` in the list).
 
 Scores are weighted: 1.0 = ideal symbol, ~0.7 = good, ~0.4 = barely
 acceptable, 0 = miss. "acceptable" = score > 0.
@@ -112,10 +113,18 @@ shipping `SymbolRecommender` — run this after any production change),
 the pick). The harness variants `v0` and `v1` are the macOS 26 research
 history; they do not follow the macOS 27 tuning.
 
-`prod` reports the keywords and candidates of each case and a
-`candidateCeiling`: the best score that a pick from the candidates can
-get. A low ceiling is a keyword or retrieval problem; a high ceiling
-with a low score is a pick problem.
+`prod` reports the keywords and candidates of each case and two
+ceilings. `retrievalCeiling` is the best score among all retrieved
+candidates. `candidateCeiling` is the best score among the candidates
+that the model could choose from (on macOS 27 the first 6). A low
+`retrievalCeiling` is a keyword or vocabulary problem; a
+`candidateCeiling` below it is a ranking problem; a high
+`candidateCeiling` with a low score is a pick problem. The tuned
+baseline has 0.964 / 0.971 on train and 0.931 / 0.944 on test.
+
+`prod` and `prod-retrieval` read the pipeline's trace through
+`@testable import`, so the harness needs a debug build. All timings are
+debug-build timings.
 
 On macOS 26, treat differences < ~0.04 meanPickScore as noise and run
 twice before believing a regression. On macOS 27 two runs give the same
@@ -144,7 +153,10 @@ baseline through the shipping port) for provenance.
   `candidateCeiling` of the case in a report); a fine list means a
   pick-prompt problem, a bad list means keywords or retrieval weights.
 - **Tune stage 1 on its own** with `run --variant prod-retrieval`: read
-  the `candidateCeiling` and the score of the top candidate.
+  the ceilings and the score of the top candidate.
+- **New vocabulary** → `SymbolRootIndex.aliasAdditionsOS27`, not
+  `aliasMap`: the macOS 26 retrieval reads `aliasMap` and cannot be
+  measured again.
 - **A new system release** → first run `prod` twice with the previous
   generation's prompts. If the scores hold, map the new release to that
   generation in `ModelGeneration.current`. If not, add a generation and

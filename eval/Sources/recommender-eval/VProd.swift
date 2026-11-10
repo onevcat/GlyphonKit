@@ -16,6 +16,7 @@ struct VProd: Variant {
       reason: recommendation.reason,
       keywords: trace.keywords,
       candidates: trace.candidates,
+      pickList: trace.pickList,
       candidateCount: recommendation.consideredCount,
       usedFallback: !recommendation.usedAI
     )

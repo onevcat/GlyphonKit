@@ -11,8 +11,11 @@ struct CaseScore: Codable {
   let reason: String
   let keywords: [String]
   let candidates: [String]?
-  /// The best score a pick from `candidates` can get: the retrieval ceiling.
+  /// The best score that the model could get: the best candidate that it
+  /// could choose from.
   let candidateCeiling: Double?
+  /// The best score among all retrieved candidates.
+  let retrievalCeiling: Double?
   let candidateCount: Int
   let usedFallback: Bool
   let totalSeconds: Double
@@ -28,13 +31,18 @@ struct EvalReport: Codable {
   let fallbackRate: Double
   let meanAlternateHitRatio: Double
   let meanSeconds: Double
-  /// The mean retrieval ceiling over the cases that report candidates.
+  /// The means over the cases that report candidates.
   let meanCandidateCeiling: Double?
+  let meanRetrievalCeiling: Double?
   let cases: [CaseScore]
 }
 
 func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, database: SymbolDatabase) -> CaseScore {
   let pickScore = matchScore(name: result.pickName, expected: evalCase.expected, database: database)
+
+  func ceiling(of names: [String]) -> Double? {
+    names.map { matchScore(name: $0, expected: evalCase.expected, database: database) }.max()
+  }
 
   let pickRoot = SymbolDatabase.semanticRoot(of: result.pickName)
   var seenRoots: Set<String> = [pickRoot]
@@ -61,9 +69,8 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, dat
     reason: result.reason,
     keywords: result.keywords,
     candidates: result.candidates.isEmpty ? nil : result.candidates,
-    candidateCeiling: result.candidates.isEmpty
-      ? nil
-      : result.candidates.map { matchScore(name: $0, expected: evalCase.expected, database: database) }.max(),
+    candidateCeiling: ceiling(of: result.pickList.isEmpty ? result.candidates : result.pickList),
+    retrievalCeiling: ceiling(of: result.candidates),
     candidateCount: result.candidateCount,
     usedFallback: result.usedFallback,
     totalSeconds: seconds
@@ -96,6 +103,7 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
   let altMean = scores.map(\.alternateHitRatio).reduce(0, +) / max(count, 1)
   let secMean = scores.map(\.totalSeconds).reduce(0, +) / max(count, 1)
   let ceilings = scores.compactMap(\.candidateCeiling)
+  let retrievalCeilings = scores.compactMap(\.retrievalCeiling)
   return EvalReport(
     variant: variant,
     dataset: dataset,
@@ -107,6 +115,9 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
     meanAlternateHitRatio: altMean,
     meanSeconds: secMean,
     meanCandidateCeiling: ceilings.isEmpty ? nil : ceilings.reduce(0, +) / Double(ceilings.count),
+    meanRetrievalCeiling: retrievalCeilings.isEmpty
+      ? nil
+      : retrievalCeilings.reduce(0, +) / Double(retrievalCeilings.count),
     cases: scores
   )
 }
@@ -137,5 +148,8 @@ func printReport(_ report: EvalReport) {
   print(String(format: "meanSeconds       %.2f", report.meanSeconds))
   if let ceiling = report.meanCandidateCeiling {
     print(String(format: "candidateCeiling  %.3f", ceiling))
+  }
+  if let ceiling = report.meanRetrievalCeiling {
+    print(String(format: "retrievalCeiling  %.3f", ceiling))
   }
 }
