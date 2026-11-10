@@ -28,8 +28,8 @@ struct EvalReport: Codable {
   let cases: [CaseScore]
 }
 
-func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> CaseScore {
-  let pickScore = matchScore(name: result.pickName, expected: evalCase.expected)
+func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, database: SymbolDatabase) -> CaseScore {
+  let pickScore = matchScore(name: result.pickName, expected: evalCase.expected, database: database)
 
   let pickRoot = SymbolDatabase.semanticRoot(of: result.pickName)
   var seenRoots: Set<String> = [pickRoot]
@@ -40,7 +40,7 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> 
     guard !seenRoots.contains(root) else { continue }
     seenRoots.insert(root)
     counted += 1
-    if matchScore(name: alternate, expected: evalCase.expected) > 0 {
+    if matchScore(name: alternate, expected: evalCase.expected, database: database) > 0 {
       hits += 1
     }
   }
@@ -61,11 +61,17 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> 
   )
 }
 
-func matchScore(name: String, expected: [ExpectedSymbol]) -> Double {
-  let root = SymbolDatabase.semanticRoot(of: name)
+/// A label and a pick match by semantic root. A renamed symbol matches
+/// under its old and its new name, so the labels do not depend on the
+/// release that the symbol data comes from.
+func matchScore(name: String, expected: [ExpectedSymbol], database: SymbolDatabase) -> Double {
+  func canonical(_ name: String) -> String {
+    database.currentName(for: SymbolDatabase.semanticRoot(of: name))
+  }
+  let pick = canonical(name)
   var best = 0.0
   for candidate in expected {
-    if candidate.root == name || candidate.root == root {
+    if candidate.root == name || canonical(candidate.root) == pick {
       best = max(best, candidate.weight)
     }
   }

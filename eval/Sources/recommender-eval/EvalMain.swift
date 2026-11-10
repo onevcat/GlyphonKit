@@ -101,7 +101,7 @@ struct EvalMain {
       do {
         let result = try await variant.recommend(query: evalCase.query, database: database, engine: engine)
         let seconds = Date().timeIntervalSince(start)
-        let score = scoreCase(evalCase, result: result, seconds: seconds)
+        let score = scoreCase(evalCase, result: result, seconds: seconds, database: database)
         scores.append(score)
         let mark = score.pickScore >= 0.99 ? "✓" : score.pickScore > 0 ? "~" : "✗"
         print("[\(index + 1)/\(cases.count)] \(mark) \(evalCase.id): \(result.pickName) (\(String(format: "%.2f", score.pickScore)))")
@@ -110,7 +110,8 @@ struct EvalMain {
         scores.append(scoreCase(
           evalCase,
           result: VariantResult(pickName: "<error>", alternates: [], reason: "\(error)"),
-          seconds: Date().timeIntervalSince(start)
+          seconds: Date().timeIntervalSince(start),
+          database: database
         ))
       }
     }

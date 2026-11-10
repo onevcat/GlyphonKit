@@ -43,6 +43,17 @@ the current baseline, not as a regression of a change:
 
 Recovering the macOS 26 quality needs its own tuning round on `train.json`.
 
+### SF Symbols 2026.2 data (2026-11-11)
+
+`symbols.json` is now version 2026.2: 9649 symbols (3362 with search
+terms). The database leaves out the symbols that the running system does
+not have, so the candidate set depends on the system: macOS 27.0.1 has
+9524 of them. With the same recommender on macOS 27.0.1, two `prod` runs
+each gave train 0.735 / 0.709 (acceptable 79.4% / 76.5%) and test
+0.456 / 0.456 (acceptable 56.2%). Two runs with the 2025.1 data on the
+same day gave train 0.724 / 0.685 and test 0.456 / 0.456: the data
+update does not move the scores beyond the run noise.
+
 Scores are weighted: 1.0 = ideal symbol, ~0.7 = good, ~0.4 = barely
 acceptable, 0 = miss. "acceptable" = score > 0.
 
