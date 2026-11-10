@@ -307,7 +307,7 @@ public struct SymbolRecommender: Sendable {
   }
 
   /// The retrieval settings that each generation's prompts were tuned with.
-  private var searchOptions: SymbolRootIndex.SearchOptions {
+  static func searchOptions(for generation: ModelGeneration) -> SymbolRootIndex.SearchOptions {
     switch generation {
     case .os26:
       SymbolRootIndex.SearchOptions()
@@ -316,6 +316,10 @@ public struct SymbolRecommender: Sendable {
         maxPerFamily: 3, joinsCompounds: true, ignoresStopWords: true,
         additionalAliases: SymbolRootIndex.aliasAdditionsOS27)
     }
+  }
+
+  private var searchOptions: SymbolRootIndex.SearchOptions {
+    Self.searchOptions(for: generation)
   }
 
   // MARK: - Stage 2: pick
@@ -333,18 +337,18 @@ public struct SymbolRecommender: Sendable {
     }
   }
 
-  /// The candidates that the model chooses from.
-  private func pickList(from candidates: [SymbolRootIndex.Root]) -> [SymbolRootIndex.Root] {
+  /// How many of the best candidates the model chooses from; `nil` is all
+  /// of them.
+  static func pickListLength(for generation: ModelGeneration) -> Int? {
     switch generation {
-    case .os26: candidates
-    case .os27: Array(candidates.prefix(Self.pickListLengthOS27))
+    case .os26: nil
+    case .os27: 6
     }
   }
 
-  /// The macOS 27 model often takes a candidate from the end of a long
-  /// list, where the matches are weak. It gets a short list and one
-  /// decision: the alternates come from the retrieval order.
-  private static let pickListLengthOS27 = 6
+  private func pickList(from candidates: [SymbolRootIndex.Root]) -> [SymbolRootIndex.Root] {
+    Self.pickListLength(for: generation).map { Array(candidates.prefix($0)) } ?? candidates
+  }
 
   /// A string in a schema has no length limit, and the macOS 27 model
   /// sometimes does not stop: a pick that opened a quotation in its reason
@@ -353,6 +357,10 @@ public struct SymbolRecommender: Sendable {
   /// short, so this limit only ends a response that went wrong.
   private static let maximumResponseTokensOS27 = 200
 
+  /// The macOS 27 model often takes a candidate from the end of a long
+  /// list, where the matches are weak. It gets a short list
+  /// (`pickListLength`) and one decision: the alternates come from the
+  /// retrieval order.
   private func pickSymbolOS27(query: String, candidates: [SymbolRootIndex.Root]) async throws -> IconPick {
     let nameSchema = DynamicGenerationSchema(name: "SymbolName", anyOf: candidates.map(\.name))
     let schema = try GenerationSchema(

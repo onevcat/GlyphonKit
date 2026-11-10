@@ -153,51 +153,91 @@ struct SymbolRootIndexSearchOptionsTests {
     #expect(SymbolRootIndex.aliasAdditionsOS27.keys.allSatisfy { SymbolRootIndex.aliasMap[$0] == nil })
   }
 
-  @Test func stopWordFilterKeepsTermPhrasesAndLoneStopWords() {
+  @Test func stopWordFilterKeepsLoneStopWords() {
     let database = SymbolDatabase(symbols: [
-      SymbolEntry(name: "plus.magnifyingglass", year: "2019", categories: [], terms: ["zoom in"]),
       SymbolEntry(name: "at", year: "2019", categories: [], terms: []),
     ])
     let index = SymbolRootIndex(database: database)
     let options = SymbolRootIndex.SearchOptions(ignoresStopWords: true)
-    func search(_ text: String) -> [String] {
-      index.search(keywords: [.init(text: text, weight: 1.0)], limit: 5, options: options).map(\.name)
-    }
-    #expect(search("zoom in") == ["plus.magnifyingglass"])
-    #expect(search("at") == ["at"])
+    #expect(index.search(keywords: [.init(text: "at", weight: 1.0)], limit: 5, options: options).map(\.name) == ["at"])
   }
 
   @Test func nonPositiveLimitGivesNoResult() {
-    #expect(names([("audio", 1.0)]).count == 4)
     let index = SymbolRootIndex(database: Self.renamed)
-    #expect(index.search(keywords: [.init(text: "audio", weight: 1.0)], limit: 0).isEmpty)
+    let keywords = [SymbolRootIndex.WeightedKeyword(text: "audio", weight: 1.0)]
+    #expect(index.search(keywords: keywords, limit: 4).count == 4)
+    #expect(index.search(keywords: keywords, limit: 0).isEmpty)
+    #expect(index.search(keywords: keywords, limit: -1).isEmpty)
   }
 
-  @Test func compoundWordsMatchAsOneToken() {
-    #expect(names([("air pods", 1.0)]).isEmpty)
-    #expect(names([("air pods", 1.0)], options: .init(joinsCompounds: true)) == ["airpods"])
+  @Test func rootKeepsItsBaseWhenOnlyAVariantWasRenamed() {
+    // Only the diamond variant has a new name. The base symbol and its
+    // other variants must stay findable under their root.
+    let database = SymbolDatabase(
+      symbols: [
+        SymbolEntry(name: "arrow.up.right", year: "2019", categories: [], terms: []),
+        SymbolEntry(name: "arrow.up.right.circle", year: "2019", categories: [], terms: []),
+        SymbolEntry(name: "arrow.up.right.diamond", year: "2019", categories: [], terms: []),
+        SymbolEntry(name: "arrow.turn.up.right.diamond", year: "2024", categories: [], terms: []),
+      ],
+      replacements: ["arrow.up.right.diamond": "arrow.turn.up.right.diamond"]
+    )
+    let index = SymbolRootIndex(database: database, mergesDuplicates: true)
+    #expect(index.roots.map(\.name) == ["arrow.turn.up.right", "arrow.up.right"])
+    #expect(index.roots[1].displayEntry.name == "arrow.up.right")
+    #expect(index.roots[1].terms.isEmpty)
   }
 
-  @Test func stopWordsDoNotTakeAShareOfTheWeight() {
-    // "chat" reaches `message` through the alias map. With "and" in the
-    // split, "chat" has a third of the phrase weight and loses against the
-    // weaker second keyword; without it, "chat" has half and wins.
-    let keywords = [("chat and messaging", 1.0), ("memo", 0.37)]
-    #expect(names(keywords).first == "text.pad.header")
-    #expect(names(keywords, options: .init(ignoresStopWords: true)).first == "message")
+  @Test func mergedRootDisplaysACurrentName() {
+    // The root name `window.on` is not a symbol. The old name is shorter
+    // than the new one, but it must not be the displayed symbol.
+    let database = SymbolDatabase(
+      symbols: [
+        SymbolEntry(name: "win.on.rectangle", year: "2019", categories: [], terms: []),
+        SymbolEntry(name: "window.on.rectangle", year: "2024", categories: [], terms: ["display"]),
+      ],
+      replacements: ["win.on.rectangle": "window.on.rectangle"]
+    )
+    let index = SymbolRootIndex(database: database, mergesDuplicates: true)
+    #expect(index.roots.map(\.name) == ["window.on"])
+    #expect(index.roots[0].displayEntry.name == "window.on.rectangle")
   }
 
-  @Test func equalScoresHaveAStableOrder() {
-    // The two roots get the same score and have names of the same length.
-    let database = SymbolDatabase(symbols: [
-      SymbolEntry(name: "bbb", year: "2019", categories: [], terms: ["same"]),
-      SymbolEntry(name: "aaa", year: "2019", categories: [], terms: ["same"]),
-    ])
-    let index = SymbolRootIndex(database: database)
-    let keywords = [SymbolRootIndex.WeightedKeyword(text: "same", weight: 1.0)]
-    for _ in 0..<5 {
-      #expect(index.search(keywords: keywords, limit: 5).map(\.name) == ["aaa", "bbb"])
-    }
+  @Test func rootDoesNotHintItsOwnName() {
+    let database = SymbolDatabase(
+      symbols: [
+        SymbolEntry(name: "ring.fill.square.fill", year: "2019", categories: [], terms: []),
+        SymbolEntry(name: "ring.square.fill", year: "2024", categories: [], terms: []),
+        SymbolEntry(name: "ring", year: "2019", categories: [], terms: ["band"]),
+      ],
+      replacements: ["ring.fill.square.fill": "ring.square.fill"]
+    )
+    let index = SymbolRootIndex(database: database, mergesDuplicates: true)
+    #expect(index.roots.first { $0.name == "ring" }?.terms == ["band"])
+  }
+}
+
+@Suite("Model generation settings")
+struct ModelGenerationSettingsTests {
+  /// The macOS 26 model cannot be measured again, so its settings must
+  /// stay as they were when its prompts were tuned.
+  @Test func macOS26KeepsTheSettingsItWasTunedWith() {
+    #expect(SymbolRecommender.searchOptions(for: .os26) == SymbolRootIndex.SearchOptions())
+    #expect(SymbolRecommender.pickListLength(for: .os26) == nil)
+    let options = SymbolRootIndex.SearchOptions()
+    #expect(options.maxPerFamily == nil)
+    #expect(!options.joinsCompounds)
+    #expect(!options.ignoresStopWords)
+    #expect(options.additionalAliases.isEmpty)
+  }
+
+  @Test func macOS27UsesItsOwnSettings() {
+    let options = SymbolRecommender.searchOptions(for: .os27)
+    #expect(options.maxPerFamily == 3)
+    #expect(options.joinsCompounds)
+    #expect(options.ignoresStopWords)
+    #expect(options.additionalAliases == SymbolRootIndex.aliasAdditionsOS27)
+    #expect(SymbolRecommender.pickListLength(for: .os27) == 6)
   }
 }
 

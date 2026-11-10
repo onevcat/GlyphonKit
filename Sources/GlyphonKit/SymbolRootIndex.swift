@@ -37,32 +37,51 @@ struct SymbolRootIndex: Sendable {
   ///   `SymbolEntry.isLocaleVariant` does not know (`checklist.rtl`,
   ///   `character.book.closed.ta`) get no root.
   init(database: SymbolDatabase, mergesDuplicates: Bool = false) {
-    // Old root -> new root. The rename table lists symbols; a variant that
-    // it does not list still belongs to the renamed root.
+    func isRenamed(_ symbol: SymbolEntry) -> Bool {
+      database.currentName(for: symbol.name) != symbol.name
+    }
+    /// The root of the new name; `nil` if the symbol has no new name, or
+    /// the new name is a locale variant, which has no root.
+    func renamedRoot(of symbol: SymbolEntry) -> String? {
+      let current = database.currentName(for: symbol.name)
+      guard current != symbol.name, database.symbol(named: current)?.isLocaleVariant == false else { return nil }
+      return SymbolDatabase.semanticRoot(of: current)
+    }
+
+    // Old root -> new root, for the roots whose base symbol was renamed.
+    // The rename table can miss a variant of such a root
+    // (`building.columns.circle.fill`); the variant follows its base. A
+    // root whose base keeps its name stays, even if one of its variants
+    // moved to another root (`arrow.up.right.diamond`).
     var renamedRoots: [String: String] = [:]
     if mergesDuplicates {
       for symbol in database.symbols where !symbol.isLocaleVariant {
-        let current = database.currentName(for: symbol.name)
-        guard current != symbol.name, database.symbol(named: current)?.isLocaleVariant == false else { continue }
-        renamedRoots[SymbolDatabase.semanticRoot(of: symbol.name)] = SymbolDatabase.semanticRoot(of: current)
+        guard symbol.name == SymbolDatabase.semanticRoot(of: symbol.name) else { continue }
+        renamedRoots[symbol.name] = renamedRoot(of: symbol)
       }
     }
 
     var byRoot: [String: [SymbolEntry]] = [:]
     for symbol in database.symbols where !symbol.isLocaleVariant {
-      let root = SymbolDatabase.semanticRoot(of: symbol.name)
-      if mergesDuplicates, let suffix = root.split(separator: ".").last,
-         root.contains("."), Self.scriptVariantSuffixes.contains(suffix) {
-        continue
+      var root = SymbolDatabase.semanticRoot(of: symbol.name)
+      if mergesDuplicates {
+        if let suffix = root.split(separator: ".").last, root.contains("."),
+           Self.scriptVariantSuffixes.contains(suffix) {
+          continue
+        }
+        root = renamedRoots[root] ?? renamedRoot(of: symbol) ?? root
       }
-      byRoot[renamedRoots[root] ?? root, default: []].append(symbol)
+      byRoot[root, default: []].append(symbol)
     }
 
     var roots: [Root] = []
     for (rootName, entries) in byRoot {
       // Prefer the entry whose name is exactly the root; else the shortest.
+      // An old name of a renamed symbol is the last choice: it has no
+      // metadata of its own.
+      let named = mergesDuplicates ? entries.filter { !isRenamed($0) } : entries
       let display = entries.first { $0.name == rootName }
-        ?? entries.min { $0.name.count < $1.name.count }!
+        ?? (named.isEmpty ? entries : named).min { $0.name.count < $1.name.count }!
       var terms: [String] = []
       var seenTerms = Set<String>()
       var tokens = Set<String>()
@@ -71,9 +90,9 @@ struct SymbolRootIndex: Sendable {
       }
       // An old name is a hint for the model too: it often says more than
       // the new one.
-      for entry in entries {
+      for entry in entries where mergesDuplicates && isRenamed(entry) {
         let oldRoot = SymbolDatabase.semanticRoot(of: entry.name)
-        guard renamedRoots[oldRoot] == rootName, seenTerms.insert(oldRoot).inserted else { continue }
+        guard oldRoot != rootName, seenTerms.insert(oldRoot).inserted else { continue }
         terms.append(oldRoot)
         for segment in oldRoot.split(separator: ".") {
           tokens.insert(String(segment))
@@ -426,7 +445,7 @@ struct SymbolRootIndex: Sendable {
 
   /// How `search` reads the keywords and builds the candidate list. The
   /// default is the behavior that the macOS 26 prompts were tuned with.
-  struct SearchOptions: Sendable {
+  struct SearchOptions: Sendable, Equatable {
     /// The most roots to return with the same first name segment
     /// (`headphones`, `headphones.dots`, ...). Without a limit, one large
     /// family can fill the list and push out other concepts.
@@ -437,8 +456,7 @@ struct SymbolRootIndex: Sendable {
     var joinsCompounds = false
     /// Ignores words that only connect other words ("chat and messaging"),
     /// so that they do not take a share of the keyword's weight. A keyword
-    /// that is a term of a symbol ("zoom in") or only a stop word ("at")
-    /// keeps its words.
+    /// of only stop words ("at") keeps them.
     var ignoresStopWords = false
     /// Alias entries on top of `aliasMap`.
     var additionalAliases: [String: [String]] = [:]
@@ -470,15 +488,14 @@ struct SymbolRootIndex: Sendable {
         .map(String.init)
         .filter { !Self.noiseWords.contains($0) }
 
-      var isTermPhrase = false
       if words.count > 1, let hits = phraseIndex[words.joined(separator: " ")] {
-        isTermPhrase = true
         for index in hits {
           scores[index, default: 0] += 2.0 * keyword.weight
         }
       }
 
-      if options.ignoresStopWords, !isTermPhrase {
+      // After the phrase lookup: a term can have a stop word ("zoom in").
+      if options.ignoresStopWords {
         let content = words.filter { !Self.stopWords.contains($0) }
         if !content.isEmpty {
           words = content
