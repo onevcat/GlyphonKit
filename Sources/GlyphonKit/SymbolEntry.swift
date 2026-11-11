@@ -46,7 +46,8 @@ public struct SymbolRecommendation: Sendable {
   public let reason: String
   /// Other relevant symbols, best first.
   public let alternates: [SymbolEntry]
-  /// How many candidate symbols were weighed for this pick.
+  /// How many candidate symbols the pipeline retrieved and ranked for this
+  /// pick. The model can choose from only the best of them.
   public let consideredCount: Int
   /// Whether this was a random "feeling lucky" draw (empty input).
   public let isLucky: Bool

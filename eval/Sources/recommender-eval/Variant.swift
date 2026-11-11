@@ -7,6 +7,12 @@ struct VariantResult {
   var alternates: [String]
   var reason: String
   var keywords: [String] = []
+  /// The retrieved candidate roots, best first (empty if the variant does
+  /// not report them).
+  var candidates: [String] = []
+  /// The part of `candidates` that the model could choose from (empty if
+  /// it is all of them).
+  var pickList: [String] = []
   var candidateCount: Int = 0
   var usedFallback: Bool = false
   var stageSeconds: [String: Double] = [:]
@@ -26,6 +32,7 @@ func makeVariant(named name: String) -> Variant? {
   case "v1-c40": V1Guided(candidateLimit: 40)
   case "v1-c15": V1Guided(candidateLimit: 15)
   case "prod": VProd()
+  case "prod-retrieval": VProdRetrieval()
   default: nil
   }
 }
