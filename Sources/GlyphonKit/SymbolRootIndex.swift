@@ -18,6 +18,8 @@ struct SymbolRootIndex: Sendable {
     let terms: [String]
     let tokens: Set<String>
     let phrases: Set<String>
+    /// Everyday words for the root (`SymbolConcepts`); empty without them.
+    var concepts: [String] = []
   }
 
   struct WeightedKeyword: Sendable {
@@ -29,6 +31,10 @@ struct SymbolRootIndex: Sendable {
   private let tokenIndex: [String: [Int]]
   private let phraseIndex: [String: [Int]]
   private let tokenDamping: [String: Double]
+  private let rootIndexByName: [String: Int]
+  /// Concept word -> roots (`SymbolConcepts`), with its own damping.
+  private let conceptIndex: [String: [Int]]
+  private let conceptDamping: [String: Double]
 
   /// - Parameter mergesDuplicates: Builds one root per concept. The old
   ///   name of a renamed symbol goes into the root of its new name, so the
@@ -36,7 +42,10 @@ struct SymbolRootIndex: Sendable {
   ///   (`text.pad.header`). The script and direction variants that
   ///   `SymbolEntry.isLocaleVariant` does not know (`checklist.rtl`,
   ///   `character.book.closed.ta`) get no root.
-  init(database: SymbolDatabase, mergesDuplicates: Bool = false) {
+  ///   - concepts: Root name -> everyday words for the symbol
+  ///   (`SymbolConcepts`). They are matched like name words, with the
+  ///   weight `SearchOptions.conceptWeight`.
+  init(database: SymbolDatabase, mergesDuplicates: Bool = false, concepts: [String: [String]] = [:]) {
     func isRenamed(_ symbol: SymbolEntry) -> Bool {
       database.currentName(for: symbol.name) != symbol.name
     }
@@ -76,6 +85,12 @@ struct SymbolRootIndex: Sendable {
 
     var roots: [Root] = []
     for (rootName, entries) in byRoot {
+      // `flashlight.slash` gives a root `flashlight`, but there is no
+      // symbol `flashlight`: the root would show only the crossed-out form.
+      if mergesDuplicates, !rootName.split(separator: ".").contains("slash"),
+         entries.allSatisfy({ $0.name.split(separator: ".").contains("slash") }) {
+        continue
+      }
       // Prefer the entry whose name is exactly the root; else the shortest.
       // An old name of a renamed symbol is the last choice: it has no
       // metadata of its own.
@@ -122,7 +137,6 @@ struct SymbolRootIndex: Sendable {
       roots.append(Root(name: rootName, displayEntry: display, terms: terms, tokens: tokens, phrases: phrases))
     }
     roots.sort { $0.name < $1.name }
-    self.roots = roots
 
     var tokenIndex: [String: [Int]] = [:]
     var phraseIndex: [String: [Int]] = [:]
@@ -143,6 +157,30 @@ struct SymbolRootIndex: Sendable {
       damping[token] = 1.0 / (1.0 + log(Double(hits.count)) / 2.0)
     }
     self.tokenDamping = damping
+    let rootIndexByName = Dictionary(uniqueKeysWithValues: roots.enumerated().map { ($1.name, $0) })
+    self.rootIndexByName = rootIndexByName
+    for (name, words) in concepts {
+      if let index = rootIndexByName[name] {
+        roots[index].concepts = words
+      }
+    }
+    self.roots = roots
+    var conceptIndex: [String: [Int]] = [:]
+    for (name, words) in concepts {
+      guard let index = rootIndexByName[name] else { continue }
+      for word in Set(words) where !roots[index].tokens.contains(word) && !Self.noiseWords.contains(word) {
+        conceptIndex[word, default: []].append(index)
+      }
+    }
+    self.conceptIndex = conceptIndex
+    // A word says as little about a root when many roots have it as a
+    // concept word as when many have it in their name, so both count.
+    var conceptDamping: [String: Double] = [:]
+    for (word, hits) in conceptIndex {
+      let count = hits.count + (tokenIndex[word]?.count ?? 0)
+      conceptDamping[word] = 1.0 / (1.0 + log(Double(count)) / 2.0)
+    }
+    self.conceptDamping = conceptDamping
   }
 
   /// Words that carry no icon signal — every software description contains
@@ -458,6 +496,20 @@ struct SymbolRootIndex: Sendable {
     /// so that they do not take a share of the keyword's weight. A keyword
     /// of only stop words ("at") keeps them.
     var ignoresStopWords = false
+    /// How a keyword's weight is shared by its words: 1 gives each of `n`
+    /// words `1/n` of it, 0.5 gives `1/sqrt(n)`.
+    var wordShareExponent = 1.0
+    /// Words to ignore on top of `noiseWords`.
+    var additionalNoiseWords: Set<String> = []
+    /// Reads a hyphenated word as one word when the index or the alias map
+    /// knows it ("to-do" is `todo`, not "to" and "do").
+    var joinsHyphenatedWords = false
+    /// A bonus for a root whose whole name is the keyword ("timer",
+    /// "frying pan" for `frying.pan`), as a share of the keyword's weight.
+    var exactNameBonus = 0.0
+    /// The weight of a match with a concept word of a root, as a share of
+    /// a match with a word of its name. 0 turns the concept words off.
+    var conceptWeight = 0.0
     /// Alias entries on top of `aliasMap`.
     var additionalAliases: [String: [String]] = [:]
   }
@@ -479,14 +531,33 @@ struct SymbolRootIndex: Sendable {
 
   /// Rank roots for a list of weighted keywords.
   func search(keywords: [WeightedKeyword], limit: Int, options: SearchOptions = SearchOptions()) -> [Root] {
+    scoredSearch(keywords: keywords, limit: limit, options: options).map(\.root)
+  }
+
+  /// `search` with the score of each root. Only the ratio between two
+  /// scores of one search has a meaning.
+  func scoredSearch(
+    keywords: [WeightedKeyword],
+    limit: Int,
+    options: SearchOptions = SearchOptions()
+  ) -> [(root: Root, score: Double)] {
     var scores: [Int: Double] = [:]
 
     for keyword in keywords {
-      let text = keyword.text.lowercased().trimmingCharacters(in: .whitespaces)
+      var text = keyword.text.lowercased().trimmingCharacters(in: .whitespaces)
       guard !text.isEmpty else { continue }
-      var words = text.split { !$0.isLetter && !$0.isNumber }
-        .map(String.init)
-        .filter { !Self.noiseWords.contains($0) }
+      if options.joinsHyphenatedWords, text.contains("-") {
+        text = text.split(separator: " ").map { word -> String in
+          let joined = String(word).replacing("-", with: "")
+          let known = tokenIndex[joined] != nil || Self.aliasMap[joined] != nil
+            || options.additionalAliases[joined] != nil
+            || (options.conceptWeight > 0 && conceptIndex[joined] != nil)
+          return known ? joined : String(word)
+        }.joined(separator: " ")
+      }
+      let allWords = text.split { !$0.isLetter && !$0.isNumber }.map(String.init)
+      var words = allWords
+        .filter { !Self.noiseWords.contains($0) && !options.additionalNoiseWords.contains($0) }
 
       if words.count > 1, let hits = phraseIndex[words.joined(separator: " ")] {
         for index in hits {
@@ -502,14 +573,28 @@ struct SymbolRootIndex: Sendable {
         }
       }
 
-      if options.joinsCompounds, words.count > 1, let hits = tokenIndex[words.joined()] {
-        for index in hits {
-          scores[index, default: 0] += keyword.weight
+      // The compound can have a noise word ("smart home" is `smarthome`).
+      if options.joinsCompounds, allWords.count > 1 {
+        let compound = allWords.joined()
+        if let hits = tokenIndex[compound] {
+          for index in hits {
+            scores[index, default: 0] += keyword.weight
+          }
+        }
+        if options.conceptWeight > 0, let hits = conceptIndex[compound] {
+          let perConcept = options.conceptWeight * keyword.weight * (conceptDamping[compound] ?? 1.0)
+          for index in hits {
+            scores[index, default: 0] += perConcept
+          }
         }
       }
 
+      if options.exactNameBonus > 0, !words.isEmpty, let index = rootIndexByName[words.joined(separator: ".")] {
+        scores[index, default: 0] += options.exactNameBonus * keyword.weight
+      }
+
       for word in words {
-        let perWordWeight = keyword.weight / Double(words.count)
+        let perWordWeight = keyword.weight / pow(Double(words.count), options.wordShareExponent)
 
         let aliases = Self.aliasMap[word] ?? options.additionalAliases[word]
         if let aliases {
@@ -523,16 +608,23 @@ struct SymbolRootIndex: Sendable {
           }
         }
 
+        if options.conceptWeight > 0, let hits = conceptIndex[word] {
+          let perConcept = options.conceptWeight * perWordWeight * (conceptDamping[word] ?? 1.0)
+          for index in hits {
+            scores[index, default: 0] += perConcept
+          }
+        }
+
         if let hits = tokenIndex[word] {
           let perToken = perWordWeight * (tokenDamping[word] ?? 1.0)
           for index in hits {
             scores[index, default: 0] += perToken
           }
-        } else if word.count >= 4, aliases == nil {
+        } else if word.count >= 4, aliases == nil, !(options.conceptWeight > 0 && conceptIndex[word] != nil) {
           // Prefix fallback for morphology: "running" -> "run", "cycling" -> "cycle".
           for (token, hits) in tokenIndex
           where token.hasPrefix(word) || (word.hasPrefix(token) && token.count >= 4 && word.count <= token.count + 4) {
-            let perToken = 0.35 * keyword.weight / Double(words.count)
+            let perToken = 0.35 * keyword.weight / pow(Double(words.count), options.wordShareExponent)
             for index in hits {
               scores[index, default: 0] += perToken
             }
@@ -558,7 +650,7 @@ struct SymbolRootIndex: Sendable {
       return lhsName < rhsName
     }
     guard limit > 0 else { return [] }
-    var result: [Root] = []
+    var result: [(root: Root, score: Double)] = []
     var familyCounts: [Substring: Int] = [:]
     for entry in sorted {
       let root = roots[entry.index]
@@ -567,7 +659,7 @@ struct SymbolRootIndex: Sendable {
         guard familyCounts[family, default: 0] < maxPerFamily else { continue }
         familyCounts[family, default: 0] += 1
       }
-      result.append(root)
+      result.append((root, entry.score))
       if result.count == limit { break }
     }
     return result

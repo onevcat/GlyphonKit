@@ -65,7 +65,9 @@ model reads the same prompt differently. Each model generation
 (`ModelGeneration`: macOS/iOS 26, macOS/iOS 27) has its own prompts and
 retrieval settings, tuned on that system with the eval harness. On
 macOS/iOS 27 the first stage asks for icon suggestions instead of
-keywords, and the model chooses from the 6 best candidates.
+keywords. Retrieval also matches the concept words of each symbol, and
+the model chooses only between the candidates whose retrieval scores are
+close; a clear first candidate is the pick.
 
 Every failure mode degrades gracefully (schema refusal → plain-text
 retry → retrieval-only → `sparkles`); the pipeline never throws to the
@@ -104,6 +106,22 @@ without search terms or categories. `symbols.json` has the rename table.
 On a system that does not have the new name yet, the old name keeps the
 metadata; `SymbolDatabase.currentName(for:)` gives the name that the
 running system uses.
+
+### Concept words
+
+`Sources/GlyphonKit/Resources/concepts.json` has everyday words for
+1722 symbol roots: what a person says when the symbol is the right icon
+(`shippingbox`: package, parcel, delivery, shipping, order, courier).
+The data from Apple has search terms for about a third of the symbols
+and few synonyms, so a keyword like "package" finds no symbol by name.
+The macOS/iOS 27 retrieval matches these words with half the weight of a
+name word; the macOS/iOS 26 retrieval does not use them.
+
+The words were written once, offline, by a large language model from the
+root names and the terms from Apple, without the eval datasets. After a
+new SF Symbols release, add words for the new roots in the same way: one
+to eight lowercase words for each root with an everyday meaning, none
+that is already a segment of the name.
 
 SF Symbols themselves are © Apple Inc. This package redistributes no
 glyph artwork — only name and metadata strings, for interoperability

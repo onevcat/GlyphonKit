@@ -88,6 +88,67 @@ meanPickScore (acceptable):
   misses are picks of a weaker candidate (`clock` for a kitchen timer
   with `timer` in the list).
 
+### macOS 27 concept words (2026-11-11)
+
+A second round on macOS 27.0.1. The first round's score on `train.json`
+(0.879) did not show the real quality: on two new sets of requests the
+same pipeline has about 0.69. This round therefore has two more
+datasets (see "Datasets") and reads four numbers.
+
+`prod`, two runs each with the same picks, meanPickScore (acceptable):
+
+| pipeline | train (42) | dev (36) | dev2 (32) | test (16) |
+|---|---|---|---|---|
+| first round (tuned prompts) | 0.879 (100%) | 0.692 (80.6%) | 0.697 (81.2%) | 0.744 (93.8%) |
+| concept words, model decides near ties | 0.912 (100%) | 0.772 (83.3%) | 0.703 (84.4%) | 0.744 (93.8%) |
+
+On the two held-out sets the final pick does not gain (dev2 +0.006,
+test 0; one case is 0.03 and 0.06 there). The retrieval does: score of
+the first candidate / best score in the first 6 candidates:
+
+| pipeline | train | dev | dev2 | test |
+|---|---|---|---|---|
+| first round | 0.833 / 0.964 | 0.586 / 0.842 | 0.519 / 0.838 | 0.656 / 0.931 |
+| concept words | 0.867 / 0.974 | 0.747 / 0.928 | 0.662 / 0.903 | 0.744 / 0.931 |
+
+What changed:
+
+- **Concept words** (`Resources/concepts.json`): everyday words for
+  1722 symbol roots, matched with half the weight of a name word. They
+  close the vocabulary gap on the symbol side, for all requests, where
+  an alias entry closes it for one word.
+- **The model decides only near ties.** The pick list has the candidates
+  with at least 70% of the best retrieval score (at most 6). A clear
+  first candidate is the only choice, and the model writes the reason.
+- **Retrieval details**: a keyword's weight is shared by its words with
+  the square root of their number; a root whose whole name is the
+  keyword gets a bonus; "to-do" is read as `todo`; "icon" and "symbol"
+  are ignored; a root with only crossed-out symbols (`flashlight.slash`
+  without `flashlight`) is left out; the pick hints show concept words.
+
+What did not help (measured on train and dev, not kept):
+
+- **A larger alias table.** 190 hand-written entries (with the
+  retrieval details below, without concept words) raised dev from 0.692
+  to 0.842 and lowered dev2 from 0.697 to 0.662: they were written
+  after the dev failures and fitted them. This is the reason for dev2.
+- **Rating each candidate** from 0 to 10 instead of one pick: dev 0.525.
+- **Asking twice with the list reversed**: the model agrees with itself
+  in 30% of the cases; the pick mostly follows the list order.
+- **Word embedding neighbors** (`NLEmbedding`) for unknown words:
+  within 0.015. **Sentence embeddings** of the symbols: unrelated
+  results, and 6.8 s to embed the roots.
+- **A literal English translation as stage 1**: first candidate on train
+  0.824 instead of 0.900.
+- **Four other wordings of the pick rules**: none was better than the
+  current one (dev 0.756 to 0.842 against 0.842).
+
+What is left: the best of the first 3 candidates is 0.844 on dev2 and
+0.931 on test, so retrieval has the answer near the top; neither the
+model nor the retrieval score reliably tells the first three apart.
+
+Raw reports: `results/prod-macos27-concepts-{train,dev,dev2,test}.json`.
+
 Scores are weighted: 1.0 = ideal symbol, ~0.7 = good, ~0.4 = barely
 acceptable, 0 = miss. "acceptable" = score > 0.
 
@@ -104,6 +165,7 @@ swift build
 .build/debug/recommender-eval run --variant prod --dataset datasets/test.json
 .build/debug/recommender-eval query --variant prod --text "宠物狗的日常照顾"
 .build/debug/recommender-eval query --variant prod --text ""   # lucky pick
+.build/debug/recommender-eval replay --report results/xxx.json --dataset datasets/dev.json
 ```
 
 Variants: `v0` (the pre-rewrite algorithm), `v0-nofm` (retrieval only),
@@ -135,8 +197,16 @@ picks, so a difference is real; still run twice after a system update.
 - `datasets/train.json` — 42 weighted cases (en/zh/ja/es/fr/de/ko,
   objects, project descriptions, abstract words). Tune on this; add new
   failure categories here with honest weighted labels.
+- `datasets/dev.json` — 36 cases on other topics. It was used to choose
+  the retrieval settings of the concept round, so it counts as tuning
+  data now.
+- `datasets/dev2.json` — 32 cases, written after those settings were
+  fixed. Held out: read its score, do not tune on its cases.
 - `datasets/test.json` — 16 held-out cases (incl. emoji-only). Never
   tune on it; only touch it to fix genuinely wrong labels.
+- A score on a set that was used for tuning is too high: on macOS 27,
+  train is about 0.15 above the held-out sets. When a change looks good
+  on train or dev, write new cases before you believe it.
 - Labels list semantic roots (`cloud.rain`), not variants
   (`cloud.rain.fill`) — scoring matches by root.
 
@@ -154,9 +224,18 @@ baseline through the shipping port) for provenance.
   pick-prompt problem, a bad list means keywords or retrieval weights.
 - **Tune stage 1 on its own** with `run --variant prod-retrieval`: read
   the ceilings and the score of the top candidate.
-- **New vocabulary** → `SymbolRootIndex.aliasAdditionsOS27`, not
-  `aliasMap`: the macOS 26 retrieval reads `aliasMap` and cannot be
+- **New vocabulary** → add concept words to the symbol in
+  `Resources/concepts.json` (macOS 27 only). An alias entry helps one
+  query word; a concept word helps every request for that symbol. Do not
+  change `aliasMap`: the macOS 26 retrieval reads it and cannot be
   measured again.
+- **Compare retrieval settings in seconds** with `replay`: it reads the
+  keywords of an earlier `prod` report and runs only the retrieval, for
+  example `replay --report results/prod-macos27-concepts-dev.json
+  --dataset datasets/dev.json --set cw=0.3,exp=1`. Settings: `cw`
+  (concept weight), `exp` (word share exponent), `exact` (name bonus),
+  `cap` (roots per family), `v` (list each case), `concepts=<path>`
+  (another concepts file). The keyword weights come from the report.
 - **A new system release** → first run `prod` twice with the previous
   generation's prompts. If the scores hold, map the new release to that
   generation in `ModelGeneration.current`. If not, add a generation and

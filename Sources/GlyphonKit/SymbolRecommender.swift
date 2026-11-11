@@ -45,7 +45,10 @@ public struct SymbolRecommender: Sendable {
 
   init(database: SymbolDatabase, generation: ModelGeneration) {
     self.database = database
-    self.index = SymbolRootIndex(database: database, mergesDuplicates: generation == .os27)
+    self.index = SymbolRootIndex(
+      database: database,
+      mergesDuplicates: generation == .os27,
+      concepts: generation == .os27 ? SymbolConcepts.bundled : [:])
     self.generation = generation
   }
 
@@ -53,8 +56,12 @@ public struct SymbolRecommender: Sendable {
   /// harness uses it to tell retrieval problems from pick problems.
   struct Trace: Sendable {
     var keywords: [String] = []
+    /// The weights of `keywords`.
+    var keywordWeights: [Double] = []
     /// The retrieved roots, best first.
     var candidates: [String] = []
+    /// The retrieval scores of `candidates`.
+    var scores: [Double] = []
     /// The part of `candidates` that the model chooses from.
     var pickList: [String] = []
   }
@@ -87,9 +94,9 @@ public struct SymbolRecommender: Sendable {
       return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
-    let candidates: [SymbolRootIndex.Root]
+    let scored: [(root: SymbolRootIndex.Root, score: Double)]
     do {
-      candidates = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace)
+      scored = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace)
     } catch let error where error is CancellationError {
       // Cancellation must escape the degradation ladder so hosts can
       // abort mid-generation instead of receiving a fallback result.
@@ -101,11 +108,12 @@ public struct SymbolRecommender: Sendable {
 
     try Task.checkCancellation()
 
+    let candidates = scored.map(\.root)
     guard candidates.count >= 2 else {
       return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
-    let pickList = pickList(from: candidates)
+    let pickList = Self.pickList(from: candidates, scores: scored.map(\.score), generation: generation)
     trace.pickList = pickList.map(\.name)
     let pick: IconPick
     do {
@@ -156,15 +164,17 @@ public struct SymbolRecommender: Sendable {
     for text: String,
     limit: Int = 25,
     trace: inout Trace
-  ) async throws -> [SymbolRootIndex.Root] {
+  ) async throws -> [(root: SymbolRootIndex.Root, score: Double)] {
     let weighted = try await extractKeywords(from: text)
     trace.keywords = weighted.map(\.text)
+    trace.keywordWeights = weighted.map(\.weight)
     debugLog("AI Step 1 - keywords: \(trace.keywords)")
 
-    let candidates = index.search(keywords: weighted, limit: limit, options: searchOptions)
-    trace.candidates = candidates.map(\.name)
-    debugLog("AI Step 1.5 - candidates: \(candidates.count)")
-    return candidates
+    let scored = index.scoredSearch(keywords: weighted, limit: limit, options: searchOptions)
+    trace.candidates = scored.map(\.root.name)
+    trace.scores = scored.map(\.score)
+    debugLog("AI Step 1.5 - candidates: \(scored.count)")
+    return scored
   }
 
   // MARK: - Lucky pick
@@ -314,6 +324,11 @@ public struct SymbolRecommender: Sendable {
     case .os27:
       SymbolRootIndex.SearchOptions(
         maxPerFamily: 3, joinsCompounds: true, ignoresStopWords: true,
+        wordShareExponent: 0.5,
+        additionalNoiseWords: ["icon", "icons", "symbol", "symbols"],
+        joinsHyphenatedWords: true,
+        exactNameBonus: 0.3,
+        conceptWeight: 0.5,
         additionalAliases: SymbolRootIndex.aliasAdditionsOS27)
     }
   }
@@ -346,8 +361,31 @@ public struct SymbolRecommender: Sendable {
     }
   }
 
-  private func pickList(from candidates: [SymbolRootIndex.Root]) -> [SymbolRootIndex.Root] {
-    Self.pickListLength(for: generation).map { Array(candidates.prefix($0)) } ?? candidates
+  /// The share of the best retrieval score that a candidate needs to be in
+  /// the pick list; `nil` has no limit.
+  ///
+  /// With the concept words, the first candidate of the macOS 27 retrieval
+  /// is right more often than the model's choice from six. The model
+  /// decides only between candidates that retrieval cannot tell apart; a
+  /// clear first candidate is the only choice, and the model writes the
+  /// reason for it.
+  static func pickListScoreShare(for generation: ModelGeneration) -> Double? {
+    switch generation {
+    case .os26: nil
+    case .os27: 0.7
+    }
+  }
+
+  static func pickList(
+    from candidates: [SymbolRootIndex.Root],
+    scores: [Double],
+    generation: ModelGeneration
+  ) -> [SymbolRootIndex.Root] {
+    var list = pickListLength(for: generation).map { Array(candidates.prefix($0)) } ?? candidates
+    if let share = pickListScoreShare(for: generation), let best = scores.first {
+      list = Array(zip(list, scores).prefix { $0.1 >= share * best }.map(\.0))
+    }
+    return list
   }
 
   /// A string in a schema has no length limit, and the macOS 27 model
@@ -371,10 +409,12 @@ public struct SymbolRecommender: Sendable {
       dependencies: []
     )
 
+    // Many symbols have no terms from Apple; the concept words say what
+    // such a symbol is for.
     let list = candidates
       .map { root in
-        let terms = root.terms.prefix(5)
-        return terms.isEmpty ? "- \(root.name)" : "- \(root.name) (\(terms.joined(separator: ", ")))"
+        let hints = root.terms.prefix(3) + root.concepts.prefix(3)
+        return hints.isEmpty ? "- \(root.name)" : "- \(root.name) (\(hints.joined(separator: ", ")))"
       }
       .joined(separator: "\n")
 
