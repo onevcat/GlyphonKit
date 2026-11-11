@@ -458,6 +458,9 @@ struct SymbolRootIndex: Sendable {
     /// so that they do not take a share of the keyword's weight. A keyword
     /// of only stop words ("at") keeps them.
     var ignoresStopWords = false
+    /// Reads a hyphenated word as one word when the index or the alias map
+    /// knows it ("to-do" is `todo`, not "to" and "do").
+    var joinsHyphenatedWords = false
     /// Alias entries on top of `aliasMap`.
     var additionalAliases: [String: [String]] = [:]
   }
@@ -479,11 +482,29 @@ struct SymbolRootIndex: Sendable {
 
   /// Rank roots for a list of weighted keywords.
   func search(keywords: [WeightedKeyword], limit: Int, options: SearchOptions = SearchOptions()) -> [Root] {
+    scoredSearch(keywords: keywords, limit: limit, options: options).map(\.root)
+  }
+
+  /// `search` with the score of each root. Only the ratio between two
+  /// scores of one search has a meaning.
+  func scoredSearch(
+    keywords: [WeightedKeyword],
+    limit: Int,
+    options: SearchOptions = SearchOptions()
+  ) -> [(root: Root, score: Double)] {
     var scores: [Int: Double] = [:]
 
     for keyword in keywords {
-      let text = keyword.text.lowercased().trimmingCharacters(in: .whitespaces)
+      var text = keyword.text.lowercased().trimmingCharacters(in: .whitespaces)
       guard !text.isEmpty else { continue }
+      if options.joinsHyphenatedWords, text.contains("-") {
+        text = text.split(separator: " ").map { word -> String in
+          let joined = String(word).replacing("-", with: "")
+          let known = tokenIndex[joined] != nil || Self.aliasMap[joined] != nil
+            || options.additionalAliases[joined] != nil
+          return known ? joined : String(word)
+        }.joined(separator: " ")
+      }
       var words = text.split { !$0.isLetter && !$0.isNumber }
         .map(String.init)
         .filter { !Self.noiseWords.contains($0) }
@@ -558,7 +579,7 @@ struct SymbolRootIndex: Sendable {
       return lhsName < rhsName
     }
     guard limit > 0 else { return [] }
-    var result: [Root] = []
+    var result: [(root: Root, score: Double)] = []
     var familyCounts: [Substring: Int] = [:]
     for entry in sorted {
       let root = roots[entry.index]
@@ -567,7 +588,7 @@ struct SymbolRootIndex: Sendable {
         guard familyCounts[family, default: 0] < maxPerFamily else { continue }
         familyCounts[family, default: 0] += 1
       }
-      result.append(root)
+      result.append((root, entry.score))
       if result.count == limit { break }
     }
     return result

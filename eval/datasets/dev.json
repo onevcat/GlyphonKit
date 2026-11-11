@@ -1,0 +1,1177 @@
+{
+  "name": "dev-v1",
+  "cases": [
+    {
+      "id": "dev-en-alarm",
+      "query": "alarm clock with sleep sounds",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "alarm",
+          "weight": 1.0
+        },
+        {
+          "root": "clock",
+          "weight": 0.6
+        },
+        {
+          "root": "bell",
+          "weight": 0.5
+        },
+        {
+          "root": "moon.zzz",
+          "weight": 0.5
+        },
+        {
+          "root": "speaker.wave.2",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-qr",
+      "query": "QR code scanner",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "qrcode.viewfinder",
+          "weight": 1.0
+        },
+        {
+          "root": "qrcode",
+          "weight": 0.9
+        },
+        {
+          "root": "barcode.viewfinder",
+          "weight": 0.6
+        },
+        {
+          "root": "viewfinder",
+          "weight": 0.5
+        },
+        {
+          "root": "camera",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-calculator",
+      "query": "calculator with unit conversion",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "plus.forwardslash.minus",
+          "weight": 1.0
+        },
+        {
+          "root": "plusminus",
+          "weight": 0.8
+        },
+        {
+          "root": "function",
+          "weight": 0.6
+        },
+        {
+          "root": "x.squareroot",
+          "weight": 0.6
+        },
+        {
+          "root": "number",
+          "weight": 0.5
+        },
+        {
+          "root": "ruler",
+          "weight": 0.5
+        },
+        {
+          "root": "equal",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-split",
+      "query": "expense splitting with friends",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "dollarsign",
+          "weight": 0.9
+        },
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "person.2",
+          "weight": 0.7
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.6
+        },
+        {
+          "root": "divide",
+          "weight": 0.6
+        },
+        {
+          "root": "person.3",
+          "weight": 0.6
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-habit",
+      "query": "habit tracker with streaks",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "checkmark.circle",
+          "weight": 1.0
+        },
+        {
+          "root": "flame",
+          "weight": 0.9
+        },
+        {
+          "root": "checklist",
+          "weight": 0.8
+        },
+        {
+          "root": "calendar",
+          "weight": 0.7
+        },
+        {
+          "root": "repeat",
+          "weight": 0.6
+        },
+        {
+          "root": "target",
+          "weight": 0.6
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-translator",
+      "query": "language translator for travelers",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "translate",
+          "weight": 1.0
+        },
+        {
+          "root": "character.bubble",
+          "weight": 0.9
+        },
+        {
+          "root": "globe",
+          "weight": 0.7
+        },
+        {
+          "root": "bubble.left.and.bubble.right",
+          "weight": 0.5
+        },
+        {
+          "root": "airplane",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-ev",
+      "query": "electric car charging station finder",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "ev.charger",
+          "weight": 1.0
+        },
+        {
+          "root": "bolt.car",
+          "weight": 1.0
+        },
+        {
+          "root": "bolt",
+          "weight": 0.6
+        },
+        {
+          "root": "powerplug",
+          "weight": 0.6
+        },
+        {
+          "root": "car",
+          "weight": 0.5
+        },
+        {
+          "root": "mappin",
+          "weight": 0.5
+        },
+        {
+          "root": "fuelpump",
+          "weight": 0.4
+        },
+        {
+          "root": "map",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-screentime",
+      "query": "screen time limits for kids",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "hourglass",
+          "weight": 1.0
+        },
+        {
+          "root": "timer",
+          "weight": 0.8
+        },
+        {
+          "root": "clock",
+          "weight": 0.6
+        },
+        {
+          "root": "figure.child",
+          "weight": 0.6
+        },
+        {
+          "root": "iphone",
+          "weight": 0.5
+        },
+        {
+          "root": "lock",
+          "weight": 0.5
+        },
+        {
+          "root": "figure.and.child.holdinghands",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-git",
+      "query": "git repository browser",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "arrow.triangle.branch",
+          "weight": 1.0
+        },
+        {
+          "root": "chevron.left.forwardslash.chevron.right",
+          "weight": 0.8
+        },
+        {
+          "root": "curlybraces",
+          "weight": 0.7
+        },
+        {
+          "root": "terminal",
+          "weight": 0.6
+        },
+        {
+          "root": "folder",
+          "weight": 0.5
+        },
+        {
+          "root": "externaldrive",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-hiking",
+      "query": "hiking trail maps offline",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "figure.hiking",
+          "weight": 1.0
+        },
+        {
+          "root": "map",
+          "weight": 0.9
+        },
+        {
+          "root": "mountain.2",
+          "weight": 0.9
+        },
+        {
+          "root": "location",
+          "weight": 0.5
+        },
+        {
+          "root": "signpost.right",
+          "weight": 0.5
+        },
+        {
+          "root": "tree",
+          "weight": 0.4
+        },
+        {
+          "root": "binoculars",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-pdf",
+      "query": "PDF reader and annotator",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "doc.text",
+          "weight": 0.8
+        },
+        {
+          "root": "doc.richtext",
+          "weight": 0.8
+        },
+        {
+          "root": "highlighter",
+          "weight": 0.8
+        },
+        {
+          "root": "doc",
+          "weight": 0.7
+        },
+        {
+          "root": "text.page",
+          "weight": 0.7
+        },
+        {
+          "root": "document",
+          "weight": 0.7
+        },
+        {
+          "root": "pencil.tip",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-flashlight",
+      "query": "flashlight",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "flashlight.on",
+          "weight": 1.0
+        },
+        {
+          "root": "flashlight.off",
+          "weight": 0.9
+        },
+        {
+          "root": "lightbulb",
+          "weight": 0.6
+        },
+        {
+          "root": "bolt",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-noise",
+      "query": "white noise for focus",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "waveform",
+          "weight": 1.0
+        },
+        {
+          "root": "speaker.wave.2",
+          "weight": 0.8
+        },
+        {
+          "root": "headphones",
+          "weight": 0.8
+        },
+        {
+          "root": "ear",
+          "weight": 0.5
+        },
+        {
+          "root": "wind",
+          "weight": 0.5
+        },
+        {
+          "root": "brain.head.profile",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-parking",
+      "query": "parking spot reminder",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "parkingsign",
+          "weight": 1.0
+        },
+        {
+          "root": "car",
+          "weight": 0.8
+        },
+        {
+          "root": "mappin",
+          "weight": 0.7
+        },
+        {
+          "root": "mappin.and.ellipse",
+          "weight": 0.7
+        },
+        {
+          "root": "location",
+          "weight": 0.5
+        },
+        {
+          "root": "bell",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-wine",
+      "query": "wine cellar inventory",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "wineglass",
+          "weight": 1.0
+        },
+        {
+          "root": "archivebox",
+          "weight": 0.5
+        },
+        {
+          "root": "list.bullet",
+          "weight": 0.4
+        },
+        {
+          "root": "shippingbox",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-sun",
+      "query": "sunrise and sunset times",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "sunrise",
+          "weight": 1.0
+        },
+        {
+          "root": "sunset",
+          "weight": 1.0
+        },
+        {
+          "root": "sun.horizon",
+          "weight": 0.9
+        },
+        {
+          "root": "sun.max",
+          "weight": 0.7
+        },
+        {
+          "root": "clock",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-memo",
+      "query": "voice memo recorder",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "mic",
+          "weight": 1.0
+        },
+        {
+          "root": "waveform",
+          "weight": 0.9
+        },
+        {
+          "root": "record.circle",
+          "weight": 0.7
+        },
+        {
+          "root": "recordingtape",
+          "weight": 0.7
+        },
+        {
+          "root": "speaker.wave.2",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-contacts",
+      "query": "contact list backup",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "person.crop.circle",
+          "weight": 0.8
+        },
+        {
+          "root": "person.crop.rectangle.stack",
+          "weight": 0.8
+        },
+        {
+          "root": "person.text.rectangle",
+          "weight": 0.8
+        },
+        {
+          "root": "person.2",
+          "weight": 0.7
+        },
+        {
+          "root": "person",
+          "weight": 0.7
+        },
+        {
+          "root": "icloud.and.arrow.up",
+          "weight": 0.6
+        },
+        {
+          "root": "externaldrive",
+          "weight": 0.5
+        },
+        {
+          "root": "arrow.clockwise.icloud",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-zh-weight",
+      "query": "记录体重和饮食",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "scalemass",
+          "weight": 1.0
+        },
+        {
+          "root": "fork.knife",
+          "weight": 0.8
+        },
+        {
+          "root": "chart.line.uptrend.xyaxis",
+          "weight": 0.6
+        },
+        {
+          "root": "carrot",
+          "weight": 0.6
+        },
+        {
+          "root": "figure",
+          "weight": 0.4
+        },
+        {
+          "root": "heart",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-zh-market",
+      "query": "二手交易市场",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "storefront",
+          "weight": 0.9
+        },
+        {
+          "root": "tag",
+          "weight": 0.9
+        },
+        {
+          "root": "cart",
+          "weight": 0.8
+        },
+        {
+          "root": "bag",
+          "weight": 0.8
+        },
+        {
+          "root": "arrow.left.arrow.right",
+          "weight": 0.5
+        },
+        {
+          "root": "banknote",
+          "weight": 0.5
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-zh-transit",
+      "query": "公交地铁实时到站",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "bus",
+          "weight": 1.0
+        },
+        {
+          "root": "tram",
+          "weight": 1.0
+        },
+        {
+          "root": "train.side.front.car",
+          "weight": 0.9
+        },
+        {
+          "root": "clock",
+          "weight": 0.4
+        },
+        {
+          "root": "mappin",
+          "weight": 0.4
+        },
+        {
+          "root": "map",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-zh-literacy",
+      "query": "儿童识字卡片",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "textformat.abc",
+          "weight": 0.9
+        },
+        {
+          "root": "character.book.closed",
+          "weight": 0.8
+        },
+        {
+          "root": "character",
+          "weight": 0.7
+        },
+        {
+          "root": "book",
+          "weight": 0.6
+        },
+        {
+          "root": "figure.child",
+          "weight": 0.5
+        },
+        {
+          "root": "graduationcap",
+          "weight": 0.5
+        },
+        {
+          "root": "pencil",
+          "weight": 0.4
+        },
+        {
+          "root": "rectangle.on.rectangle",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-ja-recipe",
+      "query": "レシピ検索",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "fork.knife",
+          "weight": 1.0
+        },
+        {
+          "root": "frying.pan",
+          "weight": 0.9
+        },
+        {
+          "root": "carrot",
+          "weight": 0.6
+        },
+        {
+          "root": "stove",
+          "weight": 0.6
+        },
+        {
+          "root": "magnifyingglass",
+          "weight": 0.5
+        },
+        {
+          "root": "book",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-ja-training",
+      "query": "筋トレ記録",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "dumbbell",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.strengthtraining.traditional",
+          "weight": 1.0
+        },
+        {
+          "root": "figure.run",
+          "weight": 0.5
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.4
+        },
+        {
+          "root": "flame",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-ja-calendar",
+      "query": "カレンダーと予定管理",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "calendar",
+          "weight": 1.0
+        },
+        {
+          "root": "calendar.badge.clock",
+          "weight": 0.9
+        },
+        {
+          "root": "checklist",
+          "weight": 0.5
+        },
+        {
+          "root": "clock",
+          "weight": 0.4
+        },
+        {
+          "root": "bell",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-ko-weather",
+      "query": "날씨 알림",
+      "lang": "ko",
+      "expected": [
+        {
+          "root": "cloud.sun",
+          "weight": 1.0
+        },
+        {
+          "root": "sun.max",
+          "weight": 0.8
+        },
+        {
+          "root": "cloud.rain",
+          "weight": 0.8
+        },
+        {
+          "root": "cloud",
+          "weight": 0.7
+        },
+        {
+          "root": "umbrella",
+          "weight": 0.6
+        },
+        {
+          "root": "bell",
+          "weight": 0.5
+        },
+        {
+          "root": "thermometer.medium",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-ko-budget",
+      "query": "가계부",
+      "lang": "ko",
+      "expected": [
+        {
+          "root": "wonsign",
+          "weight": 1.0
+        },
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.9
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.7
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.7
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-es-packages",
+      "query": "seguimiento de paquetes",
+      "lang": "es",
+      "expected": [
+        {
+          "root": "shippingbox",
+          "weight": 1.0
+        },
+        {
+          "root": "truck.box",
+          "weight": 0.9
+        },
+        {
+          "root": "box.truck",
+          "weight": 0.9
+        },
+        {
+          "root": "barcode",
+          "weight": 0.5
+        },
+        {
+          "root": "location",
+          "weight": 0.4
+        },
+        {
+          "root": "mappin",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-es-diary",
+      "query": "diario personal con fotos",
+      "lang": "es",
+      "expected": [
+        {
+          "root": "book",
+          "weight": 0.9
+        },
+        {
+          "root": "book.closed",
+          "weight": 0.9
+        },
+        {
+          "root": "square.and.pencil",
+          "weight": 0.8
+        },
+        {
+          "root": "text.book.closed",
+          "weight": 0.8
+        },
+        {
+          "root": "pencil",
+          "weight": 0.6
+        },
+        {
+          "root": "note.text",
+          "weight": 0.6
+        },
+        {
+          "root": "photo",
+          "weight": 0.5
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-fr-water",
+      "query": "suivi de la consommation d'eau",
+      "lang": "fr",
+      "expected": [
+        {
+          "root": "drop",
+          "weight": 1.0
+        },
+        {
+          "root": "waterbottle",
+          "weight": 0.9
+        },
+        {
+          "root": "humidity",
+          "weight": 0.5
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.4
+        },
+        {
+          "root": "cup.and.saucer",
+          "weight": 0.3
+        },
+        {
+          "root": "mug",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-fr-carpool",
+      "query": "covoiturage entre collègues",
+      "lang": "fr",
+      "expected": [
+        {
+          "root": "car.2",
+          "weight": 1.0
+        },
+        {
+          "root": "car",
+          "weight": 0.9
+        },
+        {
+          "root": "person.2",
+          "weight": 0.6
+        },
+        {
+          "root": "person.3",
+          "weight": 0.6
+        },
+        {
+          "root": "steeringwheel",
+          "weight": 0.6
+        },
+        {
+          "root": "mappin",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-de-shopping",
+      "query": "Einkaufsliste für die Familie",
+      "lang": "de",
+      "expected": [
+        {
+          "root": "cart",
+          "weight": 1.0
+        },
+        {
+          "root": "basket",
+          "weight": 0.9
+        },
+        {
+          "root": "checklist",
+          "weight": 0.8
+        },
+        {
+          "root": "list.bullet",
+          "weight": 0.7
+        },
+        {
+          "root": "bag",
+          "weight": 0.7
+        },
+        {
+          "root": "list.clipboard",
+          "weight": 0.6
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-de-power",
+      "query": "Stromverbrauch überwachen",
+      "lang": "de",
+      "expected": [
+        {
+          "root": "bolt",
+          "weight": 1.0
+        },
+        {
+          "root": "powermeter",
+          "weight": 0.9
+        },
+        {
+          "root": "powerplug",
+          "weight": 0.8
+        },
+        {
+          "root": "gauge.with.needle",
+          "weight": 0.6
+        },
+        {
+          "root": "lightbulb",
+          "weight": 0.6
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.5
+        },
+        {
+          "root": "battery.100percent",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-emoji-guitar",
+      "query": "🎸",
+      "lang": "emoji",
+      "expected": [
+        {
+          "root": "guitars",
+          "weight": 1.0
+        },
+        {
+          "root": "music.note",
+          "weight": 0.7
+        },
+        {
+          "root": "music.mic",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-astronomy",
+      "query": "astronomy star chart",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "moon.stars",
+          "weight": 0.9
+        },
+        {
+          "root": "star",
+          "weight": 0.7
+        },
+        {
+          "root": "sparkles",
+          "weight": 0.6
+        },
+        {
+          "root": "moon",
+          "weight": 0.5
+        },
+        {
+          "root": "binoculars",
+          "weight": 0.4
+        },
+        {
+          "root": "globe",
+          "weight": 0.3
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "dev-en-tip",
+      "query": "tip calculator",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "percent",
+          "weight": 0.9
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.9
+        },
+        {
+          "root": "receipt",
+          "weight": 0.8
+        },
+        {
+          "root": "plus.forwardslash.minus",
+          "weight": 0.8
+        },
+        {
+          "root": "banknote",
+          "weight": 0.7
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.5
+        },
+        {
+          "root": "fork.knife",
+          "weight": 0.4
+        }
+      ],
+      "notes": null
+    }
+  ]
+}

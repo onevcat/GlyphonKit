@@ -153,6 +153,24 @@ struct SymbolRootIndexSearchOptionsTests {
     #expect(SymbolRootIndex.aliasAdditionsOS27.keys.allSatisfy { SymbolRootIndex.aliasMap[$0] == nil })
   }
 
+  @Test func hyphenatedWordIsOneWordWhenItIsKnown() {
+    // "todo" has an alias entry; "to" and "do" do not name a to-do list.
+    #expect(names([("to-do", 1.0)]).isEmpty)
+    #expect(names([("to-do", 1.0)], options: .init(joinsHyphenatedWords: true)).first == "checklist")
+    // An unknown compound keeps its words.
+    #expect(names([("air-pods", 1.0)], options: .init(joinsHyphenatedWords: true)) == ["airpods"])
+    #expect(names([("memo-qqqq", 1.0)], options: .init(joinsHyphenatedWords: true)) == ["text.pad.header"])
+  }
+
+  @Test func scoredSearchGivesTheScoresInOrder() {
+    let index = SymbolRootIndex(database: Self.renamed)
+    let keywords = [SymbolRootIndex.WeightedKeyword(text: "audio", weight: 1.0)]
+    let scored = index.scoredSearch(keywords: keywords, limit: 5)
+    #expect(scored.map(\.root.name) == index.search(keywords: keywords, limit: 5).map(\.name))
+    #expect(scored.map(\.score) == scored.map(\.score).sorted(by: >))
+    #expect(scored.allSatisfy { $0.score > 0 })
+  }
+
   @Test func stopWordFilterKeepsLoneStopWords() {
     let database = SymbolDatabase(symbols: [
       SymbolEntry(name: "at", year: "2019", categories: [], terms: []),
@@ -228,6 +246,7 @@ struct ModelGenerationSettingsTests {
     #expect(options.maxPerFamily == nil)
     #expect(!options.joinsCompounds)
     #expect(!options.ignoresStopWords)
+    #expect(!options.joinsHyphenatedWords)
     #expect(options.additionalAliases.isEmpty)
   }
 
@@ -236,6 +255,7 @@ struct ModelGenerationSettingsTests {
     #expect(options.maxPerFamily == 3)
     #expect(options.joinsCompounds)
     #expect(options.ignoresStopWords)
+    #expect(options.joinsHyphenatedWords)
     #expect(options.additionalAliases == SymbolRootIndex.aliasAdditionsOS27)
     #expect(SymbolRecommender.pickListLength(for: .os27) == 6)
   }

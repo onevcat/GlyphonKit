@@ -88,6 +88,53 @@ meanPickScore (acceptable):
   misses are picks of a weaker candidate (`clock` for a kitchen timer
   with `timer` in the list).
 
+### Held-out check (2026-11-11)
+
+The scores on `train.json` are too high as a measure of quality. Two new
+sets of requests (see "Datasets") show the level on requests that the
+tuning has not seen. `prod` on macOS 27.0.1, two runs each with the same
+picks, meanPickScore (acceptable):
+
+| | train (42) | dev (36) | dev2 (32) | test (16) |
+|---|---|---|---|---|
+| macOS 27 pipeline | 0.879 (100%) | 0.692 (80.6%) | 0.697 (81.2%) | 0.744 (93.8%) |
+| first candidate of the retrieval, without the pick | 0.857 | 0.586 | 0.519 | 0.656 |
+| best of the first 6 candidates | 0.964 | 0.842 | 0.838 | 0.931 |
+
+- **Current baseline for decisions: dev2 0.697 and test 0.744.**
+  Train is about 0.15 above them, because the prompts and settings were
+  tuned on it.
+- Most misses on the new sets are retrieval misses: a keyword like
+  "package" or "calculator" finds no symbol by name, and only about a
+  third of the symbols have search terms from Apple.
+- The model adds little to the retrieval order. With the candidate list
+  reversed, it chooses the same symbol in only 30% of the cases: the
+  pick mostly follows the list order.
+- Raw reports: `results/prod-macos27-heldout-{train,dev,dev2,test}.json`.
+
+#### Directions that were tried after the tuning round
+
+None of these is in the pipeline. They are here so that they are not
+tried again without a new idea. Scores are meanPickScore unless stated.
+
+| direction | result |
+|---|---|
+| 190 more hand-written alias entries | dev 0.692 → 0.842, but dev2 0.697 → 0.662. The entries were written after the dev failures and fitted them. |
+| Concept words: everyday words for 1722 symbol roots, written offline by a large model, matched in retrieval (GlyphonKit PR #6) | Retrieval gains on all sets (first candidate on dev2 0.519 → 0.662, on test 0.656 → 0.744). The final pick does not gain on the held-out sets (dev2 +0.006, test 0): 9 cases better, 8 worse. |
+| The model chooses only between candidates near the best retrieval score (part of PR #6) | Within 0.02 of the 6-item list on train and dev. |
+| Rating each candidate from 0 to 10 instead of one pick | dev 0.525. |
+| Asking twice with the list reversed and taking the agreement | Agreement in 30% of the cases; no gain. |
+| Word embedding neighbors (`NLEmbedding`) for unknown words | Within 0.015 on the first candidate. |
+| Sentence embeddings of the symbols (`NLEmbedding.sentenceEmbedding`) | Unrelated results; 6.8 s to embed the roots. |
+| A literal English translation as stage 1 | First candidate on train 0.824 against 0.900. |
+| Four other wordings of the pick rules | None better (dev 0.756 to 0.842 against 0.842). |
+| Keyword weights (topic weight, decay, share of a keyword's words, bonus for an exact name) | Trade train against dev within 0.03; no setting is better on both. |
+
+What is left: with the concept words, the best of the first 3
+candidates is 0.844 on dev2 and 0.931 on test, but neither the on-device
+model nor the retrieval score reliably puts it first. A better order of
+the first three candidates has more room than more vocabulary.
+
 Scores are weighted: 1.0 = ideal symbol, ~0.7 = good, ~0.4 = barely
 acceptable, 0 = miss. "acceptable" = score > 0.
 
@@ -104,6 +151,7 @@ swift build
 .build/debug/recommender-eval run --variant prod --dataset datasets/test.json
 .build/debug/recommender-eval query --variant prod --text "宠物狗的日常照顾"
 .build/debug/recommender-eval query --variant prod --text ""   # lucky pick
+.build/debug/recommender-eval replay --report results/xxx.json --dataset datasets/dev.json
 ```
 
 Variants: `v0` (the pre-rewrite algorithm), `v0-nofm` (retrieval only),
@@ -120,7 +168,9 @@ that the model could choose from (on macOS 27 the first 6). A low
 `retrievalCeiling` is a keyword or vocabulary problem; a
 `candidateCeiling` below it is a ranking problem; a high
 `candidateCeiling` with a low score is a pick problem. The tuned
-baseline has 0.964 / 0.971 on train and 0.931 / 0.944 on test.
+baseline has 0.964 / 0.971 on train and 0.931 / 0.944 on test. The
+reports also have the retrieval score of each candidate
+(`candidateScores`) and the weight of each keyword (`keywordWeights`).
 
 `prod` and `prod-retrieval` read the pipeline's trace through
 `@testable import`, so the harness needs a debug build. All timings are
@@ -135,8 +185,15 @@ picks, so a difference is real; still run twice after a system update.
 - `datasets/train.json` — 42 weighted cases (en/zh/ja/es/fr/de/ko,
   objects, project descriptions, abstract words). Tune on this; add new
   failure categories here with honest weighted labels.
+- `datasets/dev.json` — 36 cases on other topics. The experiments after
+  the tuning round read its failures, so it counts as tuning data now.
+- `datasets/dev2.json` — 32 cases, written after those experiments had
+  their settings. Held out: read its score, do not tune on its cases.
 - `datasets/test.json` — 16 held-out cases (incl. emoji-only). Never
   tune on it; only touch it to fix genuinely wrong labels.
+- A score on a set that was used for tuning is too high. When a change
+  looks good on train or dev, check dev2 and test; when they were used
+  for a decision too, write new cases before you believe the change.
 - Labels list semantic roots (`cloud.rain`), not variants
   (`cloud.rain.fill`) — scoring matches by root.
 
@@ -154,6 +211,14 @@ baseline through the shipping port) for provenance.
   pick-prompt problem, a bad list means keywords or retrieval weights.
 - **Tune stage 1 on its own** with `run --variant prod-retrieval`: read
   the ceilings and the score of the top candidate.
+- **Compare retrieval settings in seconds** with `replay`: it reads the
+  keywords and weights of an earlier `prod` report and runs only the
+  retrieval, without the model, for example `replay --report
+  results/prod-macos27-heldout-dev.json --dataset datasets/dev.json
+  --set cap=2,v`. Settings: `cap` (roots per family), `nocompounds`,
+  `nostopwords`, `nohyphens`, `noaliases` (turn a macOS 27 option off),
+  `v` (list each case). To try a new option, add it to
+  `SymbolRootIndex.SearchOptions` and to the settings of `replay`.
 - **New vocabulary** → `SymbolRootIndex.aliasAdditionsOS27`, not
   `aliasMap`: the macOS 26 retrieval reads `aliasMap` and cannot be
   measured again.

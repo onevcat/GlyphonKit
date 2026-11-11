@@ -15,8 +15,10 @@ struct VProd: Variant {
       alternates: recommendation.alternates.map(\.name),
       reason: recommendation.reason,
       keywords: trace.keywords,
+      keywordWeights: trace.keywordWeights,
       candidates: trace.candidates,
       pickList: trace.pickList,
+      candidateScores: trace.scores,
       candidateCount: recommendation.consideredCount,
       usedFallback: !recommendation.usedAI
     )
@@ -32,13 +34,15 @@ struct VProdRetrieval: Variant {
   func recommend(query: String, database: SymbolDatabase, engine: SymbolSearchEngine) async throws -> VariantResult {
     let recommender = SymbolRecommender(database: database)
     var trace = SymbolRecommender.Trace()
-    let candidates = try await recommender.retrieveCandidates(for: query, trace: &trace)
+    let candidates = try await recommender.retrieveCandidates(for: query, trace: &trace).map(\.root)
     return VariantResult(
       pickName: candidates.first?.name ?? "<none>",
       alternates: candidates.dropFirst().prefix(4).map(\.name),
       reason: "",
       keywords: trace.keywords,
+      keywordWeights: trace.keywordWeights,
       candidates: trace.candidates,
+      candidateScores: trace.scores,
       candidateCount: candidates.count
     )
   }

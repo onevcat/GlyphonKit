@@ -53,8 +53,12 @@ public struct SymbolRecommender: Sendable {
   /// harness uses it to tell retrieval problems from pick problems.
   struct Trace: Sendable {
     var keywords: [String] = []
+    /// The weights of `keywords`.
+    var keywordWeights: [Double] = []
     /// The retrieved roots, best first.
     var candidates: [String] = []
+    /// The retrieval scores of `candidates`.
+    var scores: [Double] = []
     /// The part of `candidates` that the model chooses from.
     var pickList: [String] = []
   }
@@ -89,7 +93,7 @@ public struct SymbolRecommender: Sendable {
 
     let candidates: [SymbolRootIndex.Root]
     do {
-      candidates = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace)
+      candidates = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace).map(\.root)
     } catch let error where error is CancellationError {
       // Cancellation must escape the degradation ladder so hosts can
       // abort mid-generation instead of receiving a fallback result.
@@ -156,15 +160,17 @@ public struct SymbolRecommender: Sendable {
     for text: String,
     limit: Int = 25,
     trace: inout Trace
-  ) async throws -> [SymbolRootIndex.Root] {
+  ) async throws -> [(root: SymbolRootIndex.Root, score: Double)] {
     let weighted = try await extractKeywords(from: text)
     trace.keywords = weighted.map(\.text)
+    trace.keywordWeights = weighted.map(\.weight)
     debugLog("AI Step 1 - keywords: \(trace.keywords)")
 
-    let candidates = index.search(keywords: weighted, limit: limit, options: searchOptions)
-    trace.candidates = candidates.map(\.name)
-    debugLog("AI Step 1.5 - candidates: \(candidates.count)")
-    return candidates
+    let scored = index.scoredSearch(keywords: weighted, limit: limit, options: searchOptions)
+    trace.candidates = scored.map(\.root.name)
+    trace.scores = scored.map(\.score)
+    debugLog("AI Step 1.5 - candidates: \(scored.count)")
+    return scored
   }
 
   // MARK: - Lucky pick
@@ -314,6 +320,7 @@ public struct SymbolRecommender: Sendable {
     case .os27:
       SymbolRootIndex.SearchOptions(
         maxPerFamily: 3, joinsCompounds: true, ignoresStopWords: true,
+        joinsHyphenatedWords: true,
         additionalAliases: SymbolRootIndex.aliasAdditionsOS27)
     }
   }
