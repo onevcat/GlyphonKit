@@ -11,6 +11,48 @@ The research log that produced this recipe (v0 → v1 experiments,
 failure analyses) lives in the Glyphon app repository under
 `docs/ai/002-ai-search-optimize/`.
 
+## Start here
+
+The sections below are a history; this one is the current state.
+
+**Baseline** (macOS 27.0.1, Xcode 27.2, SF Symbols 2026.2 data, `prod`,
+meanPickScore / acceptable, two runs with the same picks):
+
+| train (42) | dev (36) | dev2 (32, held out) | test (16, held out) |
+|---|---|---|---|
+| 0.879 / 100% | 0.692 / 80.6% | 0.697 / 81.2% | 0.744 / 93.8% |
+
+Read **dev2 and test** to judge a change. Train and dev were used for
+tuning and are too high. The macOS 26 model had train 0.92 / test 0.844;
+it cannot be measured again, and its prompts and settings are frozen
+(`ModelGeneration.os26`).
+
+**Check a change:**
+
+```sh
+cd eval && swift build
+for d in train dev dev2 test; do
+  .build/debug/recommender-eval run --variant prod \
+    --dataset datasets/$d.json --out results/<name>-$d.json
+done
+```
+
+Run it twice, before and after the change. Then compare the picks case
+by case against `results/prod-macos27-heldout-<dataset>.json` (the
+baseline reports): the number of cases that get better and worse on
+dev2 and test decides, not the mean on train.
+
+**Find the stage that fails** for one request with `query --variant
+prod --text "..."`, or in a report: a low `retrievalCeiling` is a
+keyword or vocabulary problem, a `candidateCeiling` below it is a
+ranking problem, a high `candidateCeiling` with a low score is a pick
+problem. Retrieval settings can be compared without the model with
+`replay` (see "Tuning playbook").
+
+**Before a new direction**, read "Directions that were tried after the
+tuning round". After it, add a row, also when it did not help, and
+update the baseline table above when the pipeline changes.
+
 ## Environment snapshot (reference baseline)
 
 All reference numbers were measured on this exact setup. The on-device
