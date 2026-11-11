@@ -10,11 +10,23 @@ struct KeywordExtraction {
   var related: [String]
 }
 
+/// The keyword schema for the macOS 27 model. That model does not keep
+/// the text's own words when it is asked for "keywords" and repeats itself
+/// in a long list, but it names suitable pictures well.
+@Generable
+struct IconSuggestion {
+  @Guide(description: "The topic of the text in one or two English words, as the text itself names it")
+  var topic: String
+  @Guide(description: "Icons that could stand for the topic, best first. Each is one simple picture, named with one or two common English words", .count(6))
+  var icons: [String]
+}
+
 /// Recommends SF Symbols using a two-stage pipeline:
 /// 1. Guided keyword extraction (any input language → weighted English
 ///    keywords), ranked against the root-deduplicated index.
-/// 2. Constrained pick: the model chooses the best symbol and alternates
-///    from the candidate list, and explains why in the request's language.
+/// 2. Constrained pick: the model chooses the best symbol from the
+///    candidate list and explains why in the request's language. The
+///    alternates are the model's choice or the next candidates.
 ///
 /// Empty input becomes a random "feeling lucky" draw. Every failure mode
 /// degrades to pure retrieval, never to an error.
@@ -25,10 +37,30 @@ struct KeywordExtraction {
 public struct SymbolRecommender: Sendable {
   private let database: SymbolDatabase
   private let index: SymbolRootIndex
+  private let generation: ModelGeneration
 
   public init(database: SymbolDatabase) {
+    self.init(database: database, generation: .current)
+  }
+
+  init(database: SymbolDatabase, generation: ModelGeneration) {
     self.database = database
-    self.index = SymbolRootIndex(database: database)
+    self.index = SymbolRootIndex(database: database, mergesDuplicates: generation == .os27)
+    self.generation = generation
+  }
+
+  /// What the pipeline saw on its way to a recommendation. The eval
+  /// harness uses it to tell retrieval problems from pick problems.
+  struct Trace: Sendable {
+    var keywords: [String] = []
+    /// The weights of `keywords`.
+    var keywordWeights: [Double] = []
+    /// The retrieved roots, best first.
+    var candidates: [String] = []
+    /// The retrieval scores of `candidates`.
+    var scores: [Double] = []
+    /// The part of `candidates` that the model chooses from.
+    var pickList: [String] = []
   }
 
   /// Recommend a symbol based on a natural language description.
@@ -36,53 +68,53 @@ public struct SymbolRecommender: Sendable {
   /// - Parameters:
   ///   - text: Any natural language text, in any language. Empty text
   ///     yields a random lucky pick.
-  ///   - candidateLimit: Number of candidates for the model to choose from.
+  ///   - candidateLimit: Number of candidates to retrieve. The alternates
+  ///     come from them. The model chooses from all of them or from the
+  ///     best of them, as the prompts of its generation were tuned.
   /// - Returns: A recommendation with the chosen symbol, alternates, and reasoning.
   public func recommend(from text: String, candidateLimit: Int = 25) async throws -> SymbolRecommendation {
+    try await recommendWithTrace(from: text, candidateLimit: candidateLimit).recommendation
+  }
+
+  func recommendWithTrace(
+    from text: String,
+    candidateLimit: Int = 25
+  ) async throws -> (recommendation: SymbolRecommendation, trace: Trace) {
+    var trace = Trace()
     try Task.checkCancellation()
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
-      return await luckyPick()
+      return (await luckyPick(), trace)
     }
 
     guard case .available = SystemLanguageModel.default.availability else {
-      return retrievalOnlyRecommendation(for: trimmed)
+      return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
-    let extraction: KeywordExtraction
+    let candidates: [SymbolRootIndex.Root]
     do {
-      extraction = try await extractKeywords(from: trimmed)
-      debugLog("AI Step 1 - keywords: \(extraction.subject + extraction.related)")
+      candidates = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace).map(\.root)
     } catch let error where error is CancellationError {
       // Cancellation must escape the degradation ladder so hosts can
       // abort mid-generation instead of receiving a fallback result.
       throw error
     } catch {
       debugLog("AI Step 1 - extraction failed: \(error)")
-      return retrievalOnlyRecommendation(for: trimmed)
+      return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
     try Task.checkCancellation()
 
-    var weighted: [SymbolRootIndex.WeightedKeyword] = []
-    for (position, keyword) in extraction.subject.prefix(3).enumerated() {
-      weighted.append(.init(text: keyword, weight: 2.0 / (1.0 + Double(position) * 0.3)))
-    }
-    for (position, keyword) in extraction.related.prefix(10).enumerated() {
-      weighted.append(.init(text: keyword, weight: 1.0 / (1.0 + Double(position) * 0.15)))
-    }
-
-    let candidates = index.search(keywords: weighted, limit: candidateLimit)
-    debugLog("AI Step 1.5 - candidates: \(candidates.count)")
-
     guard candidates.count >= 2 else {
-      return retrievalOnlyRecommendation(for: trimmed)
+      return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
+    let pickList = pickList(from: candidates)
+    trace.pickList = pickList.map(\.name)
     let pick: IconPick
     do {
       do {
-        pick = try await pickSymbol(query: trimmed, candidates: candidates)
+        pick = try await pickSymbol(query: trimmed, candidates: pickList)
       } catch let error where error is CancellationError {
         throw error
       } catch {
@@ -90,26 +122,29 @@ public struct SymbolRecommender: Sendable {
         // only on the schema-constrained path; the identical prompt passes
         // as plain text. Retry unconstrained and parse.
         debugLog("AI Step 2 - constrained pick failed, retrying plain: \(error)")
-        pick = try await pickSymbolPlainText(query: trimmed, candidates: candidates)
+        pick = try await pickSymbolPlainText(query: trimmed, candidates: pickList)
       }
     } catch let error where error is CancellationError {
       throw error
     } catch {
       debugLog("AI Step 2 - pick failed: \(error)")
-      return recommendation(fromRanked: candidates, isLucky: false)
+      return (recommendation(fromRanked: candidates, isLucky: false), trace)
     }
 
-    let bestEntry = database.symbol(named: pick.best) ?? candidates[0].displayEntry
+    // A root name is not always a symbol name (`heart.text` has only
+    // `heart.text.square`), so resolve names through the candidates.
+    let entries = Dictionary(candidates.map { ($0.name, $0.displayEntry) }, uniquingKeysWith: { first, _ in first })
+    let bestEntry = entries[pick.best] ?? candidates[0].displayEntry
     var alternateNames = pick.alternates.filter { $0 != pick.best }
     for candidate in candidates where alternateNames.count < 4 {
       if candidate.name != pick.best && !alternateNames.contains(candidate.name) {
         alternateNames.append(candidate.name)
       }
     }
-    let alternates = alternateNames.compactMap { database.symbol(named: $0) }
+    let alternates = alternateNames.compactMap { entries[$0] }
 
     debugLog("AI Step 2 - pick: \(bestEntry.name) — \(pick.reason)")
-    return SymbolRecommendation(
+    let recommendation = SymbolRecommendation(
       symbol: bestEntry,
       reason: pick.reason,
       alternates: alternates,
@@ -117,6 +152,25 @@ public struct SymbolRecommender: Sendable {
       isLucky: false,
       usedAI: true
     )
+    return (recommendation, trace)
+  }
+
+  /// Stage 1 and retrieval: the model's keywords, ranked against the index.
+  func retrieveCandidates(
+    for text: String,
+    limit: Int = 25,
+    trace: inout Trace
+  ) async throws -> [(root: SymbolRootIndex.Root, score: Double)] {
+    let weighted = try await extractKeywords(from: text)
+    trace.keywords = weighted.map(\.text)
+    trace.keywordWeights = weighted.map(\.weight)
+    debugLog("AI Step 1 - keywords: \(trace.keywords)")
+
+    let scored = index.scoredSearch(keywords: weighted, limit: limit, options: searchOptions)
+    trace.candidates = scored.map(\.root.name)
+    trace.scores = scored.map(\.score)
+    debugLog("AI Step 1.5 - candidates: \(scored.count)")
+    return scored
   }
 
   // MARK: - Lucky pick
@@ -195,7 +249,14 @@ public struct SymbolRecommender: Sendable {
 
   // MARK: - Stage 1: keywords
 
-  private func extractKeywords(from text: String) async throws -> KeywordExtraction {
+  private func extractKeywords(from text: String) async throws -> [SymbolRootIndex.WeightedKeyword] {
+    switch generation {
+    case .os26: try await extractKeywordsOS26(from: text)
+    case .os27: try await extractKeywordsOS27(from: text)
+    }
+  }
+
+  private func extractKeywordsOS26(from text: String) async throws -> [SymbolRootIndex.WeightedKeyword] {
     let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
     let session = LanguageModelSession(model: model, instructions: """
       You generate English search keywords used to look up an icon for the user's text.
@@ -209,7 +270,63 @@ public struct SymbolRecommender: Sendable {
       generating: KeywordExtraction.self,
       options: GenerationOptions(sampling: .greedy)
     )
-    return response.content
+    let extraction = response.content
+
+    var weighted: [SymbolRootIndex.WeightedKeyword] = []
+    for (position, keyword) in extraction.subject.prefix(3).enumerated() {
+      weighted.append(.init(text: keyword, weight: 2.0 / (1.0 + Double(position) * 0.3)))
+    }
+    for (position, keyword) in extraction.related.prefix(10).enumerated() {
+      weighted.append(.init(text: keyword, weight: 1.0 / (1.0 + Double(position) * 0.15)))
+    }
+    return weighted
+  }
+
+  private func extractKeywordsOS27(from text: String) async throws -> [SymbolRootIndex.WeightedKeyword] {
+    let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
+    let session = LanguageModelSession(model: model, instructions: """
+      You suggest icons for the user's text, which describes an app, a project or a thing.
+      The text can be in any language; always answer in English.
+      Suggest pictures of concrete objects. The first icons show the topic itself; the later ones show things that are typical for it.
+      Never suggest generic software words such as: app, application, software, project, tool, system, platform, service, mobile, tracker, manager, screen, window, button.
+      """)
+    let response = try await session.respond(
+      to: String(text.prefix(600)),
+      generating: IconSuggestion.self,
+      options: GenerationOptions(sampling: .greedy, maximumResponseTokens: Self.maximumResponseTokensOS27)
+    )
+    let suggestion = response.content
+
+    // The model can repeat a suggestion; a repeat must not count twice.
+    var weighted: [SymbolRootIndex.WeightedKeyword] = []
+    var seen = Set<String>()
+    func add(_ keyword: String, weight: Double) {
+      let key = keyword.lowercased().trimmingCharacters(in: .whitespaces)
+      guard !key.isEmpty, seen.insert(key).inserted else { return }
+      weighted.append(.init(text: key, weight: weight))
+    }
+    add(suggestion.topic, weight: 2.0)
+    for (position, icon) in suggestion.icons.enumerated() {
+      add(icon, weight: 1.5 / (1.0 + Double(position) * 0.15))
+    }
+    return weighted
+  }
+
+  /// The retrieval settings that each generation's prompts were tuned with.
+  static func searchOptions(for generation: ModelGeneration) -> SymbolRootIndex.SearchOptions {
+    switch generation {
+    case .os26:
+      SymbolRootIndex.SearchOptions()
+    case .os27:
+      SymbolRootIndex.SearchOptions(
+        maxPerFamily: 3, joinsCompounds: true, ignoresStopWords: true,
+        joinsHyphenatedWords: true,
+        additionalAliases: SymbolRootIndex.aliasAdditionsOS27)
+    }
+  }
+
+  private var searchOptions: SymbolRootIndex.SearchOptions {
+    Self.searchOptions(for: generation)
   }
 
   // MARK: - Stage 2: pick
@@ -221,6 +338,84 @@ public struct SymbolRecommender: Sendable {
   }
 
   private func pickSymbol(query: String, candidates: [SymbolRootIndex.Root]) async throws -> IconPick {
+    switch generation {
+    case .os26: try await pickSymbolOS26(query: query, candidates: candidates)
+    case .os27: try await pickSymbolOS27(query: query, candidates: candidates)
+    }
+  }
+
+  /// How many of the best candidates the model chooses from; `nil` is all
+  /// of them.
+  static func pickListLength(for generation: ModelGeneration) -> Int? {
+    switch generation {
+    case .os26: nil
+    case .os27: 6
+    }
+  }
+
+  private func pickList(from candidates: [SymbolRootIndex.Root]) -> [SymbolRootIndex.Root] {
+    Self.pickListLength(for: generation).map { Array(candidates.prefix($0)) } ?? candidates
+  }
+
+  /// A string in a schema has no length limit, and the macOS 27 model
+  /// sometimes does not stop: a pick that opened a quotation in its reason
+  /// wrote until the context window was full, after 64 seconds. The pick
+  /// prompt forbids quotation marks for this reason. Both answers are
+  /// short, so this limit only ends a response that went wrong.
+  private static let maximumResponseTokensOS27 = 200
+
+  /// The macOS 27 model often takes a candidate from the end of a long
+  /// list, where the matches are weak. It gets a short list
+  /// (`pickListLength`) and one decision: the alternates come from the
+  /// retrieval order.
+  private func pickSymbolOS27(query: String, candidates: [SymbolRootIndex.Root]) async throws -> IconPick {
+    let nameSchema = DynamicGenerationSchema(name: "SymbolName", anyOf: candidates.map(\.name))
+    let schema = try GenerationSchema(
+      root: DynamicGenerationSchema(name: "IconPick", properties: [
+        .init(name: "best", description: "The single icon that most directly depicts the request", schema: nameSchema),
+        .init(name: "reason", description: "One short sentence (max 20 words) explaining why `best` fits", schema: DynamicGenerationSchema(type: String.self)),
+      ]),
+      dependencies: []
+    )
+
+    let list = candidates
+      .map { root in
+        let terms = root.terms.prefix(5)
+        return terms.isEmpty ? "- \(root.name)" : "- \(root.name) (\(terms.joined(separator: ", ")))"
+      }
+      .joined(separator: "\n")
+
+    let prompt = """
+      Choose the best icon for this user request.
+
+      ## User request
+      \(String(query.prefix(600)))
+
+      ## Available icons (name, then hints), ordered by relevance
+      \(list)
+
+      Rules: choose the icon that a designer would use as the app icon or tab icon for this request. \
+      It must show the request's main subject, not a detail of it. \
+      Prefer short, simple names. Earlier icons in the list are better matches. \
+      Write `reason` in \(reasonLanguage(for: query)), in plain words without quotation marks.
+      """
+
+    let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
+    let session = LanguageModelSession(model: model)
+    let response = try await session.respond(
+      to: prompt,
+      schema: schema,
+      options: GenerationOptions(sampling: .greedy, maximumResponseTokens: Self.maximumResponseTokensOS27)
+    )
+    let content = response.content
+    return IconPick(
+      best: try content.value(String.self, forProperty: "best"),
+      alternates: [],
+      reason: try content.value(String.self, forProperty: "reason")
+    )
+  }
+
+  private func pickSymbolOS26(query: String, candidates: [SymbolRootIndex.Root]) async throws -> IconPick {
     let candidateNames = candidates.map(\.name)
     let nameSchema = DynamicGenerationSchema(name: "SymbolName", anyOf: candidateNames)
     let alternatesSchema = DynamicGenerationSchema(
@@ -292,7 +487,7 @@ public struct SymbolRecommender: Sendable {
       """
     let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
     let session = LanguageModelSession(model: model)
-    let response = try await session.respond(to: prompt, options: GenerationOptions(sampling: .greedy))
+    let response = try await session.respond(to: prompt, options: plainTextPickOptions)
     let lines = response.content
       .split(separator: "\n", omittingEmptySubsequences: true)
       .map { $0.trimmingCharacters(in: .whitespaces) }
@@ -304,6 +499,15 @@ public struct SymbolRecommender: Sendable {
       throw GlyphonError.recommendationFailed("plain-text pick not in candidates: \(rawName)")
     }
     return IconPick(best: rawName, alternates: [], reason: lines.count > 1 ? lines[1] : "")
+  }
+
+  private var plainTextPickOptions: GenerationOptions {
+    switch generation {
+    case .os26:
+      GenerationOptions(sampling: .greedy)
+    case .os27:
+      GenerationOptions(sampling: .greedy, maximumResponseTokens: Self.maximumResponseTokensOS27)
+    }
   }
 
   /// Name the query's language in English so the prompt can demand the
@@ -321,7 +525,7 @@ public struct SymbolRecommender: Sendable {
       .split { !$0.isLetter && !$0.isNumber }
       .prefix(12)
       .map { SymbolRootIndex.WeightedKeyword(text: String($0), weight: 1.0) }
-    let hits = index.search(keywords: Array(words), limit: 5)
+    let hits = index.search(keywords: Array(words), limit: 5, options: searchOptions)
     guard !hits.isEmpty else {
       let fallback = database.symbol(named: "sparkles") ?? database.symbols[0]
       return SymbolRecommendation(symbol: fallback, reason: "", isLucky: false, usedAI: false)

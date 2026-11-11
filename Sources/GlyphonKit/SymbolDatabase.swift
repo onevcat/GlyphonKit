@@ -5,17 +5,34 @@ public final class SymbolDatabase: Sendable {
   public let symbols: [SymbolEntry]
   private let byName: [String: SymbolEntry]
   private let invertedIndex: [String: [Int]]
+  /// Old name -> new name, for renamed symbols whose new name is in the
+  /// database.
+  private let replacements: [String: String]
 
   public var count: Int { symbols.count }
 
-  public init(symbols: [SymbolEntry]) {
+  public convenience init(symbols: [SymbolEntry]) {
+    self.init(symbols: symbols, replacements: [:])
+  }
+
+  init(symbols: [SymbolEntry], replacements: [String: String]) {
     self.symbols = symbols
+    self.replacements = replacements
     self.byName = Dictionary(uniqueKeysWithValues: symbols.map { ($0.name, $0) })
     self.invertedIndex = Self.buildIndex(symbols)
   }
 
   public func symbol(named name: String) -> SymbolEntry? {
     byName[name]
+  }
+
+  /// The name that the running system uses for a symbol.
+  ///
+  /// SF Symbols releases rename symbols and keep the old names as aliases.
+  /// For an old name whose new name is in the database, this is the new
+  /// name. For all other names it is the name itself.
+  public func currentName(for name: String) -> String {
+    replacements[name] ?? name
   }
 
   /// Returns symbol indices matching the given term via the inverted index.
@@ -25,19 +42,40 @@ public final class SymbolDatabase: Sendable {
 
   // MARK: - Loading
 
+  static var bundledURL: URL? {
+    Bundle.module.url(forResource: "symbols", withExtension: "json")
+  }
+
   /// Load from the bundled symbols.json resource.
+  ///
+  /// Symbols that the running system does not have are left out, so every
+  /// symbol in the database can be drawn.
   public static func bundled() throws -> SymbolDatabase {
-    guard let url = Bundle.module.url(forResource: "symbols", withExtension: "json") else {
+    guard let url = bundledURL else {
       throw GlyphonError.resourceNotFound
     }
     return try load(from: url)
   }
 
   /// Load from a JSON file at the given URL.
+  ///
+  /// If the file has release data, symbols that the running system does
+  /// not have are left out.
   public static func load(from url: URL) throws -> SymbolDatabase {
+    try load(from: url, systemVersion: ProcessInfo.processInfo.operatingSystemVersion)
+  }
+
+  static func load(
+    from url: URL,
+    platform: String = SymbolAvailability.currentPlatform,
+    systemVersion: OperatingSystemVersion
+  ) throws -> SymbolDatabase {
     let data = try Data(contentsOf: url)
-    let wrapper = try JSONDecoder().decode(SymbolsFile.self, from: data)
-    return SymbolDatabase(symbols: wrapper.symbols)
+    let file = try JSONDecoder().decode(SymbolsFile.self, from: data)
+    let unavailableYears = file.releases.map {
+      SymbolAvailability(releases: $0).unavailableYears(platform: platform, version: systemVersion)
+    } ?? []
+    return file.database(withoutYears: unavailableYears)
   }
 
   // MARK: - Indexing
@@ -193,5 +231,85 @@ public final class SymbolDatabase: Sendable {
 struct SymbolsFile: Codable {
   let version: String
   let count: Int
+  /// Release year -> platform name -> the first system version with the
+  /// symbols of that year. Files from before SF Symbols 2026 do not have it.
+  let releases: [String: [String: String]]?
+  /// Old name -> new name of the renamed symbols. An old name stays a
+  /// symbol of its own, but the data has no terms or categories for it.
+  let aliases: [String: String]?
   let symbols: [SymbolEntry]
+
+  private static let whatsNew = "whatsnew"
+
+  /// The database of a system that does not have the symbols of
+  /// `unavailableYears`.
+  func database(withoutYears unavailableYears: Set<String>) -> SymbolDatabase {
+    guard !unavailableYears.isEmpty else {
+      return SymbolDatabase(symbols: symbols, replacements: aliases ?? [:])
+    }
+
+    let unavailable = Dictionary(
+      uniqueKeysWithValues: symbols.lazy.filter { unavailableYears.contains($0.year) }.map { ($0.name, $0) })
+    var available = symbols.filter { !unavailableYears.contains($0.year) }
+    var replacements: [String: String] = [:]
+
+    // On this system, an old name whose new name is not available is the
+    // only name of the symbol. Give it the metadata that moved to the new
+    // name, or it cannot be found by term or category. A symbol can have
+    // several old names; only the newest had the metadata before the
+    // rename.
+    var years: [String: String] = [:]
+    for symbol in available {
+      years[symbol.name] = symbol.year
+    }
+    var oldNames: [String: [String]] = [:]
+    for (old, new) in aliases ?? [:] {
+      if unavailable[new] != nil {
+        oldNames[new, default: []].append(old)
+      } else {
+        replacements[old] = new
+      }
+    }
+    var inherited: [String: SymbolEntry] = [:]
+    for (new, olds) in oldNames {
+      let known = olds.filter { years[$0] != nil }
+      guard let newest = known.map({ years[$0]! }).max(by: { SymbolYear.compare($0, $1) == .orderedAscending }) else {
+        continue
+      }
+      for old in known where years[old] == newest {
+        inherited[old] = unavailable[new]
+      }
+    }
+    if !inherited.isEmpty {
+      available = available.map { symbol in
+        guard let target = inherited[symbol.name], symbol.terms.isEmpty, symbol.categories.isEmpty else {
+          return symbol
+        }
+        return SymbolEntry(
+          name: symbol.name,
+          year: symbol.year,
+          categories: target.categories.filter { $0 != Self.whatsNew },
+          terms: target.terms
+        )
+      }
+    }
+
+    // The data marks only its own newest release as "whatsnew". A system
+    // without that release still has a newest release of its own.
+    if !available.contains(where: { $0.categories.contains(Self.whatsNew) }),
+       let newest = available.map(\.year).max(by: { SymbolYear.compare($0, $1) == .orderedAscending }) {
+      let major = newest.prefix { $0 != "." }
+      available = available.map { symbol in
+        guard symbol.year.prefix(while: { $0 != "." }) == major else { return symbol }
+        return SymbolEntry(
+          name: symbol.name,
+          year: symbol.year,
+          categories: symbol.categories + [Self.whatsNew],
+          terms: symbol.terms
+        )
+      }
+    }
+
+    return SymbolDatabase(symbols: available, replacements: replacements)
+  }
 }

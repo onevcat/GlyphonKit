@@ -10,6 +10,14 @@ struct CaseScore: Codable {
   let alternateHitRatio: Double
   let reason: String
   let keywords: [String]
+  let keywordWeights: [Double]?
+  let candidates: [String]?
+  let candidateScores: [Double]?
+  /// The best score that the model could get: the best candidate that it
+  /// could choose from.
+  let candidateCeiling: Double?
+  /// The best score among all retrieved candidates.
+  let retrievalCeiling: Double?
   let candidateCount: Int
   let usedFallback: Bool
   let totalSeconds: Double
@@ -25,11 +33,18 @@ struct EvalReport: Codable {
   let fallbackRate: Double
   let meanAlternateHitRatio: Double
   let meanSeconds: Double
+  /// The means over the cases that report candidates.
+  let meanCandidateCeiling: Double?
+  let meanRetrievalCeiling: Double?
   let cases: [CaseScore]
 }
 
-func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> CaseScore {
-  let pickScore = matchScore(name: result.pickName, expected: evalCase.expected)
+func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, database: SymbolDatabase) -> CaseScore {
+  let pickScore = matchScore(name: result.pickName, expected: evalCase.expected, database: database)
+
+  func ceiling(of names: [String]) -> Double? {
+    names.map { matchScore(name: $0, expected: evalCase.expected, database: database) }.max()
+  }
 
   let pickRoot = SymbolDatabase.semanticRoot(of: result.pickName)
   var seenRoots: Set<String> = [pickRoot]
@@ -40,7 +55,7 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> 
     guard !seenRoots.contains(root) else { continue }
     seenRoots.insert(root)
     counted += 1
-    if matchScore(name: alternate, expected: evalCase.expected) > 0 {
+    if matchScore(name: alternate, expected: evalCase.expected, database: database) > 0 {
       hits += 1
     }
   }
@@ -55,17 +70,28 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double) -> 
     alternateHitRatio: ratio,
     reason: result.reason,
     keywords: result.keywords,
+    keywordWeights: result.keywordWeights.isEmpty ? nil : result.keywordWeights,
+    candidates: result.candidates.isEmpty ? nil : result.candidates,
+    candidateScores: result.candidateScores.isEmpty ? nil : result.candidateScores,
+    candidateCeiling: ceiling(of: result.pickList.isEmpty ? result.candidates : result.pickList),
+    retrievalCeiling: ceiling(of: result.candidates),
     candidateCount: result.candidateCount,
     usedFallback: result.usedFallback,
     totalSeconds: seconds
   )
 }
 
-func matchScore(name: String, expected: [ExpectedSymbol]) -> Double {
-  let root = SymbolDatabase.semanticRoot(of: name)
+/// A label and a pick match by semantic root. A renamed symbol matches
+/// under its old and its new name, so the labels do not depend on the
+/// release that the symbol data comes from.
+func matchScore(name: String, expected: [ExpectedSymbol], database: SymbolDatabase) -> Double {
+  func canonical(_ name: String) -> String {
+    database.currentName(for: SymbolDatabase.semanticRoot(of: name))
+  }
+  let pick = canonical(name)
   var best = 0.0
   for candidate in expected {
-    if candidate.root == name || candidate.root == root {
+    if candidate.root == name || canonical(candidate.root) == pick {
       best = max(best, candidate.weight)
     }
   }
@@ -80,6 +106,8 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
   let fallback = Double(scores.filter(\.usedFallback).count) / max(count, 1)
   let altMean = scores.map(\.alternateHitRatio).reduce(0, +) / max(count, 1)
   let secMean = scores.map(\.totalSeconds).reduce(0, +) / max(count, 1)
+  let ceilings = scores.compactMap(\.candidateCeiling)
+  let retrievalCeilings = scores.compactMap(\.retrievalCeiling)
   return EvalReport(
     variant: variant,
     dataset: dataset,
@@ -90,6 +118,10 @@ func buildReport(variant: String, dataset: String, scores: [CaseScore]) -> EvalR
     fallbackRate: fallback,
     meanAlternateHitRatio: altMean,
     meanSeconds: secMean,
+    meanCandidateCeiling: ceilings.isEmpty ? nil : ceilings.reduce(0, +) / Double(ceilings.count),
+    meanRetrievalCeiling: retrievalCeilings.isEmpty
+      ? nil
+      : retrievalCeilings.reduce(0, +) / Double(retrievalCeilings.count),
     cases: scores
   )
 }
@@ -100,13 +132,14 @@ private func pad(_ text: String, _ width: Int) -> String {
 
 func printReport(_ report: EvalReport) {
   print("")
-  print("\(pad("case", 28)) \(pad("score", 5))  \(pad("pick", 34)) alt-hit")
+  print("\(pad("case", 28)) \(pad("score", 5))  \(pad("pick", 34)) alt-hit  ceiling")
   print(String(repeating: "-", count: 84))
   for score in report.cases {
     let flag = score.usedFallback ? " [FB]" : ""
     let scoreText = String(format: "%5.2f", score.pickScore)
     let ratioText = String(format: "%4.2f", score.alternateHitRatio)
-    print("\(pad(score.id, 28)) \(scoreText)  \(pad(score.pick, 34)) \(ratioText)\(flag)")
+    let ceilingText = score.candidateCeiling.map { String(format: "%4.2f", $0) } ?? "   -"
+    print("\(pad(score.id, 28)) \(scoreText)  \(pad(score.pick, 34)) \(ratioText)     \(ceilingText)\(flag)")
   }
   print(String(repeating: "-", count: 84))
   print("variant=\(report.variant) dataset=\(report.dataset)")
@@ -117,4 +150,10 @@ func printReport(_ report: EvalReport) {
   print(String(format: "fallbackRate      %.1f%%", report.fallbackRate * 100))
   print(String(format: "altHitRatio       %.3f", report.meanAlternateHitRatio))
   print(String(format: "meanSeconds       %.2f", report.meanSeconds))
+  if let ceiling = report.meanCandidateCeiling {
+    print(String(format: "candidateCeiling  %.3f", ceiling))
+  }
+  if let ceiling = report.meanRetrievalCeiling {
+    print(String(format: "retrievalCeiling  %.3f", ceiling))
+  }
 }

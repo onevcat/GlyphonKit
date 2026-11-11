@@ -1,6 +1,6 @@
 import Foundation
 import FoundationModels
-import GlyphonKit
+@testable import GlyphonKit
 
 @main
 struct EvalMain {
@@ -19,6 +19,8 @@ struct EvalMain {
         try validateDataset(args)
       case "run":
         try await runEval(args)
+      case "replay":
+        try replay(args)
       case "query":
         try await runSingleQuery(args)
       default:
@@ -30,6 +32,74 @@ struct EvalMain {
     }
   }
 
+  /// Retrieval only, from the keywords and weights of an earlier `prod`
+  /// report: no model call, so a retrieval setting can be compared in
+  /// seconds. Experimental options come from `--set key=value,...`.
+  static func replay(_ args: [String]) throws {
+    guard let reportPath = option("report", in: args), let datasetPath = option("dataset", in: args) else {
+      printUsage()
+      return
+    }
+    var settings: [String: String] = [:]
+    for pair in (option("set", in: args) ?? "").split(separator: ",") {
+      let parts = pair.split(separator: "=", maxSplits: 1)
+      guard let key = parts.first else { continue }
+      settings[String(key)] = parts.count > 1 ? String(parts[1]) : "1"
+    }
+    func number(_ key: String, _ fallback: Double) throws -> Double {
+      guard let text = settings[key] else { return fallback }
+      guard let value = Double(text), value.isFinite else {
+        throw GlyphonError.recommendationFailed("setting \(key) is not a number: \(text)")
+      }
+      return value
+    }
+
+    let database = try SymbolDatabase.bundled()
+    let dataset = try EvalDataset.load(from: datasetPath)
+    let report = try JSONDecoder().decode(EvalReport.self, from: Data(contentsOf: URL(fileURLWithPath: reportPath)))
+    let cases = Dictionary(report.cases.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+    let index = SymbolRootIndex(database: database, mergesDuplicates: true)
+
+    var options = SymbolRecommender.searchOptions(for: .os27)
+    options.maxPerFamily = Int(try number("cap", Double(options.maxPerFamily ?? 3)))
+    if settings["nocompounds"] != nil { options.joinsCompounds = false }
+    if settings["nostopwords"] != nil { options.ignoresStopWords = false }
+    if settings["nohyphens"] != nil { options.joinsHyphenatedWords = false }
+    if settings["noaliases"] != nil { options.additionalAliases = [:] }
+
+    let counts = [1, 2, 3, 6, 25]
+    var sums = Dictionary(uniqueKeysWithValues: counts.map { ($0, 0.0) })
+    var replayed = 0
+    var lines: [String] = []
+    for evalCase in dataset.cases {
+      guard
+        let reported = cases[evalCase.id],
+        let weights = reported.keywordWeights,
+        weights.count == reported.keywords.count,
+        !weights.isEmpty
+      else { continue }
+      let weighted = zip(reported.keywords, weights).map { SymbolRootIndex.WeightedKeyword(text: $0, weight: $1) }
+      let names = index.search(keywords: weighted, limit: 25, options: options).map(\.name)
+      let scores = names.map { matchScore(name: $0, expected: evalCase.expected, database: database) }
+      for count in counts {
+        sums[count]! += scores.prefix(count).max() ?? 0
+      }
+      replayed += 1
+      lines.append("\(evalCase.id) \(String(format: "%.1f", scores.first ?? 0)) \(names.prefix(6).joined(separator: " "))")
+    }
+    guard replayed > 0 else {
+      throw GlyphonError.recommendationFailed(
+        "no case of the dataset has keywords and weights in the report (wrong report, or a report from before `keywordWeights`)")
+    }
+    print(counts.map { "top\($0) \(String(format: "%.3f", sums[$0]! / Double(replayed)))" }.joined(separator: " | "))
+    if replayed < dataset.cases.count {
+      print("replayed \(replayed) of \(dataset.cases.count) cases; the others have no keywords in the report")
+    }
+    if settings["v"] != nil {
+      lines.forEach { print($0) }
+    }
+  }
+
   static func printUsage() {
     print("""
       usage:
@@ -37,6 +107,7 @@ struct EvalMain {
         recommender-eval validate --dataset <path>
         recommender-eval run --variant <name> --dataset <path> [--only <id>] [--limit N] [--out <path>]
         recommender-eval query --variant <name> --text <query>
+        recommender-eval replay --report <prod report> --dataset <path> [--set cap=3,nocompounds,nostopwords,nohyphens,noaliases,v]
       """)
   }
 
@@ -101,7 +172,7 @@ struct EvalMain {
       do {
         let result = try await variant.recommend(query: evalCase.query, database: database, engine: engine)
         let seconds = Date().timeIntervalSince(start)
-        let score = scoreCase(evalCase, result: result, seconds: seconds)
+        let score = scoreCase(evalCase, result: result, seconds: seconds, database: database)
         scores.append(score)
         let mark = score.pickScore >= 0.99 ? "✓" : score.pickScore > 0 ? "~" : "✗"
         print("[\(index + 1)/\(cases.count)] \(mark) \(evalCase.id): \(result.pickName) (\(String(format: "%.2f", score.pickScore)))")
@@ -110,7 +181,8 @@ struct EvalMain {
         scores.append(scoreCase(
           evalCase,
           result: VariantResult(pickName: "<error>", alternates: [], reason: "\(error)"),
-          seconds: Date().timeIntervalSince(start)
+          seconds: Date().timeIntervalSince(start),
+          database: database
         ))
       }
     }
@@ -139,7 +211,7 @@ struct EvalMain {
     let engine = SymbolSearchEngine(database: database)
     let result = try await variant.recommend(query: text, database: database, engine: engine)
     print("keywords:   \(result.keywords)")
-    print("candidates: \(result.candidateCount)")
+    print("candidates: \(result.candidateCount) \(result.candidates)")
     print("pick:       \(result.pickName)")
     print("alternates: \(result.alternates)")
     print("reason:     \(result.reason)")

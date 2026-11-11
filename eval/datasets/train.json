@@ -133,9 +133,21 @@
         {
           "root": "checkmark",
           "weight": 0.5
+        },
+        {
+          "root": "list.clipboard",
+          "weight": 0.8
+        },
+        {
+          "root": "checklist.checked",
+          "weight": 0.9
+        },
+        {
+          "root": "checklist.unchecked",
+          "weight": 0.9
         }
       ],
-      "notes": null
+      "notes": "list.clipboard is the same picture as list.bullet.clipboard; checklist.checked/unchecked are the checklist drawn in one state."
     },
     {
       "id": "en-finance",
@@ -169,9 +181,13 @@
         {
           "root": "dollarsign.bank.building",
           "weight": 0.5
+        },
+        {
+          "root": "wallet.pass",
+          "weight": 0.7
         }
       ],
-      "notes": "Money-related terms are sparse in the DB (dollarsign has only currency/currencies)."
+      "notes": "Money-related terms are sparse in the DB (dollarsign has only currency/currencies). A wallet, less iconic than wallet.bifold."
     },
     {
       "id": "en-music",
@@ -297,9 +313,17 @@
         {
           "root": "tray",
           "weight": 0.4
+        },
+        {
+          "root": "envelope.badge",
+          "weight": 0.8
+        },
+        {
+          "root": "mail",
+          "weight": 0.6
         }
       ],
-      "notes": null
+      "notes": "envelope.badge is the envelope with an unread badge. mail is the mail stack picture: on topic, less iconic than the envelope."
     },
     {
       "id": "en-password",
@@ -365,9 +389,29 @@
         {
           "root": "person.2",
           "weight": 0.4
+        },
+        {
+          "root": "bubble",
+          "weight": 0.8
+        },
+        {
+          "root": "ellipsis.message",
+          "weight": 0.7
+        },
+        {
+          "root": "rectangle.3.group.bubble",
+          "weight": 0.6
+        },
+        {
+          "root": "person.bubble",
+          "weight": 0.6
+        },
+        {
+          "root": "person.3",
+          "weight": 0.4
         }
       ],
-      "notes": null
+      "notes": "The plain bubble and the typing message show chat directly; the group bubble and person.bubble show team chat less iconically; person.3 shows only the team, like person.2."
     },
     {
       "id": "en-reading",
@@ -429,9 +473,21 @@
         {
           "root": "timer",
           "weight": 0.4
+        },
+        {
+          "root": "book.pages",
+          "weight": 0.5
+        },
+        {
+          "root": "book",
+          "weight": 0.5
+        },
+        {
+          "root": "clock",
+          "weight": 0.2
         }
       ],
-      "notes": null
+      "notes": "A book stands for the recipe collection (a cookbook). A clock is only a loose stand-in for the timer, which is itself the secondary subject."
     },
     {
       "id": "en-travel",
@@ -497,9 +553,13 @@
         {
           "root": "gauge.with.needle",
           "weight": 0.4
+        },
+        {
+          "root": "wrench",
+          "weight": 0.6
         }
       ],
-      "notes": null
+      "notes": "A plain wrench is a maintenance tool without the car, the same as wrench.adjustable."
     },
     {
       "id": "en-proj-dogcare",
@@ -565,9 +625,17 @@
         {
           "root": "arrow.trianglehead.2.clockwise.rotate.90",
           "weight": 0.5
+        },
+        {
+          "root": "arrow.clockwise.icloud",
+          "weight": 0.9
+        },
+        {
+          "root": "externaldrive.badge.icloud",
+          "weight": 0.6
         }
       ],
-      "notes": null
+      "notes": "arrow.clockwise.icloud is a cloud with a sync arrow. externaldrive.badge.icloud shows storage that goes to the cloud, without the sync."
     },
     {
       "id": "en-proj-notes",
@@ -605,9 +673,13 @@
         {
           "root": "link",
           "weight": 0.4
+        },
+        {
+          "root": "note",
+          "weight": 0.9
         }
       ],
-      "notes": null
+      "notes": "note is note.text without the text lines."
     },
     {
       "id": "en-proj-game",
@@ -637,9 +709,21 @@
         {
           "root": "die.face.5",
           "weight": 0.3
+        },
+        {
+          "root": "formfitting.gamecontroller",
+          "weight": 0.9
+        },
+        {
+          "root": "arcade.stick.and.arrow.up",
+          "weight": 0.6
+        },
+        {
+          "root": "dice",
+          "weight": 0.3
         }
       ],
-      "notes": null
+      "notes": "formfitting.gamecontroller is a game controller. The arcade stick with a direction arrow is the arcade stick with an extra element. dice is a game, but not a video game (the same as die.face.5)."
     },
     {
       "id": "en-proj-ml",
@@ -713,9 +797,25 @@
         {
           "root": "text.document",
           "weight": 0.4
+        },
+        {
+          "root": "richtext.page",
+          "weight": 0.8
+        },
+        {
+          "root": "long.text.page.and.pencil",
+          "weight": 0.6
+        },
+        {
+          "root": "pencil",
+          "weight": 0.3
+        },
+        {
+          "root": "text.page",
+          "weight": 0.4
         }
       ],
-      "notes": "Inherently ambiguous; several answers are acceptable but none perfect."
+      "notes": "Inherently ambiguous; several answers are acceptable but none perfect. richtext.page is the newer drawing of doc.richtext. long.text.page.and.pencil shows writing a long text, close to square.and.pencil. A pencil alone is only writing. text.page is a page of text, the same as doc.text."
     },
     {
       "id": "en-proj-health",
@@ -793,9 +893,17 @@
         {
           "root": "list.bullet.clipboard",
           "weight": 0.4
+        },
+        {
+          "root": "wallet.pass",
+          "weight": 0.7
+        },
+        {
+          "root": "receipt",
+          "weight": 0.5
         }
       ],
-      "notes": "Chinese input must be translated before retrieval can work."
+      "notes": "Chinese input must be translated before retrieval can work. A wallet, less iconic than wallet.bifold. A receipt shows the expenses that the app records."
     },
     {
       "id": "zh-dog",
@@ -981,9 +1089,13 @@
         {
           "root": "sparkles",
           "weight": 0.4
+        },
+        {
+          "root": "brain",
+          "weight": 0.4
         }
       ],
-      "notes": null
+      "notes": "The mind, less direct than brain.head.profile."
     },
     {
       "id": "de-bike",
@@ -1073,9 +1185,17 @@
         {
           "root": "wind",
           "weight": 0.5
+        },
+        {
+          "root": "tachometer",
+          "weight": 0.8
+        },
+        {
+          "root": "gauge.with.dots.needle.67percent",
+          "weight": 0.8
         }
       ],
-      "notes": "Abstract single word."
+      "notes": "Abstract single word. Both are speed gauges, like speedometer and gauge.with.needle."
     },
     {
       "id": "en-ai",
@@ -1112,6 +1232,278 @@
         }
       ],
       "notes": null
+    },
+    {
+      "id": "en-pomodoro",
+      "query": "pomodoro focus timer",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "timer",
+          "weight": 1.0
+        },
+        {
+          "root": "hourglass",
+          "weight": 0.8
+        },
+        {
+          "root": "stopwatch",
+          "weight": 0.7
+        },
+        {
+          "root": "alarm",
+          "weight": 0.6
+        },
+        {
+          "root": "clock",
+          "weight": 0.4
+        },
+        {
+          "root": "brain.head.profile",
+          "weight": 0.3
+        }
+      ],
+      "notes": "The head noun is the last word: the subject is the timer, not focus. Added for the macOS 27 model, which follows the first words."
+    },
+    {
+      "id": "en-heart-monitor",
+      "query": "heart rate monitor",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "waveform.path.ecg",
+          "weight": 1.0
+        },
+        {
+          "root": "heart",
+          "weight": 0.9
+        },
+        {
+          "root": "heart.text.square",
+          "weight": 0.8
+        },
+        {
+          "root": "bolt.heart",
+          "weight": 0.8
+        },
+        {
+          "root": "stethoscope",
+          "weight": 0.4
+        }
+      ],
+      "notes": "A device-type word (monitor) must not pull in displays."
+    },
+    {
+      "id": "en-dashcam",
+      "query": "dash cam recorder for road trips",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "video",
+          "weight": 1.0
+        },
+        {
+          "root": "web.camera",
+          "weight": 0.7
+        },
+        {
+          "root": "car",
+          "weight": 0.6
+        },
+        {
+          "root": "camera",
+          "weight": 0.6
+        },
+        {
+          "root": "record.circle",
+          "weight": 0.6
+        },
+        {
+          "root": "road.lanes",
+          "weight": 0.4
+        }
+      ],
+      "notes": "A camera that records video: a photo camera is only acceptable."
+    },
+    {
+      "id": "en-trail-camera",
+      "query": "wildlife trail camera viewer",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "video",
+          "weight": 0.8
+        },
+        {
+          "root": "web.camera",
+          "weight": 0.8
+        },
+        {
+          "root": "camera",
+          "weight": 0.8
+        },
+        {
+          "root": "binoculars",
+          "weight": 0.5
+        },
+        {
+          "root": "pawprint",
+          "weight": 0.5
+        },
+        {
+          "root": "tree",
+          "weight": 0.4
+        },
+        {
+          "root": "photo",
+          "weight": 0.4
+        }
+      ],
+      "notes": "Compound subject (trail camera); the viewer part is generic."
+    },
+    {
+      "id": "en-crypto",
+      "query": "crypto portfolio tracker",
+      "lang": "en",
+      "expected": [
+        {
+          "root": "bitcoinsign",
+          "weight": 1.0
+        },
+        {
+          "root": "chart.line.uptrend.xyaxis",
+          "weight": 0.9
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.8
+        },
+        {
+          "root": "chart.bar",
+          "weight": 0.7
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.6
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.5
+        },
+        {
+          "root": "wallet.pass",
+          "weight": 0.5
+        }
+      ],
+      "notes": "Finance with a chart: the price chart or the coin, not a banknote."
+    },
+    {
+      "id": "de-dictionary",
+      "query": "Wörterbuch Deutsch-Englisch",
+      "lang": "de",
+      "expected": [
+        {
+          "root": "character.book.closed",
+          "weight": 1.0
+        },
+        {
+          "root": "translate",
+          "weight": 0.9
+        },
+        {
+          "root": "text.book.closed",
+          "weight": 0.8
+        },
+        {
+          "root": "book",
+          "weight": 0.7
+        },
+        {
+          "root": "character.bubble",
+          "weight": 0.6
+        },
+        {
+          "root": "globe",
+          "weight": 0.4
+        }
+      ],
+      "notes": "German compound noun: a book of words between two languages."
+    },
+    {
+      "id": "ja-budget",
+      "query": "家計簿アプリ",
+      "lang": "ja",
+      "expected": [
+        {
+          "root": "yensign",
+          "weight": 1.0
+        },
+        {
+          "root": "banknote",
+          "weight": 0.9
+        },
+        {
+          "root": "wallet.bifold",
+          "weight": 0.9
+        },
+        {
+          "root": "creditcard",
+          "weight": 0.7
+        },
+        {
+          "root": "chart.pie",
+          "weight": 0.7
+        },
+        {
+          "root": "dollarsign",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.3
+        },
+        {
+          "root": "receipt",
+          "weight": 0.5
+        }
+      ],
+      "notes": "A household account book: the subject is money, the book is only the form."
+    },
+    {
+      "id": "zh-podcast",
+      "query": "听播客和有声书",
+      "lang": "zh",
+      "expected": [
+        {
+          "root": "headphones",
+          "weight": 1.0
+        },
+        {
+          "root": "mic",
+          "weight": 0.8
+        },
+        {
+          "root": "waveform",
+          "weight": 0.7
+        },
+        {
+          "root": "antenna.radiowaves.left.and.right",
+          "weight": 0.6
+        },
+        {
+          "root": "book",
+          "weight": 0.5
+        },
+        {
+          "root": "play",
+          "weight": 0.4
+        },
+        {
+          "root": "airpods",
+          "weight": 0.4
+        }
+      ],
+      "notes": "Listening to podcasts and audiobooks: audio first."
     }
   ]
 }
