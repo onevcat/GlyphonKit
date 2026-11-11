@@ -11,6 +11,7 @@ struct CaseScore: Codable {
   let reason: String
   let keywords: [String]
   let candidates: [String]?
+  let candidateScores: [Double]?
   /// The best score that the model could get: the best candidate that it
   /// could choose from.
   let candidateCeiling: Double?
@@ -69,6 +70,7 @@ func scoreCase(_ evalCase: EvalCase, result: VariantResult, seconds: Double, dat
     reason: result.reason,
     keywords: result.keywords,
     candidates: result.candidates.isEmpty ? nil : result.candidates,
+    candidateScores: result.candidateScores.isEmpty ? nil : result.candidateScores,
     candidateCeiling: ceiling(of: result.pickList.isEmpty ? result.candidates : result.pickList),
     retrievalCeiling: ceiling(of: result.candidates),
     candidateCount: result.candidateCount,

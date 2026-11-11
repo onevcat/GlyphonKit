@@ -13,6 +13,8 @@ struct VariantResult {
   /// The part of `candidates` that the model could choose from (empty if
   /// it is all of them).
   var pickList: [String] = []
+  /// The retrieval scores of `candidates` (empty if not reported).
+  var candidateScores: [Double] = []
   var candidateCount: Int = 0
   var usedFallback: Bool = false
   var stageSeconds: [String: Double] = [:]

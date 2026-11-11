@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import GlyphonKit
 
@@ -153,6 +154,76 @@ struct SymbolRootIndexSearchOptionsTests {
     #expect(SymbolRootIndex.aliasAdditionsOS27.keys.allSatisfy { SymbolRootIndex.aliasMap[$0] == nil })
   }
 
+  @Test func wordShareExponentKeepsMoreWeightForEachWordOfAPhrase() {
+    // "memo" is half of a two-word keyword. With an equal share it loses
+    // against the second keyword; with the square-root share it wins.
+    let keywords = [("memo qqqq", 1.0), ("tasks", 0.4)]
+    #expect(names(keywords).first == "checklist")
+    #expect(names(keywords, options: .init(wordShareExponent: 0.5)).first == "text.pad.header")
+  }
+
+  @Test func additionalNoiseWordsAreIgnored() {
+    #expect(names([("memo", 1.0)]) == ["text.pad.header"])
+    #expect(names([("memo", 1.0)], options: .init(additionalNoiseWords: ["memo"])).isEmpty)
+  }
+
+  @Test func hyphenatedWordIsOneWordWhenItIsKnown() {
+    // "todo" has an alias entry; "to" and "do" do not name a to-do list.
+    #expect(names([("to-do", 1.0)]).isEmpty)
+    #expect(names([("to-do", 1.0)], options: .init(joinsHyphenatedWords: true)).first == "checklist")
+  }
+
+  @Test func exactNameGetsABonus() {
+    let keywords = [("tasks", 0.5), ("airpods", 0.45)]
+    #expect(names(keywords).first == "checklist")
+    #expect(names(keywords, options: .init(exactNameBonus: 0.3)).first == "airpods")
+  }
+
+  @Test func rootWithOnlyCrossedOutSymbolsIsLeftOutWhenDuplicatesAreMerged() {
+    let database = SymbolDatabase(symbols: [
+      SymbolEntry(name: "torch.slash", year: "2019", categories: [], terms: []),
+      SymbolEntry(name: "torch.slash.fill", year: "2019", categories: [], terms: []),
+      SymbolEntry(name: "torch.on.fill", year: "2019", categories: [], terms: []),
+      SymbolEntry(name: "lamp", year: "2019", categories: [], terms: []),
+      SymbolEntry(name: "lamp.slash", year: "2019", categories: [], terms: []),
+    ])
+    #expect(SymbolRootIndex(database: database).roots.map(\.name) == ["lamp", "torch", "torch.on"])
+    #expect(SymbolRootIndex(database: database, mergesDuplicates: true).roots.map(\.name) == ["lamp", "torch.on"])
+  }
+
+  @Test func everyAdditionalAliasTargetIsAWordOfTheSymbolData() {
+    let index = SymbolRootIndex(database: SymbolRootIndexTests.database, mergesDuplicates: true)
+    for (word, targets) in SymbolRootIndex.aliasAdditionsOS27 {
+      for target in targets {
+        let hits = index.search(keywords: [.init(text: target, weight: 1.0)], limit: 1)
+        #expect(!hits.isEmpty, "alias \(word) -> \(target) matches no symbol")
+      }
+    }
+  }
+
+  @Test func conceptWordsFindTheirRootOnlyWithAWeight() {
+    let index = SymbolRootIndex(database: Self.renamed, concepts: ["airpods": ["earphones", "wireless"]])
+    let keywords = [SymbolRootIndex.WeightedKeyword(text: "earphones", weight: 1.0)]
+    #expect(index.search(keywords: keywords, limit: 5).isEmpty)
+    #expect(index.search(keywords: keywords, limit: 5, options: .init(conceptWeight: 0.5)).map(\.name) == ["airpods"])
+    #expect(index.roots.first { $0.name == "airpods" }?.concepts == ["earphones", "wireless"])
+  }
+
+  @Test func conceptMatchCountsLessThanANameMatch() {
+    // `speaker` has the concept word; `message` has it as its name.
+    let index = SymbolRootIndex(database: Self.renamed, concepts: ["speaker": ["message"]])
+    let keywords = [SymbolRootIndex.WeightedKeyword(text: "message", weight: 1.0)]
+    #expect(index.search(keywords: keywords, limit: 5, options: .init(conceptWeight: 0.5)).map(\.name) == ["message", "speaker"])
+  }
+
+  @Test func scoredSearchGivesTheScoresInOrder() {
+    let index = SymbolRootIndex(database: Self.renamed)
+    let scored = index.scoredSearch(keywords: [.init(text: "audio", weight: 1.0)], limit: 5)
+    #expect(scored.map(\.root.name) == index.search(keywords: [.init(text: "audio", weight: 1.0)], limit: 5).map(\.name))
+    #expect(scored.map(\.score) == scored.map(\.score).sorted(by: >))
+    #expect(scored.allSatisfy { $0.score > 0 })
+  }
+
   @Test func stopWordFilterKeepsLoneStopWords() {
     let database = SymbolDatabase(symbols: [
       SymbolEntry(name: "at", year: "2019", categories: [], terms: []),
@@ -224,10 +295,16 @@ struct ModelGenerationSettingsTests {
   @Test func macOS26KeepsTheSettingsItWasTunedWith() {
     #expect(SymbolRecommender.searchOptions(for: .os26) == SymbolRootIndex.SearchOptions())
     #expect(SymbolRecommender.pickListLength(for: .os26) == nil)
+    #expect(SymbolRecommender.pickListScoreShare(for: .os26) == nil)
+    #expect(SymbolRecommender.searchOptions(for: .os26).conceptWeight == 0)
     let options = SymbolRootIndex.SearchOptions()
     #expect(options.maxPerFamily == nil)
     #expect(!options.joinsCompounds)
     #expect(!options.ignoresStopWords)
+    #expect(options.wordShareExponent == 1.0)
+    #expect(options.exactNameBonus == 0)
+    #expect(!options.joinsHyphenatedWords)
+    #expect(options.additionalNoiseWords.isEmpty)
     #expect(options.additionalAliases.isEmpty)
   }
 
@@ -236,8 +313,66 @@ struct ModelGenerationSettingsTests {
     #expect(options.maxPerFamily == 3)
     #expect(options.joinsCompounds)
     #expect(options.ignoresStopWords)
+    #expect(options.wordShareExponent == 0.5)
+    #expect(options.exactNameBonus == 0.3)
+    #expect(options.joinsHyphenatedWords)
+    #expect(options.additionalNoiseWords.contains("icon"))
     #expect(options.additionalAliases == SymbolRootIndex.aliasAdditionsOS27)
+    #expect(options.conceptWeight == 0.5)
     #expect(SymbolRecommender.pickListLength(for: .os27) == 6)
+    #expect(SymbolRecommender.pickListScoreShare(for: .os27) == 0.7)
+  }
+
+  private func roots(_ count: Int) -> [SymbolRootIndex.Root] {
+    (0..<count).map { number in
+      let entry = SymbolEntry(name: "symbol\(number)", year: "2019", categories: [], terms: [])
+      return SymbolRootIndex.Root(name: entry.name, displayEntry: entry, terms: [], tokens: [], phrases: [])
+    }
+  }
+
+  @Test func macOS27PickListHasOnlyTheCandidatesNearTheBestScore() {
+    let candidates = roots(8)
+    let close = SymbolRecommender.pickList(
+      from: candidates, scores: [1.0, 0.8, 0.7, 0.69, 0.9, 0.2, 0.1, 0.1], generation: .os27)
+    // The list stops at the first candidate below 70% of the best score.
+    #expect(close.map(\.name) == ["symbol0", "symbol1", "symbol2"])
+
+    let clear = SymbolRecommender.pickList(
+      from: candidates, scores: [1.0, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1], generation: .os27)
+    #expect(clear.map(\.name) == ["symbol0"])
+
+    let equal = SymbolRecommender.pickList(
+      from: candidates, scores: Array(repeating: 1.0, count: 8), generation: .os27)
+    #expect(equal.count == 6)
+  }
+
+  @Test func macOS26PickListHasAllCandidates() {
+    let candidates = roots(8)
+    let list = SymbolRecommender.pickList(
+      from: candidates, scores: [1.0, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1], generation: .os26)
+    #expect(list.count == 8)
+  }
+}
+
+@Suite("SymbolConcepts")
+struct SymbolConceptsTests {
+  @Test func bundledConceptsAreWordsOfKnownRoots() throws {
+    let concepts = SymbolConcepts.bundled
+    #expect(concepts.count > 1500)
+
+    // All releases, so that the check does not depend on the test system.
+    let url = try #require(SymbolDatabase.bundledURL)
+    let database = try SymbolDatabase.load(
+      from: url, platform: "macOS",
+      systemVersion: OperatingSystemVersion(majorVersion: 99, minorVersion: 0, patchVersion: 0))
+    let roots = Set(SymbolRootIndex(database: database).roots.map(\.name))
+    for (name, words) in concepts {
+      #expect(roots.contains(name), "\(name) is not a root")
+      #expect(!words.isEmpty)
+      for word in words {
+        #expect(word.allSatisfy { $0.isLowercase && $0.isLetter && $0.isASCII }, "\(name): \(word)")
+      }
+    }
   }
 }
 
