@@ -4,18 +4,18 @@
     {
       "alternateHitRatio" : 0.25,
       "alternates" : [
-        "swift",
         "book.closed",
         "binoculars",
+        "swift",
         "magazine"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
       "candidateScores" : [
         5.7508364159425405,
-        1.3273502691896257,
         1.2282886197236274,
         1.21875,
+        0.985724269932882,
         0.9130761148950408,
         0.7022898863968158,
         0.6536131914767872,
@@ -40,9 +40,9 @@
       ],
       "candidates" : [
         "bird",
-        "swift",
         "book.closed",
         "binoculars",
+        "swift",
         "magazine",
         "tree",
         "text.book.closed",
@@ -66,6 +66,15 @@
         "leaf.arrow.trianglehead.clockwise"
       ],
       "id" : "test-en-birdwatch",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "bird watching journal",
         "bird",
@@ -80,7 +89,7 @@
       "query" : "bird watching journal",
       "reason" : "The icon directly represents the main subject of bird watching.",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.3833450078964233,
+      "totalSeconds" : 2.3315579891204834,
       "usedFallback" : false
     },
     {
@@ -99,8 +108,8 @@
         1.2332059665674844,
         1.1498499425644824,
         1.1498499425644824,
-        0.8824828883545177,
-        0.8824828883545177,
+        0.8775186254792458,
+        0.8775186254792458,
         0.7547528006926769,
         0.6147929272384163,
         0.5924735542839578,
@@ -108,17 +117,17 @@
         0.5791777062877779,
         0.5791777062877779,
         0.5360084796935543,
-        0.5358144662374186,
+        0.5308502033621467,
         0.5156090935385546,
-        0.46875,
         0.458319194256493,
         0.4466737330779619,
         0.4466737330779619,
-        0.4465120551978488,
-        0.4465120551978488,
-        0.4465120551978488,
-        0.4465120551978488,
-        0.4465120551978488
+        0.4423751694684556,
+        0.4423751694684556,
+        0.4423751694684556,
+        0.4423751694684556,
+        0.4423751694684556,
+        0.4423751694684556
       ],
       "candidates" : [
         "headphones",
@@ -137,7 +146,6 @@
         "memories",
         "airpods",
         "square.and.arrow.down",
-        "headset",
         "square.and.arrow.down.on",
         "text.append",
         "text.insert",
@@ -145,9 +153,18 @@
         "airpods.max",
         "airpods.pro",
         "earbud.left",
-        "airpod.right"
+        "airpod.right",
+        "beats.fitpro"
       ],
       "id" : "test-en-podcast",
+      "keywordWeights" : [
+        2,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "podcast player",
         "headphones",
@@ -161,7 +178,7 @@
       "query" : "podcast player with episode downloads",
       "reason" : "The icon clearly represents audio, the core subject of podcast playback.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.1399389505386353,
+      "totalSeconds" : 2.129179000854492,
       "usedFallback" : false
     },
     {
@@ -178,9 +195,8 @@
         2.758258870730779,
         2.0296974557550373,
         1.6326547436082213,
-        1.1900017930060456,
-        0.9864383602610289,
-        0.888116334390713,
+        1.1858550844060043,
+        0.9814623099409794,
         0.8866788541300961,
         0.8866788541300961,
         0.7758439973638339,
@@ -196,10 +212,11 @@
         0.625413282428162,
         0.625413282428162,
         0.5599006114527999,
-        0.5179470625080184,
-        0.49050215160725447,
+        0.513800353907977,
+        0.5080126577854684,
+        0.48552610128720486,
         0.4747077641494799,
-        0.44874767873424115
+        0.44108427147825
       ],
       "candidates" : [
         "network",
@@ -207,7 +224,6 @@
         "shield",
         "wifi.router",
         "globe",
-        "firewall",
         "shield.lefthalf.filled",
         "shield.righthalf.filled",
         "person.badge.shield.checkmark",
@@ -224,11 +240,21 @@
         "globe.americas",
         "wifi.badge.lock",
         "server.rack",
+        "firewall",
         "wifi",
         "display",
-        "airport.express"
+        "exclamationmark.lock"
       ],
       "id" : "test-en-vpn",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "vpn",
         "vpn symbol",
@@ -243,7 +269,7 @@
       "query" : "VPN and network privacy tool",
       "reason" : "Directly represents internet and network concepts",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.031727910041809,
+      "totalSeconds" : 2.054882049560547,
       "usedFallback" : false
     },
     {
@@ -311,6 +337,14 @@
         "17.calendar"
       ],
       "id" : "test-en-garden",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375
+      ],
       "keywords" : [
         "plant watering reminder",
         "plant",
@@ -324,7 +358,7 @@
       "query" : "plant watering reminder",
       "reason" : "The main subject is a plant, and the tree icon directly represents watering.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.1300740242004395,
+      "totalSeconds" : 2.071453094482422,
       "usedFallback" : false
     },
     {
@@ -340,7 +374,7 @@
       "candidateScores" : [
         2.152054405177986,
         2.1490604852080484,
-        1.9212735908537708,
+        1.8591611279043245,
         1.2233526248070232,
         0.9516639599943243,
         0.9516639599943243,
@@ -351,15 +385,15 @@
         0.8157119657094208,
         0.8157119657094208,
         0.7504296378584289,
-        0.7311233586730805,
         0.7291241341476468,
         0.702764432862307,
         0.702764432862307,
+        0.7013222085629816,
         0.6795040372150323,
         0.6472238967346313,
         0.6472238967346313,
         0.6344426399962161,
-        0.6266771645769262,
+        0.6253580315486907,
         0.6253580315486907,
         0.6253580315486907,
         0.6253580315486907
@@ -378,20 +412,28 @@
         "text.rectangle.page",
         "questionmark.text.page",
         "document",
-        "printer.dotmatrix",
         "list.bullet.clipboard",
         "arrow.up.page.on.clipboard",
         "arrow.right.page.on.clipboard",
+        "printer.dotmatrix",
         "pencil",
         "heart.text.clipboard",
         "sparkle.text.clipboard",
         "waveform.path.ecg.text.page",
-        "printer.dotmatrix.inverse",
         "append.page",
         "zipper.page",
-        "lock.document"
+        "lock.document",
+        "richtext.page"
       ],
       "id" : "test-zh-invoice",
+      "keywordWeights" : [
+        2,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "invoice scanner",
         "receipt",
@@ -405,33 +447,33 @@
       "query" : "发票扫描和报销工具",
       "reason" : "图标直接代表发票扫描和报销的核心内容",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 1.9357810020446777,
+      "totalSeconds" : 1.9868500232696533,
       "usedFallback" : false
     },
     {
       "alternateHitRatio" : 1,
       "alternates" : [
-        "train.side.rear.car",
         "train.side.front.car",
         "train.side.middle.car",
+        "tram",
         "cablecar"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
       "candidateScores" : [
-        1.6900680600114137,
         1.5742783883045337,
         1.5742783883045337,
         1.5742783883045337,
+        1.538564596792738,
         1.3344029716087955,
         1.2772345893979744,
-        1.2071914714367242,
-        0.8287773612758402,
+        1.0989747119948128,
         0.7177422489463113,
-        0.6227721908012441,
+        0.6772738980571642,
         0.5820582962167759,
         0.5487381168703924,
         0.5402853914843991,
+        0.4689541383758177,
         0.463101764129485,
         0.463101764129485,
         0.463101764129485,
@@ -446,19 +488,19 @@
         0.4267963131214163
       ],
       "candidates" : [
-        "tram",
         "train.side.rear.car",
         "train.side.front.car",
         "train.side.middle.car",
+        "tram",
         "cablecar",
         "clock",
         "tram.fill.tunnel",
-        "lightrail",
         "tram.card",
-        "alarm",
+        "lightrail",
         "calendar.badge.clock",
         "house.and.flag",
         "clock.badge",
+        "alarm",
         "app.badge.clock",
         "bolt.badge.clock",
         "cart.badge.clock",
@@ -473,6 +515,14 @@
         "dot.radiowaves.left.and.right"
       ],
       "id" : "test-ja-train",
+      "keywordWeights" : [
+        2,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "train timetable",
         "clock",
@@ -481,12 +531,12 @@
         "schedule",
         "timetable"
       ],
-      "pick" : "tram",
-      "pickScore" : 1,
+      "pick" : "train.side.rear.car",
+      "pickScore" : 0.7,
       "query" : "電車の時刻表アプリ",
-      "reason" : "電車を象徴するシンプルで直感的なアイコン",
+      "reason" : "電車は後ろから見える車台で時刻表アプリを表す",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.1169610023498535,
+      "totalSeconds" : 2.21937096118927,
       "usedFallback" : false
     },
     {
@@ -494,20 +544,20 @@
       "alternates" : [
         "dollarsign",
         "dollarsign.gauge.chart.lefthalf.righthalf",
-        "graph.2d",
-        "graph.3d"
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
+        "graph.2d"
       ],
       "candidateCeiling" : 0.6,
       "candidateCount" : 25,
       "candidateScores" : [
-        1.7201818698352438,
+        1.7036880898826388,
         1.490651280458658,
         1.4230000094533206,
-        1.4203011211033123,
-        1.4203011211033123,
         1.2807000085079885,
-        1.1677546970332535,
-        1.0009325974570744,
+        1.2004197181015794,
+        1.2004197181015794,
+        1.1512609170806483,
+        0.9867950717834127,
         0.669217960348324,
         0.5948604091985102,
         0.5948604091985102,
@@ -530,9 +580,9 @@
         "chart.pie",
         "dollarsign",
         "dollarsign.gauge.chart.lefthalf.righthalf",
+        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
         "graph.2d",
         "graph.3d",
-        "dollarsign.gauge.chart.leftthird.topthird.rightthird",
         "chart.bar",
         "chart.bar.xaxis",
         "gauge.chart.lefthalf.righthalf",
@@ -554,6 +604,14 @@
         "rublesign.gauge.chart.lefthalf.righthalf"
       ],
       "id" : "test-en-stocks",
+      "keywordWeights" : [
+        2,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "stock market",
         "graph",
@@ -567,7 +625,7 @@
       "query" : "stock market tracker",
       "reason" : "The icon directly represents the stock market's core concept of data visualization.",
       "retrievalCeiling" : 0.8,
-      "totalSeconds" : 2.320142984390259,
+      "totalSeconds" : 2.246364951133728,
       "usedFallback" : false
     },
     {
@@ -576,22 +634,22 @@
         "clock",
         "timer",
         "fork.knife",
-        "alarm"
+        "oven"
       ],
       "candidateCeiling" : 0.5,
       "candidateCount" : 25,
       "candidateScores" : [
         2.1323996477378793,
-        1.2483809540639264,
-        1.2479862922670828,
+        1.2189408498825651,
+        1.0710955319778424,
         0.8620689655172414,
-        0.698490287424309,
-        0.698490287424309,
         0.5809408514703455,
         0.5809408514703455,
         0.5809408514703455,
         0.5809408514703455,
         0.5773502691896258,
+        0.4921594229537074,
+        0.4921594229537074,
         0.452377290418207,
         0.4252194701226171,
         0.387751963215606,
@@ -612,13 +670,13 @@
         "clock",
         "timer",
         "fork.knife",
-        "alarm",
-        "deskclock",
         "oven",
         "sink",
         "stove",
         "refrigerator",
         "menucard",
+        "alarm",
+        "deskclock",
         "clock.badge",
         "gauge.with.needle",
         "app.badge.clock",
@@ -635,6 +693,15 @@
         "document.badge.clock"
       ],
       "id" : "test-fr-cook",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "minuteur de cuisine",
         "clock",
@@ -649,7 +716,7 @@
       "query" : "minuteur de cuisine",
       "reason" : "l'élément principal est la cuisine, représentée par la poêle",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.609539031982422,
+      "totalSeconds" : 2.5672459602355957,
       "usedFallback" : false
     },
     {
@@ -685,9 +752,9 @@
         0.4084656791949049,
         0.4084656791949049,
         0.4034063908451396,
-        0.37265086135561076,
-        0.37265086135561076,
-        0.3501134393099185
+        0.3501134393099185,
+        0.3501134393099185,
+        0.3409923696052748
       ],
       "candidates" : [
         "book",
@@ -712,11 +779,19 @@
         "pencil.tip",
         "pencil.line",
         "play.laptopcomputer",
-        "backpack",
-        "studentdesk",
-        "bubble.and.pencil"
+        "bubble.and.pencil",
+        "square.and.pencil",
+        "backpack"
       ],
       "id" : "test-de-budget",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.8571428571428571
+      ],
       "keywords" : [
         "student budget book",
         "notebook",
@@ -730,7 +805,7 @@
       "query" : "Haushaltsbuch für Studenten",
       "reason" : "Das Wort steht für ein Haushaltsbuch.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 1.9292049407958984,
+      "totalSeconds" : 1.878159999847412,
       "usedFallback" : false
     },
     {
@@ -754,20 +829,20 @@
         1.0506103099787694,
         1.0506103099787694,
         1.0506103099787694,
-        0.965311074931624,
+        0.9434395962985073,
         0.9278547469346907,
-        0.8541749831702344,
         0.8400992761667474,
-        0.8026688236448845,
+        0.8370949438363039,
+        0.7821727764441677,
         0.7660952921831192,
         0.7660952921831192,
         0.6915890684171127,
-        0.6896242045842317,
-        0.6184393565942709,
+        0.6691281573835149,
         0.6000709115476768,
         0.6000709115476768,
         0.6000709115476768,
         0.6000709115476768,
+        0.5979433093935541,
         0.5872992848226318
       ],
       "candidates" : [
@@ -783,21 +858,30 @@
         "display.and.screwdriver",
         "sensor",
         "sleep",
-        "moon.zzz",
         "eye",
+        "moon.zzz",
         "powersleep",
         "tv",
         "desktopcomputer",
         "alarm",
         "moon",
-        "zzz",
         "eye.half.closed",
         "keyboard.badge.eye",
         "hourglass.badge.eye",
         "eye.trianglebadge.exclamationmark",
+        "zzz",
         "display.2"
       ],
       "id" : "test-en-baby",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "baby sleep monitor",
         "baby monitor",
@@ -812,7 +896,7 @@
       "query" : "baby sleep monitor",
       "reason" : "The stroller directly represents the baby sleep monitor's main function.",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.049368977546692,
+      "totalSeconds" : 2.0876030921936035,
       "usedFallback" : false
     },
     {
@@ -827,13 +911,13 @@
       "candidateCount" : 25,
       "candidateScores" : [
         2.024512504848585,
-        1.01225264857327,
+        1.0013203092154115,
         0.9324214770526325,
         0.8869943480182718,
         0.8869943480182718,
         0.8869943480182718,
-        0.8811878376972236,
-        0.8435438738110583,
+        0.8770411290971823,
+        0.834433591012843,
         0.7391619566818932,
         0.7391619566818932,
         0.7391619566818932,
@@ -841,15 +925,15 @@
         0.5867735599210241,
         0.5564226080622615,
         0.5564226080622615,
-        0.49050215160725447,
-        0.48030309862185283,
+        0.48552610128720486,
+        0.47119281582363753,
         0.4655172413793104,
         0.4596897336064778,
         0.4401826462888717,
-        0.4116883702473024,
-        0.4087517930060454,
-        0.4087517930060454,
-        0.38344812615165513,
+        0.40460508440600407,
+        0.40460508440600407,
+        0.40387955642026074,
+        0.37847207583160547,
         0.28846153846153844
       ],
       "candidates" : [
@@ -873,13 +957,22 @@
         "hammer",
         "chevron.left.forwardslash.chevron.right",
         "arrow.trianglehead.pull",
-        "apple.terminal.on",
         "wifi.router",
         "wifi.exclamationmark",
+        "apple.terminal.on",
         "firewall",
         "antenna.radiowaves.left.and.right"
       ],
       "id" : "test-en-cli-http",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "rest client",
         "rest icon",
@@ -894,7 +987,7 @@
       "query" : "HTTP client for testing REST APIs",
       "reason" : "The icon clearly represents REST API testing.",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.1334019899368286,
+      "totalSeconds" : 2.0941810607910156,
       "usedFallback" : false
     },
     {
@@ -908,22 +1001,22 @@
       "candidateCeiling" : 1,
       "candidateCount" : 16,
       "candidateScores" : [
-        5.030623894134994,
+        5.022253511931808,
         2.4285113019775793,
-        1.6426079903416901,
-        1.1142162777255502,
-        0.9550425237647573,
-        0.6189852354783394,
+        1.5167342320123633,
+        1.107240959222895,
+        0.94906367933391,
+        0.6106148532751532,
         0.6000542005538959,
         0.37503387534618493,
         0.3532095654153856,
         0.3532095654153856,
-        0.2521289942782123,
-        0.2521289942782123,
         0.2472466957907699,
         0.2338783396421838,
-        0.21611056652418192,
-        0.16705595688727415
+        0.186134905484572,
+        0.186134905484572,
+        0.16705595688727415,
+        0.15954420470106173
       ],
       "candidates" : [
         "dumbbell",
@@ -936,14 +1029,23 @@
         "thermometer.variable.and.figure",
         "mirror.side.left",
         "mirror.side.right",
-        "airplay.video",
-        "oval.portrait",
         "mirror.side.left.and.heat.waves",
         "flame",
-        "righttriangle.split.diagonal",
-        "flame.gauge.open"
+        "airplay.video",
+        "oval.portrait",
+        "flame.gauge.open",
+        "righttriangle.split.diagonal"
       ],
       "id" : "test-es-gym",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "gym routines",
         "gym",
@@ -958,7 +1060,7 @@
       "query" : "rutinas de gimnasio",
       "reason" : "representa directamente la actividad principal de entrenamiento físico",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 1.9798110723495483,
+      "totalSeconds" : 2.007547974586487,
       "usedFallback" : false
     },
     {
@@ -1026,6 +1128,15 @@
         "11.calendar"
       ],
       "id" : "test-zh-vocab",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "word learning app",
         "book with words",
@@ -1040,27 +1151,27 @@
       "query" : "背单词的应用",
       "reason" : "图标直接关联单词学习的核心元素",
       "retrievalCeiling" : 0.9,
-      "totalSeconds" : 2.4569079875946045,
+      "totalSeconds" : 2.463771939277649,
       "usedFallback" : false
     },
     {
-      "alternateHitRatio" : 0.25,
+      "alternateHitRatio" : 0,
       "alternates" : [
         "bolt",
         "lock.display",
-        "video.doorbell",
-        "lock.open.display"
+        "lock.open.display",
+        "camera"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 25,
       "candidateScores" : [
         2.0974275345130065,
         1.7020345129451668,
-        1.397164987259465,
-        1.2929590653284038,
-        1.1975699890795415,
+        1.3959348712970052,
+        1.1965156039688616,
         1.1910814430786345,
         1.177598169882187,
+        1.1524091020930376,
         1.130460738253942,
         1.130460738253942,
         1.1245933051292178,
@@ -1076,18 +1187,18 @@
         0.951057979308053,
         0.9360768914846782,
         0.9309852844076516,
-        0.9210897098928776,
         0.9119657670389908,
-        0.8411415499158479
+        0.8411415499158479,
+        0.8385934908019055
       ],
       "candidates" : [
         "web.camera",
         "bolt",
         "lock.display",
-        "video.doorbell",
         "lock.open.display",
         "camera",
         "key",
+        "video.doorbell",
         "camera.aperture",
         "camera.viewfinder",
         "light.beacon.max",
@@ -1103,11 +1214,20 @@
         "poweroutlet.type.b",
         "bolt.badge.automatic",
         "alarm",
-        "shield",
         "exclamationmark.lock",
-        "questionmark.key.filled"
+        "questionmark.key.filled",
+        "cable.connector"
       ],
       "id" : "test-en-camera",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "home security camera viewer",
         "security camera",
@@ -1122,27 +1242,27 @@
       "query" : "home security camera viewer",
       "reason" : "Directly represents a home security camera viewer app",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 2.1356379985809326,
+      "totalSeconds" : 2.0882779359817505,
       "usedFallback" : false
     },
     {
       "alternateHitRatio" : 0.25,
       "alternates" : [
         "service.dog",
+        "earbuds.bone.conduction",
         "pawprint",
-        "pet.carrier",
-        "earbuds.bone.conduction"
+        "earbuds.bone.conduction.left"
       ],
       "candidateCeiling" : 1,
       "candidateCount" : 11,
       "candidateScores" : [
         2.0852511696625284,
         1.237709308052107,
-        0.7426255848312643,
-        0.6188546540260536,
         0.6013511416325062,
+        0.5906161091496412,
         0.5261822489284429,
         0.5261822489284429,
+        0.4921800909580344,
         0.3025547931338547,
         0.3025547931338547,
         0.3017241379310345,
@@ -1151,17 +1271,25 @@
       "candidates" : [
         "dog",
         "service.dog",
-        "pawprint",
-        "pet.carrier",
         "earbuds.bone.conduction",
+        "pawprint",
         "earbuds.bone.conduction.left",
         "earbuds.bone.conduction.right",
+        "pet.carrier",
         "tree",
         "parkingsign",
         "figure.bowling",
         "house.and.flag"
       ],
       "id" : "test-emoji-dog",
+      "keywordWeights" : [
+        2,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "dog",
         "bone",
@@ -1175,7 +1303,7 @@
       "query" : "🐶",
       "reason" : "Directly represents the main subject of the request",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 1.8310219049453735,
+      "totalSeconds" : 1.8308039903640747,
       "usedFallback" : false
     },
     {
@@ -1211,7 +1339,7 @@
         0.4407823925575267,
         0.4407823925575267,
         0.4330512013953738,
-        0.42843783740265245,
+        0.3728198219455872,
         0.3728198219455872,
         0.3728198219455872
       ],
@@ -1238,11 +1366,20 @@
         "xmark.circle.badge.airplane",
         "checkmark.circle.badge.airplane",
         "airplaneseat",
-        "radio",
         "xbox.logo",
-        "arcade.stick"
+        "arcade.stick",
+        "playstation.logo"
       ],
       "id" : "test-en-drone",
+      "keywordWeights" : [
+        2,
+        1.5,
+        1.3043478260869565,
+        1.1538461538461537,
+        1.0344827586206897,
+        0.9375,
+        0.8571428571428571
+      ],
       "keywords" : [
         "drone flight controller",
         "drone",
@@ -1257,18 +1394,18 @@
       "query" : "drone flight controller",
       "reason" : "Shows the main subject without unnecessary details",
       "retrievalCeiling" : 1,
-      "totalSeconds" : 1.974316954612732,
+      "totalSeconds" : 1.9915640354156494,
       "usedFallback" : false
     }
   ],
   "dataset" : "test-v1",
   "fallbackRate" : 0,
-  "meanAlternateHitRatio" : 0.46875,
+  "meanAlternateHitRatio" : 0.453125,
   "meanCandidateCeiling" : 0.85625,
-  "meanPickScore" : 0.7625000000000001,
+  "meanPickScore" : 0.74375,
   "meanRetrievalCeiling" : 0.95625,
-  "meanSeconds" : 2.1348238587379456,
+  "meanSeconds" : 2.1280508786439896,
   "missRate" : 0.0625,
-  "perfectRate" : 0.375,
+  "perfectRate" : 0.3125,
   "variant" : "prod"
 }

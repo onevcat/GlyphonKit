@@ -110,7 +110,7 @@ running system uses.
 ### Concept words
 
 `Sources/GlyphonKit/Resources/concepts.json` has everyday words for
-1724 symbol roots: what a person says when the symbol is the right icon
+1722 symbol roots: what a person says when the symbol is the right icon
 (`shippingbox`: package, parcel, delivery, shipping, order, courier).
 The data from Apple has search terms for about a third of the symbols
 and few synonyms, so a keyword like "package" finds no symbol by name.

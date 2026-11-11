@@ -16,11 +16,11 @@ enum SymbolConcepts {
   /// Root name -> words. Empty if the resource cannot be read: retrieval
   /// then works from names, terms and aliases as before.
   static let bundled: [String: [String]] = {
-    guard
-      let url = Bundle.module.url(forResource: "concepts", withExtension: "json"),
-      let data = try? Data(contentsOf: url),
-      let file = try? JSONDecoder().decode(File.self, from: data)
-    else { return [:] }
-    return file.concepts
+    guard let url = Bundle.module.url(forResource: "concepts", withExtension: "json") else { return [:] }
+    return (try? load(from: url)) ?? [:]
   }()
+
+  static func load(from url: URL) throws -> [String: [String]] {
+    try JSONDecoder().decode(File.self, from: Data(contentsOf: url)).concepts
+  }
 }

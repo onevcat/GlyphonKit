@@ -191,6 +191,15 @@ struct SymbolRootIndexSearchOptionsTests {
     #expect(SymbolRootIndex(database: database, mergesDuplicates: true).roots.map(\.name) == ["lamp", "torch.on"])
   }
 
+  @Test func rootNamedSlashStays() {
+    // Here the slash is the subject, not a crossed-out form.
+    let database = SymbolDatabase(symbols: [
+      SymbolEntry(name: "slash.circle", year: "2019", categories: [], terms: ["divide"]),
+      SymbolEntry(name: "slash.circle.fill", year: "2019", categories: [], terms: ["divide"]),
+    ])
+    #expect(SymbolRootIndex(database: database, mergesDuplicates: true).roots.map(\.name) == ["slash"])
+  }
+
   @Test func everyAdditionalAliasTargetIsAWordOfTheSymbolData() {
     let index = SymbolRootIndex(database: SymbolRootIndexTests.database, mergesDuplicates: true)
     for (word, targets) in SymbolRootIndex.aliasAdditionsOS27 {
@@ -214,6 +223,38 @@ struct SymbolRootIndexSearchOptionsTests {
     let index = SymbolRootIndex(database: Self.renamed, concepts: ["speaker": ["message"]])
     let keywords = [SymbolRootIndex.WeightedKeyword(text: "message", weight: 1.0)]
     #expect(index.search(keywords: keywords, limit: 5, options: .init(conceptWeight: 0.5)).map(\.name) == ["message", "speaker"])
+  }
+
+  @Test func twoWordKeywordFindsAOneWordConcept() {
+    // "smart" is a noise word, but "smart home" is the concept `smarthome`.
+    let index = SymbolRootIndex(database: Self.renamed, concepts: ["speaker": ["smarthome", "filmstrip"]])
+    let options = SymbolRootIndex.SearchOptions(joinsCompounds: true, joinsHyphenatedWords: true, conceptWeight: 0.5)
+    func search(_ text: String) -> [String] {
+      index.search(keywords: [.init(text: text, weight: 1.0)], limit: 5, options: options).map(\.name)
+    }
+    #expect(search("smart home") == ["speaker"])
+    #expect(search("film strip") == ["speaker"])
+    #expect(search("film-strip") == ["speaker"])
+  }
+
+  @Test func noiseWordIsNotAConceptWord() {
+    // The search drops "library" before any lookup, so it must not be a
+    // concept word either: it would only take a hint slot.
+    let index = SymbolRootIndex(database: Self.renamed, concepts: ["speaker": ["library"]])
+    let options = SymbolRootIndex.SearchOptions(conceptWeight: 0.5)
+    #expect(index.search(keywords: [.init(text: "library", weight: 1.0)], limit: 5, options: options).isEmpty)
+  }
+
+  @Test func commonNameWordDampsTheConceptWordToo() {
+    // "audio" is a term of four roots and a concept word of one. The
+    // concept match must not count more than a name match.
+    let index = SymbolRootIndex(database: Self.renamed, concepts: ["message": ["audio"]])
+    let scored = index.scoredSearch(
+      keywords: [.init(text: "audio", weight: 1.0)], limit: 10, options: .init(conceptWeight: 0.5))
+    let message = scored.first { $0.root.name == "message" }?.score ?? 0
+    let speaker = scored.first { $0.root.name == "speaker" }?.score ?? 0
+    #expect(message > 0)
+    #expect(message < speaker)
   }
 
   @Test func scoredSearchGivesTheScoresInOrder() {
@@ -365,12 +406,15 @@ struct SymbolConceptsTests {
     let database = try SymbolDatabase.load(
       from: url, platform: "macOS",
       systemVersion: OperatingSystemVersion(majorVersion: 99, minorVersion: 0, patchVersion: 0))
-    let roots = Set(SymbolRootIndex(database: database).roots.map(\.name))
+    // The index that reads the concepts: a key for an old name or for a
+    // root that this index leaves out would have no effect.
+    let roots = Set(SymbolRootIndex(database: database, mergesDuplicates: true).roots.map(\.name))
     for (name, words) in concepts {
       #expect(roots.contains(name), "\(name) is not a root")
       #expect(!words.isEmpty)
       for word in words {
         #expect(word.allSatisfy { $0.isLowercase && $0.isLetter && $0.isASCII }, "\(name): \(word)")
+        #expect(!SymbolRootIndex.noiseWords.contains(word), "\(name): \(word) is a noise word")
       }
     }
   }

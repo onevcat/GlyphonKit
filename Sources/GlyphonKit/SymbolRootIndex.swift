@@ -87,7 +87,8 @@ struct SymbolRootIndex: Sendable {
     for (rootName, entries) in byRoot {
       // `flashlight.slash` gives a root `flashlight`, but there is no
       // symbol `flashlight`: the root would show only the crossed-out form.
-      if mergesDuplicates, entries.allSatisfy({ $0.name.split(separator: ".").contains("slash") }) {
+      if mergesDuplicates, !rootName.split(separator: ".").contains("slash"),
+         entries.allSatisfy({ $0.name.split(separator: ".").contains("slash") }) {
         continue
       }
       // Prefer the entry whose name is exactly the root; else the shortest.
@@ -167,12 +168,19 @@ struct SymbolRootIndex: Sendable {
     var conceptIndex: [String: [Int]] = [:]
     for (name, words) in concepts {
       guard let index = rootIndexByName[name] else { continue }
-      for word in Set(words) where !roots[index].tokens.contains(word) {
+      for word in Set(words) where !roots[index].tokens.contains(word) && !Self.noiseWords.contains(word) {
         conceptIndex[word, default: []].append(index)
       }
     }
     self.conceptIndex = conceptIndex
-    self.conceptDamping = conceptIndex.mapValues { 1.0 / (1.0 + log(Double($0.count)) / 2.0) }
+    // A word says as little about a root when many roots have it as a
+    // concept word as when many have it in their name, so both count.
+    var conceptDamping: [String: Double] = [:]
+    for (word, hits) in conceptIndex {
+      let count = hits.count + (tokenIndex[word]?.count ?? 0)
+      conceptDamping[word] = 1.0 / (1.0 + log(Double(count)) / 2.0)
+    }
+    self.conceptDamping = conceptDamping
   }
 
   /// Words that carry no icon signal — every software description contains
@@ -541,12 +549,14 @@ struct SymbolRootIndex: Sendable {
       if options.joinsHyphenatedWords, text.contains("-") {
         text = text.split(separator: " ").map { word -> String in
           let joined = String(word).replacing("-", with: "")
-          let known = tokenIndex[joined] != nil || Self.aliasMap[joined] != nil || options.additionalAliases[joined] != nil
+          let known = tokenIndex[joined] != nil || Self.aliasMap[joined] != nil
+            || options.additionalAliases[joined] != nil
+            || (options.conceptWeight > 0 && conceptIndex[joined] != nil)
           return known ? joined : String(word)
         }.joined(separator: " ")
       }
-      var words = text.split { !$0.isLetter && !$0.isNumber }
-        .map(String.init)
+      let allWords = text.split { !$0.isLetter && !$0.isNumber }.map(String.init)
+      var words = allWords
         .filter { !Self.noiseWords.contains($0) && !options.additionalNoiseWords.contains($0) }
 
       if words.count > 1, let hits = phraseIndex[words.joined(separator: " ")] {
@@ -563,9 +573,19 @@ struct SymbolRootIndex: Sendable {
         }
       }
 
-      if options.joinsCompounds, words.count > 1, let hits = tokenIndex[words.joined()] {
-        for index in hits {
-          scores[index, default: 0] += keyword.weight
+      // The compound can have a noise word ("smart home" is `smarthome`).
+      if options.joinsCompounds, allWords.count > 1 {
+        let compound = allWords.joined()
+        if let hits = tokenIndex[compound] {
+          for index in hits {
+            scores[index, default: 0] += keyword.weight
+          }
+        }
+        if options.conceptWeight > 0, let hits = conceptIndex[compound] {
+          let perConcept = options.conceptWeight * keyword.weight * (conceptDamping[compound] ?? 1.0)
+          for index in hits {
+            scores[index, default: 0] += perConcept
+          }
         }
       }
 
@@ -604,7 +624,7 @@ struct SymbolRootIndex: Sendable {
           // Prefix fallback for morphology: "running" -> "run", "cycling" -> "cycle".
           for (token, hits) in tokenIndex
           where token.hasPrefix(word) || (word.hasPrefix(token) && token.count >= 4 && word.count <= token.count + 4) {
-            let perToken = 0.35 * keyword.weight / Double(words.count)
+            let perToken = 0.35 * keyword.weight / pow(Double(words.count), options.wordShareExponent)
             for index in hits {
               scores[index, default: 0] += perToken
             }

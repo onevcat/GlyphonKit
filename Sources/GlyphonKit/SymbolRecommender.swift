@@ -56,6 +56,8 @@ public struct SymbolRecommender: Sendable {
   /// harness uses it to tell retrieval problems from pick problems.
   struct Trace: Sendable {
     var keywords: [String] = []
+    /// The weights of `keywords`.
+    var keywordWeights: [Double] = []
     /// The retrieved roots, best first.
     var candidates: [String] = []
     /// The retrieval scores of `candidates`.
@@ -92,9 +94,9 @@ public struct SymbolRecommender: Sendable {
       return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
-    let candidates: [SymbolRootIndex.Root]
+    let scored: [(root: SymbolRootIndex.Root, score: Double)]
     do {
-      candidates = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace)
+      scored = try await retrieveCandidates(for: trimmed, limit: candidateLimit, trace: &trace)
     } catch let error where error is CancellationError {
       // Cancellation must escape the degradation ladder so hosts can
       // abort mid-generation instead of receiving a fallback result.
@@ -106,11 +108,12 @@ public struct SymbolRecommender: Sendable {
 
     try Task.checkCancellation()
 
+    let candidates = scored.map(\.root)
     guard candidates.count >= 2 else {
       return (retrievalOnlyRecommendation(for: trimmed), trace)
     }
 
-    let pickList = Self.pickList(from: candidates, scores: trace.scores, generation: generation)
+    let pickList = Self.pickList(from: candidates, scores: scored.map(\.score), generation: generation)
     trace.pickList = pickList.map(\.name)
     let pick: IconPick
     do {
@@ -161,17 +164,17 @@ public struct SymbolRecommender: Sendable {
     for text: String,
     limit: Int = 25,
     trace: inout Trace
-  ) async throws -> [SymbolRootIndex.Root] {
+  ) async throws -> [(root: SymbolRootIndex.Root, score: Double)] {
     let weighted = try await extractKeywords(from: text)
     trace.keywords = weighted.map(\.text)
+    trace.keywordWeights = weighted.map(\.weight)
     debugLog("AI Step 1 - keywords: \(trace.keywords)")
 
     let scored = index.scoredSearch(keywords: weighted, limit: limit, options: searchOptions)
-    let candidates = scored.map(\.root)
-    trace.candidates = candidates.map(\.name)
+    trace.candidates = scored.map(\.root.name)
     trace.scores = scored.map(\.score)
-    debugLog("AI Step 1.5 - candidates: \(candidates.count)")
-    return candidates
+    debugLog("AI Step 1.5 - candidates: \(scored.count)")
+    return scored
   }
 
   // MARK: - Lucky pick

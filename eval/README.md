@@ -100,20 +100,21 @@ datasets (see "Datasets") and reads four numbers.
 | pipeline | train (42) | dev (36) | dev2 (32) | test (16) |
 |---|---|---|---|---|
 | first round (tuned prompts) | 0.879 (100%) | 0.692 (80.6%) | 0.697 (81.2%) | 0.744 (93.8%) |
-| concept words, model decides near ties | 0.912 (100%) | 0.747 (80.6%) | 0.703 (84.4%) | 0.763 (93.8%) |
+| concept words, model decides near ties | 0.912 (100%) | 0.772 (83.3%) | 0.703 (84.4%) | 0.744 (93.8%) |
 
-The retrieval itself gains much more than the final pick. Score of the
-first candidate / best score in the first 6 candidates:
+On the two held-out sets the final pick does not gain (dev2 +0.006,
+test 0; one case is 0.03 and 0.06 there). The retrieval does: score of
+the first candidate / best score in the first 6 candidates:
 
 | pipeline | train | dev | dev2 | test |
 |---|---|---|---|---|
 | first round | 0.833 / 0.964 | 0.586 / 0.842 | 0.519 / 0.838 | 0.656 / 0.931 |
-| concept words | 0.864 / 0.974 | 0.744 / 0.928 | 0.691 / 0.903 | 0.762 / 0.931 |
+| concept words | 0.867 / 0.974 | 0.747 / 0.928 | 0.662 / 0.903 | 0.744 / 0.931 |
 
 What changed:
 
 - **Concept words** (`Resources/concepts.json`): everyday words for
-  1724 symbol roots, matched with half the weight of a name word. They
+  1722 symbol roots, matched with half the weight of a name word. They
   close the vocabulary gap on the symbol side, for all requests, where
   an alias entry closes it for one word.
 - **The model decides only near ties.** The pick list has the candidates
@@ -142,7 +143,7 @@ What did not help (measured on train and dev, not kept):
 - **Four other wordings of the pick rules**: none was better than the
   current one (dev 0.756 to 0.842 against 0.842).
 
-What is left: the best of the first 3 candidates is 0.872 on dev2 and
+What is left: the best of the first 3 candidates is 0.844 on dev2 and
 0.931 on test, so retrieval has the answer near the top; neither the
 model nor the retrieval score reliably tells the first three apart.
 
@@ -233,8 +234,8 @@ baseline through the shipping port) for provenance.
   example `replay --report results/prod-macos27-concepts-dev.json
   --dataset datasets/dev.json --set cw=0.3,exp=1`. Settings: `cw`
   (concept weight), `exp` (word share exponent), `exact` (name bonus),
-  `cap` (roots per family), `wt` / `wi` / `decay` (keyword weights), `v`
-  (list each case), `concepts=<path>` (another concepts file).
+  `cap` (roots per family), `v` (list each case), `concepts=<path>`
+  (another concepts file). The keyword weights come from the report.
 - **A new system release** → first run `prod` twice with the previous
   generation's prompts. If the scores hold, map the new release to that
   generation in `ModelGeneration.current`. If not, add a generation and
